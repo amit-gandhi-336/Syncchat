@@ -242,25 +242,7 @@ public void setPrimary(boolean primary)
         election.startElection();
     }
 
-    // =====================================================
-    // RING ELECTION
-    // =====================================================
-
-    @Override
-    public void startRingElection(
-            int candidateId)
-            throws RemoteException {
-
-        RingElection election =
-                new RingElection(
-                        nodeId,
-                        nodes
-                );
-
-        election.forwardElection(
-                candidateId
-        );
-    }
+    
 
     // =====================================================
     // PRIMARY ANNOUNCEMENT

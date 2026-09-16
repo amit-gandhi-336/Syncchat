@@ -17,8 +17,6 @@ public interface NodeService extends Remote {
     void startBullyElection()
             throws RemoteException;
 
-    void startRingElection(int candidateId)
-            throws RemoteException;
 
     void announcePrimary(int winnerId)
             throws RemoteException;
