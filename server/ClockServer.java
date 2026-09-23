@@ -1,7 +1,6 @@
 package server;
 
 import common.NodeInfo;
-
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -20,7 +19,7 @@ public class ClockServer {
              * args[3] = Primary
              */
 
-            if (args.length < 4) {
+            if (args.length < 5) {
 
                 System.out.println(
                         "Usage:"
@@ -49,6 +48,11 @@ public class ClockServer {
                             args[3]
                     );
 
+             ConsistencyMode consistencyMode =
+                ConsistencyMode.valueOf(
+                        args[4].toUpperCase()
+                );
+
             /*
              * Create RMI registry
              */
@@ -61,11 +65,12 @@ public class ClockServer {
              * Create server
              */
             ChatServer server =
-                    new ChatServer(
-                            nodeId,
-                            offset,
-                            primary
-                    );
+        new ChatServer(
+                nodeId,
+                offset,
+                primary,
+                consistencyMode
+        );
 
             /*
              * Register services
@@ -85,6 +90,10 @@ public class ClockServer {
                     server
             );
 
+            registry.rebind(
+                        "ReplicationService",
+                        server
+        );
             /*
              * Add all cluster nodes
              */
@@ -164,6 +173,12 @@ public class ClockServer {
                     "Heartbeat: ACTIVE"
             );
 
+            System.out.println(
+                "Consistency: " +
+                consistencyMode
+        );
+        
+        
             System.out.println(
                     "================================="
             );

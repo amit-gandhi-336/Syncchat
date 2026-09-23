@@ -2,10 +2,8 @@ package client;
 
 import common.ChatService;
 import common.Message;
-
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,7 +22,7 @@ public class ChatClient {
             Registry registry =
                     LocateRegistry.getRegistry(
                             "localhost",
-                            1099
+                            2001
                     );
 
             /*
