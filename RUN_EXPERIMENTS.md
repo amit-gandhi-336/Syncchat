@@ -51,3 +51,49 @@ java -cp out server.ClockServer 1 2001 0 true
 java -cp out server.ClockServer 2 2002 0 false
 
 java -cp out server.ClockServer 3 2003 0 false
+
+cd /home/Amit/Desktop/amit/study/sem5/dc/Syncchat
+
+## 1. Compile the project
+
+rm -rf out
+mkdir out
+javac -d out common/*.java server/*.java client/*.java
+
+## 2. Experiment 5 - Strong Consistency
+
+### Terminal 1: start Primary Node
+
+java -cp out server.ClockServer 1 2001 0 true STRONG
+
+### Terminal 2: start Backup Node 2
+
+java -cp out server.ClockServer 2 2002 100 false STRONG
+
+### Terminal 3: start Backup Node 3
+
+java -cp out server.ClockServer 3 2003 -100 false STRONG
+
+### Terminal 4: start the client
+
+java -cp out client.ChatClient
+
+## 3. Experiment 5 - Eventual Consistency
+
+Stop the three server terminals using Ctrl+C before starting Eventual Consistency.
+
+### Terminal 1: start Primary Node
+
+java -cp out server.ClockServer 1 2001 0 true EVENTUAL
+
+### Terminal 2: start Backup Node 2
+
+java -cp out server.ClockServer 2 2002 100 false EVENTUAL
+
+### Terminal 3: start Backup Node 3
+
+java -cp out server.ClockServer 3 2003 -100 false EVENTUAL
+
+### Terminal 4: start the client
+
+java -cp out client.ChatClient
