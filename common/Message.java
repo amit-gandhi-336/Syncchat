@@ -16,6 +16,10 @@ public class Message implements Serializable {
         this.time = LocalDateTime.now();
     }
 
+    public String getSender() {
+        return sender;
+    }
+
     public String toString() {
         return "[" + time + "] " + sender +
                " -> " + receiver + ": " + content;

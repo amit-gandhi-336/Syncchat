@@ -2,6 +2,7 @@ package client;
 
 import common.ChatService;
 import common.Message;
+import java.util.Map;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
@@ -16,13 +17,18 @@ public class ChatClient {
             Scanner scanner =
                     new Scanner(System.in);
 
+            String serverHost = args.length > 0 ? args[0] : "localhost";
+            int serverPort = args.length > 1
+                    ? Integer.parseInt(args[1])
+                    : 2001;
+
             /*
              * Connect to RMI registry.
              */
             Registry registry =
                     LocateRegistry.getRegistry(
-                            "localhost",
-                            2001
+                            serverHost,
+                            serverPort
                     );
 
             /*
@@ -94,7 +100,11 @@ public class ChatClient {
                 );
 
                 System.out.println(
-                        "4. Exit"
+                        "4. Chat Activity Analytics (MapReduce)"
+                );
+
+                System.out.println(
+                        "5. Exit"
                 );
 
                 System.out.print(
@@ -181,6 +191,27 @@ public class ChatClient {
                         break;
 
                     case "4":
+
+                        Map<String, Long> senderCounts =
+                                chatService.getMessageCountsBySender();
+
+                        System.out.println();
+                        System.out.println(
+                                "===== MESSAGES BY SENDER (MAPREDUCE) ====="
+                        );
+                        if (senderCounts.isEmpty()) {
+                            System.out.println("No messages to analyze.");
+                        } else {
+                            senderCounts.forEach((sender, count) ->
+                                    System.out.println(sender + ": " + count)
+                            );
+                        }
+                        System.out.println(
+                                "==========================================="
+                        );
+                        break;
+
+                    case "5":
 
                         System.out.println(
                                 "Goodbye!"

@@ -53,6 +53,19 @@ public class ClockServer {
                         args[4].toUpperCase()
                 );
 
+            String advertisedHost = System.getProperty(
+                    "java.rmi.server.hostname",
+                    "localhost"
+            );
+            int exportPort = Integer.getInteger(
+                    "syncchat.rmi.exportPort",
+                    port + 1000
+            );
+            String clusterConfig = System.getProperty(
+                    "syncchat.nodes",
+                    "1@localhost@2001,2@localhost@2002,3@localhost@2003"
+            );
+
             /*
              * Create RMI registry
              */
@@ -69,7 +82,8 @@ public class ClockServer {
                 nodeId,
                 offset,
                 primary,
-                consistencyMode
+                consistencyMode,
+                exportPort
         );
 
             /*
@@ -94,32 +108,27 @@ public class ClockServer {
                         "ReplicationService",
                         server
         );
+            registry.rebind(
+                    "MapReduceService",
+                    server
+            );
             /*
              * Add all cluster nodes
              */
-            server.addNode(
-                    new NodeInfo(
-                            1,
-                            "localhost",
-                            2001
-                    )
-            );
-
-            server.addNode(
-                    new NodeInfo(
-                            2,
-                            "localhost",
-                            2002
-                    )
-            );
-
-            server.addNode(
-                    new NodeInfo(
-                            3,
-                            "localhost",
-                            2003
-                    )
-            );
+            for (String entry : clusterConfig.split(",")) {
+                String[] fields = entry.trim().split("@", 3);
+                if (fields.length != 3) {
+                    throw new IllegalArgumentException(
+                            "Invalid node entry '" + entry
+                                    + "'; expected id@host@registryPort"
+                    );
+                }
+                server.addNode(new NodeInfo(
+                        Integer.parseInt(fields[0]),
+                        fields[1],
+                        Integer.parseInt(fields[2])
+                ));
+            }
 
             /*
              * Start heartbeat manager
@@ -159,6 +168,8 @@ public class ClockServer {
             System.out.println(
                     "Port     : " + port
             );
+            System.out.println("RMI object port: " + exportPort);
+            System.out.println("Advertised host: " + advertisedHost);
 
             System.out.println(
                     "Primary  : " + primary

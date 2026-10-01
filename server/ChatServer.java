@@ -14,7 +14,8 @@ public class ChatServer
         implements ChatService,
                    ClockService,
                    NodeService,
-                   ReplicationService {
+                   ReplicationService,
+                   MapReduceService {
 
 
     private final Set<String> users =
@@ -41,6 +42,7 @@ public class ChatServer
             new ConcurrentHashMap<>();
 
     private final ConsistencyMode consistencyMode;
+        private static final int MAP_BATCH_SIZE = 100;
     /*
      * Constructor
      */
@@ -48,10 +50,11 @@ public class ChatServer
         int nodeId,
         long offset,
         boolean primary,
-        ConsistencyMode consistencyMode)
+                ConsistencyMode consistencyMode,
+                int exportPort)
         throws RemoteException {
 
-    super();
+        super(exportPort);
 
     this.nodeId = nodeId;
     this.primary = primary;
@@ -363,6 +366,89 @@ public void sendMessage(
 
         return new ArrayList<>(list);
     }
+
+        /** Map phase: count messages by sender within one batch. */
+        @Override
+        public Map<String, Long> mapMessageCounts(List<Message> batch)
+                        throws RemoteException {
+
+                Map<String, Long> partialCounts = new HashMap<>();
+                for (Message message : batch) {
+                        partialCounts.merge(message.getSender(), 1L, Long::sum);
+                }
+                return partialCounts;
+        }
+
+        /**
+         * Coordinator: snapshot the primary's data, distribute disjoint map
+         * batches to cluster nodes, then reduce their partial counts.
+         */
+        @Override
+        public Map<String, Long> getMessageCountsBySender()
+                        throws RemoteException {
+
+                if (!primary) {
+                        throw new RemoteException(
+                                        "Run chat analytics through the PRIMARY node."
+                        );
+                }
+
+                List<Message> snapshot = new ArrayList<>();
+                for (List<Message> inbox : messages.values()) {
+                        synchronized (inbox) {
+                                snapshot.addAll(inbox);
+                        }
+                }
+
+                List<NodeInfo> workers = new ArrayList<>(nodes.values());
+                workers.sort(Comparator.comparingInt(NodeInfo::getNodeId));
+                if (workers.isEmpty()) {
+                        workers.add(new NodeInfo(nodeId, "localhost", 0));
+                }
+
+                List<CompletableFuture<Map<String, Long>>> mapResults =
+                                new ArrayList<>();
+                int taskNumber = 0;
+                for (int start = 0; start < snapshot.size(); start += MAP_BATCH_SIZE) {
+                        int end = Math.min(start + MAP_BATCH_SIZE, snapshot.size());
+                        List<Message> batch = new ArrayList<>(snapshot.subList(start, end));
+                        NodeInfo worker = workers.get(taskNumber++ % workers.size());
+
+                        mapResults.add(CompletableFuture.supplyAsync(() -> {
+                                try {
+                                        if (worker.getNodeId() == nodeId) {
+                                                return mapMessageCounts(batch);
+                                        }
+
+                                        Registry registry = LocateRegistry.getRegistry(
+                                                        worker.getHost(), worker.getPort()
+                                        );
+                                        MapReduceService service = (MapReduceService)
+                                                        registry.lookup("MapReduceService");
+                                        return service.mapMessageCounts(batch);
+                                } catch (Exception e) {
+                                        System.err.println(
+                                                        "Map task failed on Node " + worker.getNodeId()
+                                                                        + "; mapping batch locally: " + e.getMessage()
+                                        );
+                                        try {
+                                                return mapMessageCounts(batch);
+                                        } catch (RemoteException impossible) {
+                                                throw new CompletionException(impossible);
+                                        }
+                                }
+                        }, pool));
+                }
+
+                // Reduce phase: sum each worker's partial count for each sender.
+                Map<String, Long> totals = new TreeMap<>();
+                for (CompletableFuture<Map<String, Long>> result : mapResults) {
+                        result.join().forEach(
+                                        (sender, count) -> totals.merge(sender, count, Long::sum)
+                        );
+                }
+                return totals;
+        }
 
     @Override
     public String getServerStatus()

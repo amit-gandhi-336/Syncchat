@@ -10,14 +10,18 @@ public class BerkeleyCoordinator {
     public static void main(String[] args) {
 
         try {
+            String host1 = args.length > 0 ? args[0] : "localhost";
+            String host2 = args.length > 1 ? args[1] : "localhost";
+            String host3 = args.length > 2 ? args[2] : "localhost";
+
             Registry r1 =
-                LocateRegistry.getRegistry("localhost", 2001);
+                LocateRegistry.getRegistry(host1, 2001);
 
             Registry r2 =
-                LocateRegistry.getRegistry("localhost", 2002);
+                LocateRegistry.getRegistry(host2, 2002);
 
             Registry r3 =
-                LocateRegistry.getRegistry("localhost", 2003);
+                LocateRegistry.getRegistry(host3, 2003);
 
             ClockService s1 =
                 (ClockService) r1.lookup("ClockService");
