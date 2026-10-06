@@ -1,170 +1,154 @@
-cd /home/Amit/Desktop/amit/study/sem5/dc/Syncchat
+# Syncchat experiments
 
-## 1. Compile the project
+Run all commands from the project root directory.
 
-Compile all common, server, and client classes into `out/`:
-
-rm -rf out
-mkdir out
-javac -d out common/_.java server/_.java
-
-## 2. Java RMI and chat experiment
-
-### Terminal 1: start the RMI server
-
-java -cp out server.ClockServer 1 1099 0 true
-
-Arguments are `<nodeId> <port> <clockOffset> <primary>`. Keep this terminal running.
-
-### Terminal 2: start a client
-
-java -cp out client.ChatClient
-
-## Run the cluster across Tailscale
-
-On each Linux server, obtain that machine's Tailscale IPv4 address with
-`tailscale ip -4`. Allow incoming TCP traffic on that machine's registry port
-and TCP 2100 from the tailnet only. The registry ports below are 2001, 2002,
-and 2003; every server uses fixed RMI object port 2100. Both ports are required
-because RMI first contacts the registry and then the exported server object.
-
-On all three machines, compile the same project version:
+## Compile
 
 ```sh
+mkdir -p out
 javac -d out common/*.java server/*.java client/*.java
 ```
 
-Replace `100.x.y.1`, `.2`, and `.3` with the actual Tailscale IPs. Start the
-following commands on their respective machines. Keep the identical
-`syncchat.nodes` list on every server:
+The server command format is:
+
+```text
+java ... server.ClockServer <nodeId> <registryPort> <clockOffset> <primary> <STRONG|EVENTUAL>
+```
+
+Keep every server running in its own terminal. Start the primary before connecting clients.
+
+## Local three-node cluster
+
+Start one node per terminal on the same computer:
+
+```sh
+java -cp out server.ClockServer 1 2001 0 true STRONG
+java -cp out server.ClockServer 2 2002 100 false STRONG
+java -cp out server.ClockServer 3 2003 -100 false STRONG
+```
+
+Start the client in another terminal. If it is local, the default endpoint is `localhost:2001`:
+
+```sh
+java -cp out client.ChatClient
+```
+
+The client menu includes send message, check inbox, server status, MapReduce chat activity analytics, and exit. Choose different usernames for separate clients.
+
+## Run three servers across Tailscale
+
+The configured Tailscale IPs are:
+
+- Node 1 (primary): `100.68.59.4`
+- Node 2: `100.67.169.23`
+- Node 3: `100.120.104.65`
+
+Compile the same project on each computer:
+
+```sh
+mkdir -p out
+javac -d out common/*.java server/*.java client/*.java
+```
+
+Start each command on its respective computer. The peer-list property must be identical on all three servers. Each server advertises its own Tailscale IP, uses its registry port, and exports its RMI service on TCP port 2100.
 
 Node 1:
 
 ```sh
-java -Djava.rmi.server.hostname=100.x.y.1 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.x.y.1@2001,2@100.x.y.2@2002,3@100.x.y.3@2003" -cp out server.ClockServer 1 2001 0 true STRONG
+java -Djava.rmi.server.hostname=100.68.59.4 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 1 2001 0 true STRONG
 ```
 
 Node 2:
 
 ```sh
-java -Djava.rmi.server.hostname=100.x.y.2 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.x.y.1@2001,2@100.x.y.2@2002,3@100.x.y.3@2003" -cp out server.ClockServer 2 2002 100 false STRONG
+java -Djava.rmi.server.hostname=100.67.169.23 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 2 2002 100 false STRONG
 ```
 
 Node 3:
 
 ```sh
-java -Djava.rmi.server.hostname=100.x.y.3 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.x.y.1@2001,2@100.x.y.2@2002,3@100.x.y.3@2003" -cp out server.ClockServer 3 2003 -100 false STRONG
+java -Djava.rmi.server.hostname=100.120.104.65 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 3 2003 -100 false STRONG
 ```
 
-Start the client on any tailnet-connected machine, passing node 1's Tailscale
-IP and registry port:
+Allow TCP port 2100 and the node's registry port through each server firewall for tailnet traffic only: node 1 needs 2100 and 2001, node 2 needs 2100 and 2002, node 3 needs 2100 and 2003. Do not expose RMI ports to the public internet. Tailscale ping confirms VPN reachability, but does not confirm the firewall permits these TCP ports.
+
+From a Tailscale-connected client machine, connect to node 1:
 
 ```sh
-java -cp out client.ChatClient 100.x.y.1 2001
+java -cp out client.ChatClient 100.68.59.4 2001
 ```
 
-All machines need matching compiled interfaces/classes. Tailscale ping only
-confirms basic VPN reachability; verify firewall/ACL access to the registry and
-RMI object ports as well. Never expose these Java RMI ports to the public
-internet. The cluster configuration controls replication, election, and
-MapReduce workers. The Berkeley clock coordinator can be run with the three
-Tailscale IPs as arguments.
+## Run clients through the load balancer
 
-## 3. Multithreading experiment
+`server.LoadBalancer` is a separate RMI gateway. It probes configured nodes
+through their existing `NodeService` (`isAlive()` and `isPrimary()`) every two
+seconds. It round-robins inbox and status reads across nodes it can reach.
+Registration, message writes, and MapReduce analytics are sent only to the
+node that currently reports itself as primary. If no unique healthy primary is
+reported, it refuses those operations rather than writing to a backup. Failed
+nodes are excluded from reads and probed again so they can rejoin when reachable.
+Primary-only requests refresh the election state before routing, so the gateway
+can follow a newly elected primary without a restart.
 
-There is no separate multithreading `main` class. Multithreading is implemented inside `ChatServer` with a fixed five-thread `ExecutorService`. Run the RMI server, then start multiple clients concurrently:
+First start all three backend servers using the Tailscale commands above. Then
+start one load balancer process on node 1 (or another tailnet host). The gateway
+uses registry port 2000 and exported-object port 2200 in this example:
 
-### Terminal 1: start the server
+```sh
+java -Djava.rmi.server.hostname=100.68.59.4 -cp out server.LoadBalancer 2000 2200 "1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003"
+```
 
-java -cp out server.ClockServer 1 1099 0 true
+Allow TCP 2000 and 2200 on the gateway host for tailnet clients. Continue to
+allow the backend registry ports and service port 2100 between backend nodes.
+Clients should connect to the gateway, not directly to node 1:
 
-### Terminals 2 and 3: start clients
+```sh
+java -cp out client.ChatClient 100.68.59.4 2000
+```
 
-java -cp out client.ChatClient
+If using a different gateway computer, use its Tailscale IP both for
+`-Djava.rmi.server.hostname` and as the client host. The configured backends
+remain the same. Reads from a backup may be stale under EVENTUAL consistency;
+a node that rejoins after losing its in-memory state is reachable but does not
+automatically catch up its data.
 
-## 4. Clock synchronization experiment
+If a backup is unreachable, the primary now skips that peer for the current
+replication attempt, including in STRONG mode, so a live primary can continue
+serving clients after failover. STRONG mode waits for reachable backups to
+acknowledge; this is not quorum replication, and an offline/restarted node may
+miss writes because this project does not yet synchronize it back up. A
+reachable backup that rejects replication still causes a STRONG write to fail.
 
-### Terminals 1, 2, and 3: start three nodes
+Run the same client command on a second computer for a second client, and use a different username. To run the Berkeley clock coordinator from a tailnet machine:
 
-java -cp out server.ClockServer 1 2001 5000 true
+```sh
+java -cp out server.BerkeleyCoordinator 100.68.59.4 100.67.169.23 100.120.104.65
+```
 
-java -cp out server.ClockServer 2 2002 -3000 false
+## One Tailscale server with EVENTUAL consistency
 
-java -cp out server.ClockServer 3 2003 12000 false
+You can run only node 1 if you do not need backup or failover. Compile as above, then start this command on `100.68.59.4`:
 
+```sh
+java -Djava.rmi.server.hostname=100.68.59.4 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001" -cp out server.ClockServer 1 2001 0 true EVENTUAL
+```
+
+The one-node list keeps replication and MapReduce local. Start clients on any tailnet-connected computers with the same client command shown above. In this configuration, chat data exists only on the primary and is lost if that process stops.
+
+## Berkeley clock synchronization (local cluster)
+
+Start the three local nodes using the commands in **Local three-node cluster**, then run:
+
+```sh
 java -cp out server.BerkeleyCoordinator
+```
 
-## 5. Bully election experiment
+## Bully election (local cluster)
 
-java -cp out server.ClockServer 1 2001 0 true
-
-java -cp out server.ClockServer 2 2002 0 false
-
-java -cp out server.ClockServer 3 2003 0 false
-
-cd /home/Amit/Desktop/amit/study/sem5/dc/Syncchat
-
-## 1. Compile the project
-
-rm -rf out
-mkdir out
-javac -d out common/_.java server/_.java client/\*.java
-
-## 2. Experiment 5 - Strong Consistency
-
-### Terminal 1: start Primary Node
-
-java -cp out server.ClockServer 1 2001 0 true STRONG
-
-### Terminal 2: start Backup Node 2
-
-java -cp out server.ClockServer 2 2002 100 false STRONG
-
-### Terminal 3: start Backup Node 3
-
-java -cp out server.ClockServer 3 2003 -100 false STRONG
-
-### Terminal 4: start the client
-
-java -cp out client.ChatClient
+Start three local nodes using the commands in **Local three-node cluster**. Stop a server to simulate failure and observe election messages in the remaining server terminals.
 
 ## MapReduce chat activity analytics
 
-Syncchat includes a distributed MapReduce job that reports the number of
-messages sent by each sender. The primary takes a consistent-enough snapshot
-of its in-memory inboxes, splits it into batches of up to 100 messages, and
-assigns the disjoint batches across configured cluster nodes. Each worker maps
-its batch to `(sender, 1)` and locally combines counts; the primary reduces the
-partial maps by summing each sender's counts. Only the primary snapshot is
-processed, so replicated copies on backup nodes are not counted a second time.
+Start the three-node cluster, register users, and send messages. Select the client's **Chat Activity Analytics (MapReduce)** menu option to count messages by sender. The primary snapshots its in-memory messages, divides them into batches of up to 100, distributes map tasks to the configured nodes, and reduces their partial sender counts. It analyzes only the primary's snapshot, avoiding duplicate counts from replicated backup data. With the one-node setup, the map work runs locally. Chat storage remains in-memory and is not partitioned; restarting nodes clears their data.
 
-Compile and start the three nodes using the strong-consistency commands above.
-Register users and send some messages. In the client, choose menu option 4
-(`Chat Activity Analytics (MapReduce)`) to see the reduced sender totals. The
-worker service is registered in each node's RMI registry as `MapReduceService`.
-If a remote worker is unavailable, its assigned batch is mapped locally so the
-analytics request can still finish.
-
-This is distributed computation over a primary-owned snapshot, not partitioned
-chat storage: the existing application keeps messages in memory and replicates
-them to backups. Restarting nodes clears that in-memory chat history.
-
-## 3. Experiment 5 - Eventual Consistency
-
-Stop the three server terminals using Ctrl+C before starting Eventual Consistency.
-
-### Terminal 1: start Primary Node
-
-java -cp out server.ClockServer 1 2001 0 true EVENTUAL
-
-### Terminal 2: start Backup Node 2
-
-java -cp out server.ClockServer 2 2002 100 false EVENTUAL
-
-### Terminal 3: start Backup Node 3
-
-java -cp out server.ClockServer 3 2003 -100 false EVENTUAL
-
-### Terminal 4: start the client
-
-java -cp out client.ChatClient
+To try EVENTUAL mode with all three local servers, stop the existing processes and restart the same three server commands with `EVENTUAL` as the last argument.

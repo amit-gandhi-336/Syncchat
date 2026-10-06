@@ -114,23 +114,38 @@ public class ChatServer
 
         } catch (Exception e) {
 
-            System.out.println(
-                    "Replication failed for Node "
-                            + node.getNodeId()
-            );
-
-            if (consistencyMode ==
-                    ConsistencyMode.STRONG) {
+                        boolean nodeAvailable = isNodeAvailable(node);
+                        if (consistencyMode == ConsistencyMode.STRONG && nodeAvailable) {
 
                 throw new RuntimeException(
-                        "Strong consistency failed. " +
-                        "Backup Node " +
+                                                "Strong replication failed on reachable backup Node " +
                         node.getNodeId() +
                         " did not acknowledge."
                 );
             }
+
+                        System.out.println(
+                    nodeAvailable
+                            ? "Replication failed for reachable Node " + node.getNodeId()
+                            : "Backup Node " + node.getNodeId()
+                                    + " is unavailable; skipping replication for this operation."
+                        );
         }
     }
+}
+
+/** Check reachability using the cluster's existing NodeService health call. */
+private boolean isNodeAvailable(NodeInfo node) {
+        try {
+                Registry registry = LocateRegistry.getRegistry(
+                                node.getHost(),
+                                node.getPort()
+                );
+                NodeService service = (NodeService) registry.lookup("NodeService");
+                return service.isAlive();
+        } catch (Exception e) {
+                return false;
+        }
 }
 
     @Override
@@ -217,18 +232,21 @@ private void replicateUserToBackups(
 
         } catch (Exception e) {
 
-            System.out.println(
-                    "User replication failed for Node "
-                            + node.getNodeId()
-            );
-
-            if (consistencyMode ==
-                    ConsistencyMode.STRONG) {
+                        boolean nodeAvailable = isNodeAvailable(node);
+                        if (consistencyMode == ConsistencyMode.STRONG && nodeAvailable) {
 
                 throw new RuntimeException(
-                        "Strong consistency failed."
+                        "User replication failed on reachable backup Node "
+                                + node.getNodeId()
                 );
             }
+
+            System.out.println(
+                    nodeAvailable
+                            ? "User replication failed for reachable Node " + node.getNodeId()
+                            : "Backup Node " + node.getNodeId()
+                                    + " is unavailable; skipping user replication."
+            );
         }
     }
 }
