@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a1020" />
+    <title>SyncChat · Tailnet</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #090e1b;
+        --panel: #111a2c;
+        --panel-hi: #17243a;
+        --line: #273651;
+        --text: #edf3ff;
+        --muted: #8c9bb5;
+        --cyan: #62d6d0;
+        --blue: #779dff;
+        --green: #62dda0;
+        --red: #ff7185;
+        --gold: #ffc96b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(ellipse at 16% -10%, #183251 0, transparent 42%),
+          radial-gradient(ellipse at 90% 30%, #171a36 0, transparent 36%),
+          var(--bg);
+        color: var(--text);
+        font:
+          15px/1.55 Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        background: linear-gradient(120deg, var(--cyan), #8de6d5);
+        color: #08151b;
+        font-weight: 750;
+        cursor: pointer;
+        transition:
+          transform 0.15s,
+          filter 0.15s;
+      }
+      button:hover {
+        filter: brightness(1.07);
+        transform: translateY(-1px);
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: wait;
+        transform: none;
+      }
+      .secondary {
+        background: #1b2940;
+        color: var(--text);
+        border: 1px solid var(--line);
+      }
+      .shell {
+        width: min(1180px, calc(100% - 36px));
+        margin: auto;
+        padding: 34px 0 60px;
+      }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 15px;
+        display: grid;
+        place-items: center;
+        color: #06151c;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        font-weight: 900;
+        font-size: 22px;
+        box-shadow: 0 8px 32px #62d6d044;
+      }
+      .kicker {
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--cyan);
+        font-size: 10px;
+        font-weight: 800;
+      }
+      .title {
+        font-size: 25px;
+        letter-spacing: -0.035em;
+        font-weight: 760;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .tailnet {
+        padding: 7px 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 1.35fr 0.65fr;
+        gap: 16px;
+        margin-bottom: 19px;
+      }
+      .hero-card,
+      .panel,
+      .stat {
+        background: linear-gradient(150deg, #131e32f2, #0f1728f2);
+        border: 1px solid var(--line);
+        border-radius: 17px;
+        box-shadow: 0 12px 35px #02061138;
+      }
+      .hero-card {
+        padding: 23px;
+      }
+      .hero-card h1 {
+        font-size: 20px;
+        margin: 0 0 5px;
+        letter-spacing: -0.025em;
+      }
+      .hero-card p,
+      .panel p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .hero-side {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 18px;
+      }
+      .health {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 13px;
+      }
+      .led {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #73819a;
+        display: inline-block;
+      }
+      .led.good {
+        background: var(--green);
+        box-shadow: 0 0 12px #62dda077;
+      }
+      .led.bad {
+        background: var(--red);
+      }
+      .tabs {
+        display: flex;
+        gap: 7px;
+        border-bottom: 1px solid var(--line);
+        margin: 0 0 17px;
+      }
+      .tab {
+        background: transparent;
+        color: var(--muted);
+        border-radius: 9px 9px 0 0;
+        padding: 11px 15px;
+        border-bottom: 2px solid transparent;
+      }
+      .tab.active {
+        color: var(--text);
+        border-color: var(--cyan);
+        background: #15243a;
+      }
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: block;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+        gap: 16px;
+      }
+      .panel {
+        padding: 20px;
+        min-width: 0;
+      }
+      .panel h2 {
+        font-size: 16px;
+        margin: 0 0 5px;
+      }
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+      }
+      .pill {
+        border: 1px solid var(--line);
+        background: #0c1423;
+        border-radius: 999px;
+        padding: 5px 9px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .form {
+        display: grid;
+        gap: 11px;
+      }
+      .label {
+        font-size: 12px;
+        color: #bac6d9;
+        font-weight: 650;
+      }
+      .input,
+      .select {
+        width: 100%;
+        background: #0b1322;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--text);
+        padding: 11px 12px;
+        outline: none;
+      }
+      .input:focus,
+      .select:focus {
+        border-color: var(--cyan);
+        box-shadow: 0 0 0 3px #62d6d018;
+      }
+      .row {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .row > * {
+        min-width: 0;
+      }
+      .row .input {
+        flex: 1;
+      }
+      .notice {
+        min-height: 22px;
+        font-size: 13px;
+        color: var(--cyan);
+        margin-top: 9px;
+      }
+      .notice.error {
+        color: var(--red);
+      }
+      .user-summary {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
+        border: 1px solid var(--line);
+        background: #0d1524;
+        border-radius: 12px;
+        margin-bottom: 15px;
+      }
+      .user-summary small {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .recipient-area {
+        margin-top: 18px;
+      }
+      .inbox {
+        margin-top: 11px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        max-height: 260px;
+        overflow: auto;
+      }
+      .message {
+        padding: 10px 12px;
+        background: var(--panel-hi);
+        border: 1px solid #263650;
+        border-radius: 11px;
+        overflow-wrap: anywhere;
+        font-size: 13px;
+      }
+      .empty {
+        color: var(--muted);
+        padding: 12px 0;
+        font-size: 13px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin: 14px 0;
+      }
+      .stat {
+        padding: 14px;
+      }
+      .stat-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+      }
+      .stat-value {
+        font-size: 22px;
+        font-weight: 750;
+        color: var(--cyan);
+        margin-top: 4px;
+      }
+      .analytics {
+        margin-top: 12px;
+      }
+      .metric {
+        display: flex;
+        justify-content: space-between;
+        padding: 9px 2px;
+        border-bottom: 1px solid var(--line);
+        font-size: 13px;
+      }
+      .metric:last-child {
+        border: 0;
+      }
+      .metric strong {
+        color: var(--cyan);
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .logbox {
+        margin: 0;
+        padding: 15px;
+        min-height: 390px;
+        max-height: 590px;
+        overflow: auto;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        background: #070c15;
+        border: 1px solid #202d43;
+        border-radius: 12px;
+        color: #b9c9e2;
+        font:
+          12px/1.7 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+      }
+      .help {
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 11px;
+      }
+      .footer {
+        text-align: center;
+        color: #64738c;
+        font-size: 11px;
+        margin-top: 24px;
+      }
+      .toast {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        max-width: min(440px, calc(100vw - 32px));
+        padding: 12px 15px;
+        background: #1a2941;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: 0.2s;
+        pointer-events: none;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: none;
+      }
+      @media (max-width: 800px) {
+        .hero,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .tailnet {
+          margin-left: 62px;
+        }
+        .hero-side {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .panel {
+          padding: 16px;
+        }
+      }
+      @media (max-width: 460px) {
+        .shell {
+          width: calc(100% - 24px);
+          padding-top: 22px;
+        }
+        .tabs {
+          overflow: auto;
+        }
+        .tab {
+          white-space: nowrap;
+          padding: 10px;
+        }
+        .row.wrap {
+          align-items: stretch;
+          flex-direction: column;
+        }
+        .row.wrap button {
+          width: 100%;
+        }
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .title {
+          font-size: 21px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="header">
+        <div class="brand">
+          <div class="logo">S</div>
+          <div>
+            <div class="kicker">Distributed chat · tailnet</div>
+            <div class="title">SyncChat</div>
+            <div class="subtitle">
+              A simple client for your Tailscale cluster.
+            </div>
+          </div>
+        </div>
+        <div class="tailnet" id="hostLabel">Gateway · resolving</div>
+      </header>
+
+      <section class="hero">
+        <article class="hero-card">
+          <h1>Welcome to the cluster</h1>
+          <p>
+            Register your handle, choose a teammate, and chat. Teammates start
+            server processes from their own terminals; this dashboard never
+            starts or stops them.
+          </p>
+        </article>
+        <aside class="hero-side panel">
+          <div class="health">
+            <i class="led" id="clusterLed"></i
+            ><span id="clusterState">Checking server status…</span>
+          </div>
+          <div class="subtitle">
+            Connects to the load balancer on this dashboard machine at TCP 2000.
+          </div>
+        </aside>
+      </section>
+
+      <nav class="tabs" aria-label="SyncChat sections">
+        <button class="tab active" data-view="client">Client</button>
+        <button class="tab" data-view="server">Server logs</button>
+        <button class="tab" data-view="loadbalancer">Load balancer logs</button>
+      </nav>
+
+      <section class="view active" id="view-client">
+        <div class="grid">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Your chat</h2>
+                <p>Register your name once for this in-memory cluster.</p>
+              </div>
+              <span class="pill">Java RMI</span>
+            </div>
+            <div class="user-summary">
+              <div>
+                <small>Signed in as</small
+                ><strong id="activeName">Not registered</strong>
+              </div>
+              <button class="secondary" id="changeName">Change</button>
+            </div>
+            <div class="form" id="registerForm">
+              <label class="label" for="username">Choose your chat name</label>
+              <div class="row wrap">
+                <input
+                  id="username"
+                  class="input"
+                  maxlength="40"
+                  autocomplete="nickname"
+                  placeholder="e.g. alex"
+                /><button id="registerButton">Register name</button>
+              </div>
+            </div>
+            <div id="clientNotice" class="notice" role="status"></div>
+            <div class="recipient-area">
+              <div class="form">
+                <label class="label" for="recipient">Send a message to</label>
+                <div class="row wrap">
+                  <select id="recipient" class="select">
+                    <option value="">
+                      Register your name to load teammates
+                    </option></select
+                  ><button
+                    id="refreshUsers"
+                    class="secondary"
+                    title="Refresh registered teammates"
+                  >
+                    Refresh
+                  </button>
+                </div>
+                <label class="label" for="messageText">Message</label>
+                <div class="row wrap">
+                  <input
+                    id="messageText"
+                    class="input"
+                    maxlength="2000"
+                    placeholder="Write a message…"
+                  /><button id="sendButton">Send</button>
+                </div>
+              </div>
+            </div>
+            <div class="recipient-area">
+              <div class="panel-head">
+                <div>
+                  <h2>Your inbox</h2>
+                  <p>Messages addressed to your registered name.</p>
+                </div>
+                <button class="secondary" id="refreshInbox">Refresh</button>
+              </div>
+              <div class="inbox" id="inbox">
+                <div class="empty">Register your name to view your inbox.</div>
+              </div>
+            </div>
+          </article>
+          <aside class="panel">
+            <div class="panel-head">
+              <div>
+                <h2>Cluster overview</h2>
+                <p>Live service check and sender activity.</p>
+              </div>
+              <button class="secondary" id="refreshOverview">Refresh</button>
+            </div>
+            <div class="stats">
+              <div class="stat">
+                <div class="stat-label">Chat service</div>
+                <div class="stat-value" id="serviceState">—</div>
+              </div>
+              <div class="stat">
+                <div class="stat-label">Registered users</div>
+                <div class="stat-value" id="userCount">—</div>
+              </div>
+            </div>
+            <div class="panel-head" style="margin: 16px 0 4px">
+              <div class="label">Messages by sender · MapReduce</div>
+              <button class="secondary" id="runAnalytics">Run MapReduce</button>
+            </div>
+            <div class="analytics" id="analytics">
+              <div class="empty">
+                Select “Run MapReduce” to calculate sender activity.
+              </div>
+            </div>
+            <div id="overviewNotice" class="notice" role="status"></div>
+            <div class="help">
+              Analytics are calculated by the primary. Cluster state and chat
+              data are in memory and reset when servers restart.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-server">
+        <article class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Local server output</h2>
+              <p>
+                Logs written by the server process started in this laptop's
+                terminal.
+              </p>
+            </div>
+            <div class="row">
+              <label class="label" for="nodeSelect">Node</label
+              ><select class="select" id="nodeSelect">
+                <option value="node1">Node 1</option>
+                <option value="node2">Node 2</option>
+                <option value="node3">Node 3</option></select
+              ><button id="refreshServerLog" class="secondary">Refresh</button>
+            </div>
+          </div>
+          <pre id="serverLog" class="logbox">Waiting for local server log…</pre>
+          <div class="help">
+            The matching node must be launched on this machine from a terminal
+            using the current compiled sources. Log files are stored under logs/
+            and output continues to appear in the terminal.
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-loadbalancer">
+        <article class="panel">
+          <div class="toolbar">
+            <div>
+              <h2>Load balancer output</h2>
+              <p>
+                Only available on the laptop running the load balancer process.
+              </p>
+            </div>
+            <button id="refreshLbLog" class="secondary">Refresh</button>
+          </div>
+          <pre id="lbLog" class="logbox">Waiting for load-balancer log…</pre>
+          <div class="help">
+            The load balancer's stdout and stderr are mirrored to
+            logs/load-balancer.log on its host.
+          </div>
+        </article>
+      </section>
+      <footer class="footer">
+        SyncChat · Tailscale · Java RMI · Bully election · replication ·
+        MapReduce
+      </footer>
+    </main>
+    <div class="toast" id="toast" role="status"></div>
+    <script>
+      const $ = (id) => document.getElementById(id);
+      const API = {
+        async get(path) {
+          const response = await fetch(path, { cache: "no-store" });
+          const data = await response.json();
+          if (!response.ok)
+            throw new Error(
+              data.error || `Request failed (${response.status})`,
+            );
+          return data;
+        },
+        async post(path, values) {
+          const response = await fetch(path, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams(values),
+          });
+          const data = await response.json();
+          if (!response.ok)
+            throw new Error(
+              data.error || `Request failed (${response.status})`,
+            );
+          return data;
+        },
+      };
+      const store = {
+        get name() {
+          return localStorage.getItem("syncchat.username") || "";
+        },
+        set name(value) {
+          if (value) localStorage.setItem("syncchat.username", value);
+          else localStorage.removeItem("syncchat.username");
+        },
+      };
+      let toastTimer;
+      $("hostLabel").textContent = `Gateway · ${location.hostname}:2000`;
+      document.querySelectorAll(".tab").forEach((button) =>
+        button.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tab")
+            .forEach((tab) => tab.classList.toggle("active", tab === button));
+          document
+            .querySelectorAll(".view")
+            .forEach((view) =>
+              view.classList.toggle(
+                "active",
+                view.id === `view-${button.dataset.view}`,
+              ),
+            );
+          if (button.dataset.view === "server") refreshServerLog();
+          if (button.dataset.view === "loadbalancer") refreshLbLog();
+        }),
+      );
+      function toast(message) {
+        $("toast").textContent = message;
+        $("toast").classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(
+          () => $("toast").classList.remove("show"),
+          3000,
+        );
+      }
+      function notice(id, message, error = false) {
+        $(id).textContent = message;
+        $(id).classList.toggle("error", error);
+      }
+      function setActiveName(name) {
+        $("activeName").textContent = name || "Not registered";
+        $("username").value = name;
+        $("registerForm").hidden = !!name;
+      }
+      async function registerName() {
+        const username = $("username").value.trim();
+        if (!username)
+          return notice(
+            "clientNotice",
+            "Choose a name before registering.",
+            true,
+          );
+        try {
+          const result = await API.post("/api/register", { username });
+          if (!result.registered) {
+            store.name = username;
+            setActiveName(username);
+            notice(
+              "clientNotice",
+              "That name is already registered. Signed in with that name.",
+            );
+          } else {
+            store.name = username;
+            setActiveName(username);
+            notice("clientNotice", result.message);
+          }
+          await Promise.all([
+            refreshUsers(),
+            refreshInbox(),
+            refreshOverview(),
+          ]);
+        } catch (error) {
+          notice("clientNotice", error.message, true);
+        }
+      }
+      async function refreshUsers() {
+        try {
+          const data = await API.get("/api/users");
+          const select = $("recipient");
+          const previous = select.value;
+          select.replaceChildren();
+          const choices = data.users.filter((name) => name !== store.name);
+          if (!choices.length) {
+            const option = document.createElement("option");
+            option.value = "";
+            option.textContent = store.name
+              ? "No other registered teammates yet"
+              : "Register your name first";
+            select.append(option);
+          }
+          choices.forEach((name) => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            select.append(option);
+          });
+          if (choices.includes(previous)) select.value = previous;
+          $("userCount").textContent = data.users.length;
+        } catch (error) {
+          $("recipient").innerHTML =
+            '<option value="">Load users after connecting to the primary</option>';
+          notice("overviewNotice", error.message, true);
+        }
+      }
+      async function sendMessage() {
+        if (!store.name)
+          return notice(
+            "clientNotice",
+            "Register your name before sending messages.",
+            true,
+          );
+        const receiver = $("recipient").value,
+          content = $("messageText").value.trim();
+        if (!receiver || !content)
+          return notice(
+            "clientNotice",
+            "Choose a teammate and enter a message.",
+            true,
+          );
+        try {
+          const result = await API.post("/api/send", {
+            sender: store.name,
+            receiver,
+            content,
+          });
+          $("messageText").value = "";
+          notice("clientNotice", result.message);
+          toast(result.message);
+          await refreshInbox();
+        } catch (error) {
+          notice("clientNotice", error.message, true);
+        }
+      }
+      async function refreshInbox() {
+        if (!store.name) {
+          $("inbox").innerHTML =
+            '<div class="empty">Register your name to view your inbox.</div>';
+          return;
+        }
+        try {
+          const data = await API.get(
+            `/api/inbox?username=${encodeURIComponent(store.name)}`,
+          );
+          const list = $("inbox");
+          list.replaceChildren();
+          if (!data.messages.length) {
+            list.innerHTML = '<div class="empty">No messages yet.</div>';
+            return;
+          }
+          [...data.messages].reverse().forEach((item) => {
+            const entry = document.createElement("div");
+            entry.className = "message";
+            entry.textContent = item.text;
+            list.append(entry);
+          });
+        } catch (error) {
+          $("inbox").innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+        }
+      }
+      function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+      }
+      async function refreshOverview() {
+        try {
+          const status = await API.get("/api/server-status");
+          $("serviceState").textContent = "Online";
+          $("clusterState").textContent = status.status;
+          $("clusterLed").className = "led good";
+          notice("overviewNotice", "");
+          await refreshUsers();
+        } catch (error) {
+          $("serviceState").textContent = "Offline";
+          $("clusterState").textContent =
+            "Load balancer or primary is unreachable";
+          $("clusterLed").className = "led bad";
+          notice("overviewNotice", error.message, true);
+        }
+      }
+      async function runMapReduce() {
+        const button = $("runAnalytics");
+        button.disabled = true;
+        button.textContent = "Calculating…";
+        try {
+          const data = await API.get("/api/analytics");
+          const target = $("analytics");
+          target.replaceChildren();
+          const entries = Object.entries(data.counts);
+          if (!entries.length) {
+            target.innerHTML =
+              '<div class="empty">No messages counted yet.</div>';
+          } else {
+            entries
+              .sort((a, b) => b[1] - a[1])
+              .forEach(([name, count]) => {
+                const row = document.createElement("div");
+                row.className = "metric";
+                const user = document.createElement("span");
+                user.textContent = name;
+                const total = document.createElement("strong");
+                total.textContent = count;
+                row.append(user, total);
+                target.append(row);
+              });
+          }
+          notice("overviewNotice", "MapReduce analytics completed.");
+        } catch (error) {
+          notice("overviewNotice", error.message, true);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Run MapReduce";
+        }
+      }
+      async function refreshLog(component, target) {
+        try {
+          const data = await API.get(
+            `/api/logs?component=${encodeURIComponent(component)}`,
+          );
+          target.textContent = data.lines.join("\n") || "Log file is empty.";
+          target.scrollTop = target.scrollHeight;
+        } catch (error) {
+          target.textContent = `Unable to read ${component} logs: ${error.message}`;
+        }
+      }
+      function refreshServerLog() {
+        return refreshLog($("nodeSelect").value, $("serverLog"));
+      }
+      function refreshLbLog() {
+        return refreshLog("load-balancer", $("lbLog"));
+      }
+      $("registerButton").addEventListener("click", registerName);
+      $("username").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") registerName();
+      });
+      $("changeName").addEventListener("click", () => {
+        store.name = "";
+        setActiveName("");
+        $("username").focus();
+      });
+      $("sendButton").addEventListener("click", sendMessage);
+      $("messageText").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") sendMessage();
+      });
+      $("refreshUsers").addEventListener("click", refreshUsers);
+      $("refreshInbox").addEventListener("click", refreshInbox);
+      $("refreshOverview").addEventListener("click", refreshOverview);
+      $("runAnalytics").addEventListener("click", runMapReduce);
+      $("nodeSelect").addEventListener("change", refreshServerLog);
+      $("refreshServerLog").addEventListener("click", refreshServerLog);
+      $("refreshLbLog").addEventListener("click", refreshLbLog);
+      setActiveName(store.name);
+      refreshOverview();
+      refreshInbox();
+      refreshServerLog();
+      refreshLbLog();
+      setInterval(refreshOverview, 10000);
+      setInterval(refreshInbox, 7000);
+      setInterval(() => {
+        if ($("view-server").classList.contains("active")) refreshServerLog();
+        if ($("view-loadbalancer").classList.contains("active")) refreshLbLog();
+      }, 2000);
+    </script>
+  </body>
+</html>

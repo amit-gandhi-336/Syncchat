@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface ChatService extends Remote {
     boolean registerUser(String username) throws RemoteException;
+    List<String> getRegisteredUsers() throws RemoteException;
     void sendMessage(String sender, String receiver, String content)
             throws RemoteException;
     List<Message> getMessages(String username) throws RemoteException;

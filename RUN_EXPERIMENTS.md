@@ -37,6 +37,31 @@ The client menu includes send message, check inbox, server status, MapReduce cha
 
 ## Run three servers across Tailscale
 
+To use the web client with manually started servers, start Node 1, Node 2, and
+Node 3 using the commands below, then start the load balancer on the machine
+whose Tailscale address serves the dashboard. Compile the updated project on
+each machine first; servers and the load balancer mirror terminal output to
+`logs/node1.log`, `logs/node2.log`, `logs/node3.log`, and
+`logs/load-balancer.log`, respectively. The dashboard reads logs from its local
+`logs/` directory, so each server-log tab shows only files present on that
+dashboard host. The load-balancer log is visible on the laptop running the
+load-balancer process.
+
+Start the dashboard on the load-balancer laptop. For example, on Node 1:
+
+```sh
+java --add-modules jdk.httpserver -Dsyncchat.dashboard.host=100.68.59.4 -cp out server.SimulationDashboard
+```
+
+Open <http://100.68.59.4:8080> from a trusted tailnet device. The dashboard UI
+must be hosted on the load-balancer laptop because the backend connects to a
+load balancer on its own host. Allow TCP 8080 to the dashboard host, TCP 2000
+and 2200 to the load-balancer host, and the node
+registry ports plus service port 2100 between cluster nodes. Keep these ports
+available to tailnet peers only. Browser registration, chat, status, and
+analytics are routed through the load balancer at the dashboard host's Tailscale
+IP on port 2000.
+
 The configured Tailscale IPs are:
 
 - Node 1 (primary): `100.68.59.4`

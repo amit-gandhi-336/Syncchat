@@ -1,0 +1,210 @@
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001
+Load balancer: routing primary-only request to Node 1
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1

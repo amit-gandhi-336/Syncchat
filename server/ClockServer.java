@@ -37,6 +37,8 @@ public class ClockServer {
             int nodeId =
                     Integer.parseInt(args[0]);
 
+            ProcessLog.redirect("node" + nodeId);
+
             int port =
                     Integer.parseInt(args[1]);
 

@@ -194,6 +194,11 @@ public class LoadBalancer extends UnicastRemoteObject implements ChatService {
     }
 
     @Override
+    public List<String> getRegisteredUsers() throws RemoteException {
+        return primaryService().getRegisteredUsers();
+    }
+
+    @Override
     public void sendMessage(String sender, String receiver, String content)
             throws RemoteException {
         // Writes always go to the discovered primary, never a random backup.
@@ -242,6 +247,11 @@ public class LoadBalancer extends UnicastRemoteObject implements ChatService {
      * server.LoadBalancer <registryPort> <exportPort> <id@host@port,...>
      */
     public static void main(String[] args) {
+        try {
+            ProcessLog.redirect("load-balancer");
+        } catch (java.io.IOException e) {
+            System.err.println("Could not enable dashboard log capture: " + e.getMessage());
+        }
         if (args.length != 3) {
             System.err.println(
                     "Usage: java -Djava.rmi.server.hostname=<gatewayHost> "

@@ -200,6 +200,11 @@ public boolean registerUser(
     return true;
 }
 
+@Override
+public List<String> getRegisteredUsers() throws RemoteException {
+        return users.stream().sorted().toList();
+}
+
 private void replicateUserToBackups(
         String username) {
 
