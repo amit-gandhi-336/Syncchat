@@ -3,38 +3,44 @@ package client;
 import common.ChatService;
 import common.Message;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class ChatClient {
 
-    private static String serverHost =
-            "localhost";
-
-    private static int serverPort =
-            2001;
+    private static String node1IP;
+    private static String node2IP;
+    private static String node3IP;
 
     private static ChatService chatService;
 
     public static void main(String[] args) {
 
+        if (args.length < 3) {
+
+            System.out.println(
+                    "Usage:"
+            );
+
+            System.out.println(
+                    "java client.ChatClient " +
+                    "<node1IP> " +
+                    "<node2IP> " +
+                    "<node3IP>"
+            );
+
+            return;
+        }
+
+        node1IP = args[0];
+        node2IP = args[1];
+        node3IP = args[2];
+
         try {
 
             Scanner scanner =
                     new Scanner(System.in);
-
-            if (args.length > 0) {
-                serverHost = args[0];
-            }
-
-            if (args.length > 1) {
-
-                serverPort =
-                        Integer.parseInt(
-                                args[1]
-                        );
-            }
 
             connect();
 
@@ -44,7 +50,7 @@ public class ChatClient {
             );
 
             System.out.println(
-                    "       SYNCCHAT CLIENT"
+                    "          SYNCCHAT CLIENT"
             );
 
             System.out.println(
@@ -69,9 +75,8 @@ public class ChatClient {
 
             } catch (Exception e) {
 
-                System.out.println();
                 System.out.println(
-                        "Primary server unavailable."
+                        "Primary unavailable."
                 );
 
                 reconnect();
@@ -98,23 +103,18 @@ public class ChatClient {
             while (true) {
 
                 System.out.println();
-
                 System.out.println(
                         "1. Send Message"
                 );
-
                 System.out.println(
                         "2. Check Inbox"
                 );
-
                 System.out.println(
                         "3. Server Status"
                 );
-
                 System.out.println(
                         "4. Chat Activity Analytics (MapReduce)"
                 );
-
                 System.out.println(
                         "5. Exit"
                 );
@@ -197,8 +197,9 @@ public class ChatClient {
 
         chatService =
                 FailoverClient.connect(
-                        serverHost,
-                        serverPort
+                        node1IP,
+                        node2IP,
+                        node3IP
                 );
     }
 
@@ -206,7 +207,7 @@ public class ChatClient {
 
         int attempts = 0;
 
-        while (attempts < 10) {
+        while (attempts < 20) {
 
             try {
 
@@ -214,8 +215,9 @@ public class ChatClient {
 
                 chatService =
                         FailoverClient.connect(
-                                serverHost,
-                                serverPort
+                                node1IP,
+                                node2IP,
+                                node3IP
                         );
 
                 System.out.println(
@@ -258,7 +260,6 @@ public class ChatClient {
 
         } catch (Exception e) {
 
-            System.out.println();
             System.out.println(
                     "Primary server failed."
             );
@@ -332,7 +333,6 @@ public class ChatClient {
             List<Message> messages) {
 
         System.out.println();
-
         System.out.println(
                 "========== INBOX =========="
         );
@@ -345,9 +345,12 @@ public class ChatClient {
 
         } else {
 
-            for (Message msg : messages) {
+            for (Message message :
+                    messages) {
 
-                System.out.println(msg);
+                System.out.println(
+                        message
+                );
             }
         }
 
@@ -426,7 +429,6 @@ public class ChatClient {
             Map<String, Long> senderCounts) {
 
         System.out.println();
-
         System.out.println(
                 "===== MESSAGES BY SENDER (MAPREDUCE) ====="
         );

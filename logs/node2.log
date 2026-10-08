@@ -26,3 +26,29 @@ Starting Bully Election...
 Node 2 contacted Node 3
 Node 2 is BACKUP
 Node 2 is BACKUP
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 3 is not responding.
+Starting Bully Election...
+=================================
+
+=================================
+       BULLY ELECTION
+       Initiated by Node 2
+=================================
+Node 3 is unavailable.
+
+*********************************
+Node 2 WINS THE BULLY ELECTION
+Node 2 is now PRIMARY
+*********************************
+
+=================================
+Node 2 IS NOW PRIMARY
+Starting state recovery...
+=================================
+Starting state recovery...
+Unable to recover state from Node 1
+Unable to recover state from Node 3
+No backup was available for state recovery.

@@ -593,7 +593,7 @@ public class ChatServer
     }
 
     // =====================================================
-    // MAP REDUCE METHODS
+    // MAP REDUCE
     // =====================================================
 
     @Override
@@ -634,7 +634,6 @@ public class ChatServer
                 messages.values()) {
 
             synchronized (inbox) {
-
                 snapshot.addAll(inbox);
             }
         }
@@ -891,13 +890,16 @@ public class ChatServer
             System.out.println(
                     "================================="
             );
+
             System.out.println(
                     "Node " + nodeId +
                     " IS NOW PRIMARY"
             );
+
             System.out.println(
                     "Starting state recovery..."
             );
+
             System.out.println(
                     "================================="
             );

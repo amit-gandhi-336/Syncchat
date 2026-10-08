@@ -8,33 +8,34 @@ import java.rmi.registry.Registry;
 
 public class FailoverClient {
 
-    private static final String DEFAULT_HOST =
-            "localhost";
-
-    private static final int[] DEFAULT_PORTS = {
-            2001,
-            2002,
-            2003
-    };
-
     public static ChatService connect(
-            String host,
-            int preferredPort)
+            String node1IP,
+            String node2IP,
+            String node3IP)
             throws Exception {
 
-        int[] ports =
-                buildPortList(preferredPort);
+        String[] hosts = {
+                node1IP,
+                node2IP,
+                node3IP
+        };
+
+        int[] ports = {
+                2001,
+                2002,
+                2003
+        };
 
         Exception lastException = null;
 
-        for (int port : ports) {
+        for (int i = 0; i < hosts.length; i++) {
 
             try {
 
                 Registry registry =
                         LocateRegistry.getRegistry(
-                                host,
-                                port
+                                hosts[i],
+                                ports[i]
                         );
 
                 NodeService nodeService =
@@ -70,14 +71,14 @@ public class FailoverClient {
             }
         }
 
-        for (int port : ports) {
+        for (int i = 0; i < hosts.length; i++) {
 
             try {
 
                 Registry registry =
                         LocateRegistry.getRegistry(
-                                host,
-                                port
+                                hosts[i],
+                                ports[i]
                         );
 
                 NodeService nodeService =
@@ -97,7 +98,7 @@ public class FailoverClient {
                                 );
 
                 System.out.println(
-                        "Connected to available Node "
+                        "Connected to Node "
                                 + nodeService.getNodeId()
                 );
 
@@ -114,38 +115,7 @@ public class FailoverClient {
         }
 
         throw new Exception(
-                "No SyncChat server is available."
+                "No SyncChat node is available."
         );
-    }
-
-    public static ChatService connect()
-            throws Exception {
-
-        return connect(
-                DEFAULT_HOST,
-                DEFAULT_PORTS[0]
-        );
-    }
-
-    private static int[] buildPortList(
-            int preferredPort) {
-
-        int[] result =
-                new int[DEFAULT_PORTS.length + 1];
-
-        result[0] = preferredPort;
-
-        int index = 1;
-
-        for (int port : DEFAULT_PORTS) {
-
-            if (port == preferredPort) {
-                continue;
-            }
-
-            result[index++] = port;
-        }
-
-        return result;
     }
 }
