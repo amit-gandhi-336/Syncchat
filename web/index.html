@@ -503,7 +503,7 @@
             <div class="panel-head">
               <div>
                 <h2>Your chat</h2>
-                <p>Register your name once for this in-memory cluster.</p>
+                <p>Register one name for this browser. It stays fixed here.</p>
               </div>
               <span class="pill">Java RMI</span>
             </div>
@@ -512,7 +512,6 @@
                 <small>Signed in as</small
                 ><strong id="activeName">Not registered</strong>
               </div>
-              <button class="secondary" id="changeName">Change</button>
             </div>
             <div class="form" id="registerForm">
               <label class="label" for="username">Choose your chat name</label>
@@ -918,11 +917,6 @@
       $("registerButton").addEventListener("click", registerName);
       $("username").addEventListener("keydown", (event) => {
         if (event.key === "Enter") registerName();
-      });
-      $("changeName").addEventListener("click", () => {
-        store.name = "";
-        setActiveName("");
-        $("username").focus();
       });
       $("sendButton").addEventListener("click", sendMessage);
       $("messageText").addEventListener("keydown", (event) => {

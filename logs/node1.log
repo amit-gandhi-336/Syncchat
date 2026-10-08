@@ -76,3 +76,56 @@ Node 1 stored message locally.
 EVENTUAL CONSISTENCY: Replicating in background...
 Node 1 stored message locally.
 EVENTUAL CONSISTENCY: Replicating in background...
+
+=================================
+       SYNCCHAT NODE
+=================================
+Node ID  : 1
+Port     : 2001
+RMI object port: 2100
+Advertised host: 100.68.59.4
+Primary  : true
+Clock    : 1791446642664
+Heartbeat: ACTIVE
+Consistency: EVENTUAL
+=================================
+Node 1 registered user: amit
+User replication ACK from Node 2
+Backup Node 3 is unavailable; skipping user replication.
+Node 1 registered user: vedansh
+User replication ACK from Node 2
+Node 1 stored message locally.
+EVENTUAL CONSISTENCY: Replicating in background...
+Replication ACK from Node 2
+Node 1 stored message locally.
+EVENTUAL CONSISTENCY: Replicating in background...
+Replication ACK from Node 2
+Backup Node 3 is unavailable; skipping user replication.
+Backup Node 3 is unavailable; skipping replication for this operation.
+Backup Node 3 is unavailable; skipping replication for this operation.
+
+=================================
+       SYNCCHAT NODE
+=================================
+Node ID  : 1
+Port     : 2001
+RMI object port: 2100
+Advertised host: 100.68.59.4
+Primary  : true
+Clock    : 1791447939676
+Heartbeat: ACTIVE
+Consistency: EVENTUAL
+=================================
+Node 1 is BACKUP
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 2 is not responding.
+Starting Bully Election...
+=================================
+
+=================================
+       BULLY ELECTION
+       Initiated by Node 1
+=================================
+Node 2 is unavailable.
