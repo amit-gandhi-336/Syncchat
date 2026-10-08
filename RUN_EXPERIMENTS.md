@@ -37,6 +37,10 @@ Start the client in another terminal. If it is local, the default endpoint is `l
 java -cp out client.ChatClient
 ```
 
+For a remote endpoint, pass its host and RMI registry port. Use `2000` for the
+load balancer or `2001` to connect directly to Node 1. The older three-IP form
+remains available for client-side primary failover.
+
 The client menu includes send message, check inbox, server status, MapReduce chat activity analytics, and exit. Choose different usernames for separate clients.
 
 ## Run three servers across Tailscale

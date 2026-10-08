@@ -11,3 +11,5 @@ Consistency   : EVENTUAL
 ======================================
 Heartbeat manager started.
 Node is ready.
+Node 1 registered user: amit
+User replication ACK from Node 2

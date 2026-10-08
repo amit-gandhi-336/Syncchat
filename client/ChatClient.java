@@ -6,36 +6,51 @@ import common.Message;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class ChatClient {
 
     private static String node1IP;
     private static String node2IP;
     private static String node3IP;
+        private static String endpointHost;
+        private static int endpointPort;
+        private static boolean failoverMode;
 
     private static ChatService chatService;
 
     public static void main(String[] args) {
 
-        if (args.length < 3) {
+                if (args.length != 0 && args.length != 2 && args.length != 3) {
 
-            System.out.println(
-                    "Usage:"
-            );
-
-            System.out.println(
-                    "java client.ChatClient " +
-                    "<node1IP> " +
-                    "<node2IP> " +
-                    "<node3IP>"
-            );
+                        System.out.println("Usage:");
+                        System.out.println("java -cp out client.ChatClient [<serverHost> <registryPort>]");
+                        System.out.println("java -cp out client.ChatClient <node1IP> <node2IP> <node3IP>  (failover mode)");
 
             return;
         }
 
-        node1IP = args[0];
-        node2IP = args[1];
-        node3IP = args[2];
+                if (args.length == 0) {
+                        endpointHost = "localhost";
+                        endpointPort = 2001;
+                } else if (args.length == 2) {
+                        endpointHost = args[0];
+                        try {
+                                endpointPort = Integer.parseInt(args[1]);
+                                if (endpointPort < 1 || endpointPort > 65535) {
+                                        throw new NumberFormatException();
+                                }
+                        } catch (NumberFormatException e) {
+                                System.err.println("Registry port must be an integer between 1 and 65535.");
+                                return;
+                        }
+                } else {
+                        node1IP = args[0];
+                        node2IP = args[1];
+                        node3IP = args[2];
+                        failoverMode = true;
+                }
 
         try {
 
@@ -194,13 +209,13 @@ public class ChatClient {
 
     private static void connect()
             throws Exception {
-
-        chatService =
-                FailoverClient.connect(
-                        node1IP,
-                        node2IP,
-                        node3IP
-                );
+                if (failoverMode) {
+                        chatService = FailoverClient.connect(node1IP, node2IP, node3IP);
+                } else {
+                        Registry registry = LocateRegistry.getRegistry(endpointHost, endpointPort);
+                        chatService = (ChatService) registry.lookup("ChatService");
+                        System.out.println("Connected to SyncChat at " + endpointHost + ":" + endpointPort);
+                }
     }
 
     private static void reconnect() {
@@ -213,12 +228,7 @@ public class ChatClient {
 
                 Thread.sleep(2000);
 
-                chatService =
-                        FailoverClient.connect(
-                                node1IP,
-                                node2IP,
-                                node3IP
-                        );
+                connect();
 
                 System.out.println(
                         "Failover connection established."

@@ -2244,3 +2244,8 @@ Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23;
 	java.net.ConnectException: Connection refused
 Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
 	java.net.ConnectException: Connection refused
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001,2@100.67.169.23@2002
+Load balancer: routing primary-only request to Node 1
