@@ -9,7 +9,11 @@ mkdir -p out
 javac -d out common/*.java server/*.java client/*.java
 ```
 
-The server command format is:
+The server command accepts the five required arguments below. Three optional
+node IP arguments are also accepted for compatibility. For Tailscale, prefer
+the `java.rmi.server.hostname`, `syncchat.rmi.exportPort`, and `syncchat.nodes`
+JVM properties shown in the cluster commands below; the explicit hostname is
+preserved in the RMI service stub.
 
 ```text
 java ... server.ClockServer <nodeId> <registryPort> <clockOffset> <primary> <STRONG|EVENTUAL>
