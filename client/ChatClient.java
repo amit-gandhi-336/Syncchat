@@ -2,13 +2,20 @@ package client;
 
 import common.ChatService;
 import common.Message;
+
 import java.util.Map;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.List;
 import java.util.Scanner;
 
 public class ChatClient {
+
+    private static String serverHost =
+            "localhost";
+
+    private static int serverPort =
+            2001;
+
+    private static ChatService chatService;
 
     public static void main(String[] args) {
 
@@ -17,28 +24,19 @@ public class ChatClient {
             Scanner scanner =
                     new Scanner(System.in);
 
-            String serverHost = args.length > 0 ? args[0] : "localhost";
-            int serverPort = args.length > 1
-                    ? Integer.parseInt(args[1])
-                    : 2001;
+            if (args.length > 0) {
+                serverHost = args[0];
+            }
 
-            /*
-             * Connect to RMI registry.
-             */
-            Registry registry =
-                    LocateRegistry.getRegistry(
-                            serverHost,
-                            serverPort
-                    );
+            if (args.length > 1) {
 
-            /*
-             * Get remote object.
-             */
-            ChatService chatService =
-                    (ChatService)
-                            registry.lookup(
-                                    "ChatService"
-                            );
+                serverPort =
+                        Integer.parseInt(
+                                args[1]
+                        );
+            }
+
+            connect();
 
             System.out.println();
             System.out.println(
@@ -53,9 +51,6 @@ public class ChatClient {
                     "================================="
             );
 
-            /*
-             * Login / username.
-             */
             System.out.print(
                     "Enter username: "
             );
@@ -63,13 +58,29 @@ public class ChatClient {
             String username =
                     scanner.nextLine();
 
-            /*
-             * Register user.
-             */
-            boolean registered =
-                    chatService.registerUser(
-                            username
-                    );
+            boolean registered;
+
+            try {
+
+                registered =
+                        chatService.registerUser(
+                                username
+                        );
+
+            } catch (Exception e) {
+
+                System.out.println();
+                System.out.println(
+                        "Primary server unavailable."
+                );
+
+                reconnect();
+
+                registered =
+                        chatService.registerUser(
+                                username
+                        );
+            }
 
             if (!registered) {
 
@@ -87,6 +98,7 @@ public class ChatClient {
             while (true) {
 
                 System.out.println();
+
                 System.out.println(
                         "1. Send Message"
                 );
@@ -132,83 +144,30 @@ public class ChatClient {
                         String message =
                                 scanner.nextLine();
 
-                        chatService.sendMessage(
+                        sendMessage(
                                 username,
                                 receiver,
                                 message
-                        );
-
-                        System.out.println(
-                                "Message sent!"
                         );
 
                         break;
 
                     case "2":
 
-                        List<Message> messages =
-                                chatService.getMessages(
-                                        username
-                                );
-
-                        System.out.println();
-                        System.out.println(
-                                "========== INBOX =========="
-                        );
-
-                        if (messages.isEmpty()) {
-
-                            System.out.println(
-                                    "No messages."
-                            );
-
-                        } else {
-
-                            for (
-                                    Message msg :
-                                    messages
-                            ) {
-
-                                System.out.println(
-                                        msg
-                                );
-                            }
-                        }
-
-                        System.out.println(
-                                "============================"
-                        );
+                        getInbox(username);
 
                         break;
 
                     case "3":
 
-                        System.out.println(
-                                chatService
-                                        .getServerStatus()
-                        );
+                        getServerStatus();
 
                         break;
 
                     case "4":
 
-                        Map<String, Long> senderCounts =
-                                chatService.getMessageCountsBySender();
+                        getAnalytics();
 
-                        System.out.println();
-                        System.out.println(
-                                "===== MESSAGES BY SENDER (MAPREDUCE) ====="
-                        );
-                        if (senderCounts.isEmpty()) {
-                            System.out.println("No messages to analyze.");
-                        } else {
-                            senderCounts.forEach((sender, count) ->
-                                    System.out.println(sender + ": " + count)
-                            );
-                        }
-                        System.out.println(
-                                "==========================================="
-                        );
                         break;
 
                     case "5":
@@ -231,5 +190,267 @@ public class ChatClient {
 
             e.printStackTrace();
         }
+    }
+
+    private static void connect()
+            throws Exception {
+
+        chatService =
+                FailoverClient.connect(
+                        serverHost,
+                        serverPort
+                );
+    }
+
+    private static void reconnect() {
+
+        int attempts = 0;
+
+        while (attempts < 10) {
+
+            try {
+
+                Thread.sleep(2000);
+
+                chatService =
+                        FailoverClient.connect(
+                                serverHost,
+                                serverPort
+                        );
+
+                System.out.println(
+                        "Failover connection established."
+                );
+
+                return;
+
+            } catch (Exception e) {
+
+                attempts++;
+
+                System.out.println(
+                        "Waiting for new PRIMARY..."
+                );
+            }
+        }
+
+        throw new RuntimeException(
+                "Unable to reconnect to SyncChat cluster."
+        );
+    }
+
+    private static void sendMessage(
+            String username,
+            String receiver,
+            String message) {
+
+        try {
+
+            chatService.sendMessage(
+                    username,
+                    receiver,
+                    message
+            );
+
+            System.out.println(
+                    "Message sent!"
+            );
+
+        } catch (Exception e) {
+
+            System.out.println();
+            System.out.println(
+                    "Primary server failed."
+            );
+
+            System.out.println(
+                    "Waiting for failover..."
+            );
+
+            try {
+
+                reconnect();
+
+                chatService.sendMessage(
+                        username,
+                        receiver,
+                        message
+                );
+
+                System.out.println(
+                        "Message sent after failover!"
+                );
+
+            } catch (Exception retryException) {
+
+                System.out.println(
+                        "Unable to send message."
+                );
+            }
+        }
+    }
+
+    private static void getInbox(
+            String username) {
+
+        try {
+
+            List<Message> messages =
+                    chatService.getMessages(
+                            username
+                    );
+
+            printInbox(messages);
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Primary server unavailable."
+            );
+
+            try {
+
+                reconnect();
+
+                List<Message> messages =
+                        chatService.getMessages(
+                                username
+                        );
+
+                printInbox(messages);
+
+            } catch (Exception retryException) {
+
+                System.out.println(
+                        "Unable to retrieve inbox."
+                );
+            }
+        }
+    }
+
+    private static void printInbox(
+            List<Message> messages) {
+
+        System.out.println();
+
+        System.out.println(
+                "========== INBOX =========="
+        );
+
+        if (messages.isEmpty()) {
+
+            System.out.println(
+                    "No messages."
+            );
+
+        } else {
+
+            for (Message msg : messages) {
+
+                System.out.println(msg);
+            }
+        }
+
+        System.out.println(
+                "============================"
+        );
+    }
+
+    private static void getServerStatus() {
+
+        try {
+
+            System.out.println(
+                    chatService.getServerStatus()
+            );
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Primary server unavailable."
+            );
+
+            try {
+
+                reconnect();
+
+                System.out.println(
+                        chatService.getServerStatus()
+                );
+
+            } catch (Exception retryException) {
+
+                System.out.println(
+                        "Unable to contact SyncChat cluster."
+                );
+            }
+        }
+    }
+
+    private static void getAnalytics() {
+
+        try {
+
+            Map<String, Long> senderCounts =
+                    chatService
+                            .getMessageCountsBySender();
+
+            printAnalytics(senderCounts);
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Primary server unavailable."
+            );
+
+            try {
+
+                reconnect();
+
+                Map<String, Long> senderCounts =
+                        chatService
+                                .getMessageCountsBySender();
+
+                printAnalytics(senderCounts);
+
+            } catch (Exception retryException) {
+
+                System.out.println(
+                        "Unable to run analytics."
+                );
+            }
+        }
+    }
+
+    private static void printAnalytics(
+            Map<String, Long> senderCounts) {
+
+        System.out.println();
+
+        System.out.println(
+                "===== MESSAGES BY SENDER (MAPREDUCE) ====="
+        );
+
+        if (senderCounts.isEmpty()) {
+
+            System.out.println(
+                    "No messages to analyze."
+            );
+
+        } else {
+
+            senderCounts.forEach(
+                    (sender, count) ->
+                            System.out.println(
+                                    sender +
+                                    ": " +
+                                    count
+                            )
+            );
+        }
+
+        System.out.println(
+                "==========================================="
+        );
     }
 }

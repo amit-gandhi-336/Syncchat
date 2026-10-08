@@ -1,0 +1,28 @@
+
+=================================
+       SYNCCHAT NODE
+=================================
+Node ID  : 2
+Port     : 2002
+RMI object port: 3002
+Advertised host: localhost
+Primary  : false
+Clock    : 1791451110630
+Heartbeat: ACTIVE
+Consistency: STRONG
+=================================
+Node 2 replicated user: Sdawg
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 1 is not responding.
+Starting Bully Election...
+=================================
+
+=================================
+       BULLY ELECTION
+       Initiated by Node 2
+=================================
+Node 2 contacted Node 3
+Node 2 is BACKUP
+Node 2 is BACKUP

@@ -11,8 +11,13 @@ public class HeartbeatManager
         implements Runnable {
 
     private final int nodeId;
+
     private final Map<Integer, NodeInfo> nodes;
+
     private final ChatServer server;
+
+    private volatile boolean electionInProgress =
+            false;
 
     public HeartbeatManager(
             int nodeId,
@@ -50,10 +55,10 @@ public class HeartbeatManager
         int primaryId =
                 server.getCurrentPrimary();
 
-        /*
-         * Primary does not need to check itself.
-         */
         if (primaryId == nodeId) {
+
+            electionInProgress = false;
+
             return;
         }
 
@@ -78,9 +83,18 @@ public class HeartbeatManager
                                     "NodeService"
                             );
 
-            service.isAlive();
+            if (service.isAlive()) {
+
+                electionInProgress = false;
+            }
 
         } catch (Exception e) {
+
+            if (electionInProgress) {
+                return;
+            }
+
+            electionInProgress = true;
 
             System.out.println();
             System.out.println(
@@ -109,6 +123,8 @@ public class HeartbeatManager
                 server.startBullyElection();
 
             } catch (Exception ex) {
+
+                electionInProgress = false;
 
                 ex.printStackTrace();
             }

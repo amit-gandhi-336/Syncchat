@@ -129,3 +129,19 @@ Starting Bully Election...
        Initiated by Node 1
 =================================
 Node 2 is unavailable.
+
+=================================
+       SYNCCHAT NODE
+=================================
+Node ID  : 1
+Port     : 2001
+RMI object port: 3001
+Advertised host: localhost
+Primary  : true
+Clock    : 1791451084232
+Heartbeat: ACTIVE
+Consistency: STRONG
+=================================
+Node 1 registered user: Sdawg
+User replication ACK from Node 2
+User replication ACK from Node 3

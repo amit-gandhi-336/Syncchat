@@ -17,7 +17,6 @@ public class ChatServer
                    ReplicationService,
                    MapReduceService {
 
-
     private final Set<String> users =
             ConcurrentHashMap.newKeySet();
 
@@ -29,9 +28,6 @@ public class ChatServer
 
     private final LogicalClock clock;
 
-    /*
-     * Distributed node information
-     */
     private final int nodeId;
 
     private volatile boolean primary;
@@ -42,338 +38,369 @@ public class ChatServer
             new ConcurrentHashMap<>();
 
     private final ConsistencyMode consistencyMode;
-        private static final int MAP_BATCH_SIZE = 100;
-    /*
-     * Constructor
-     */
+
+    private static final int MAP_BATCH_SIZE = 100;
+
     public ChatServer(
-        int nodeId,
-        long offset,
-        boolean primary,
-                ConsistencyMode consistencyMode,
-                int exportPort)
-        throws RemoteException {
+            int nodeId,
+            long offset,
+            boolean primary,
+            ConsistencyMode consistencyMode,
+            int exportPort)
+            throws RemoteException {
 
         super(exportPort);
 
-    this.nodeId = nodeId;
-    this.primary = primary;
+        this.nodeId = nodeId;
+        this.primary = primary;
 
-    this.currentPrimary =
-            primary ? nodeId : 1;
+        this.currentPrimary =
+                primary ? nodeId : 1;
 
-    this.consistencyMode =
-            consistencyMode;
+        this.consistencyMode =
+                consistencyMode;
 
-    clock =
-            new LogicalClock(offset);
-}
+        clock =
+                new LogicalClock(offset);
+    }
 
     // =====================================================
     // CHAT METHODS
     // =====================================================
 
     private void replicateToBackups(
-        String sender,
-        String receiver,
-        String content) {
+            String sender,
+            String receiver,
+            String content) {
 
-    for (NodeInfo node : nodes.values()) {
+        for (NodeInfo node : nodes.values()) {
 
-        /*
-         * Don't replicate to ourselves.
-         */
-        if (node.getNodeId() == nodeId) {
-            continue;
-        }
-
-        try {
-
-            Registry registry =
-                    LocateRegistry.getRegistry(
-                            node.getHost(),
-                            node.getPort()
-                    );
-
-            ReplicationService service =
-                    (ReplicationService)
-                            registry.lookup(
-                                    "ReplicationService"
-                            );
-
-            service.replicateMessage(
-                    sender,
-                    receiver,
-                    content
-            );
-
-            System.out.println(
-                    "Replication ACK from Node "
-                            + node.getNodeId()
-            );
-
-        } catch (Exception e) {
-
-                        boolean nodeAvailable = isNodeAvailable(node);
-                        if (consistencyMode == ConsistencyMode.STRONG && nodeAvailable) {
-
-                throw new RuntimeException(
-                                                "Strong replication failed on reachable backup Node " +
-                        node.getNodeId() +
-                        " did not acknowledge."
-                );
+            if (node.getNodeId() == nodeId) {
+                continue;
             }
-
-                        System.out.println(
-                    nodeAvailable
-                            ? "Replication failed for reachable Node " + node.getNodeId()
-                            : "Backup Node " + node.getNodeId()
-                                    + " is unavailable; skipping replication for this operation."
-                        );
-        }
-    }
-}
-
-/** Check reachability using the cluster's existing NodeService health call. */
-private boolean isNodeAvailable(NodeInfo node) {
-        try {
-                Registry registry = LocateRegistry.getRegistry(
-                                node.getHost(),
-                                node.getPort()
-                );
-                NodeService service = (NodeService) registry.lookup("NodeService");
-                return service.isAlive();
-        } catch (Exception e) {
-                return false;
-        }
-}
-
-    @Override
-public boolean registerUser(
-        String username)
-        throws RemoteException {
-
-    if (!primary) {
-
-        throw new RemoteException(
-                "This node is a BACKUP. " +
-                "Register user through PRIMARY."
-        );
-    }
-
-    if (users.contains(username)) {
-        return false;
-    }
-
-    users.add(username);
-
-    messages.put(
-            username,
-            Collections.synchronizedList(
-                    new ArrayList<>()
-            )
-    );
-
-    System.out.println(
-            "Node " + nodeId +
-            " registered user: " +
-            username
-    );
-
-    /*
-     * Replicate user to backups.
-     */
-    if (consistencyMode ==
-            ConsistencyMode.STRONG) {
-
-        replicateUserToBackups(username);
-
-    } else {
-
-        pool.submit(() -> {
-
-            replicateUserToBackups(username);
-
-        });
-    }
-
-    return true;
-}
-
-@Override
-public List<String> getRegisteredUsers() throws RemoteException {
-        return users.stream().sorted().toList();
-}
-
-private void replicateUserToBackups(
-        String username) {
-
-    for (NodeInfo node : nodes.values()) {
-
-        if (node.getNodeId() == nodeId) {
-            continue;
-        }
-
-        try {
-
-            Registry registry =
-                    LocateRegistry.getRegistry(
-                            node.getHost(),
-                            node.getPort()
-                    );
-
-            ReplicationService service =
-                    (ReplicationService)
-                            registry.lookup(
-                                    "ReplicationService"
-                            );
-
-            service.replicateUser(username);
-
-            System.out.println(
-                    "User replication ACK from Node "
-                            + node.getNodeId()
-            );
-
-        } catch (Exception e) {
-
-                        boolean nodeAvailable = isNodeAvailable(node);
-                        if (consistencyMode == ConsistencyMode.STRONG && nodeAvailable) {
-
-                throw new RuntimeException(
-                        "User replication failed on reachable backup Node "
-                                + node.getNodeId()
-                );
-            }
-
-            System.out.println(
-                    nodeAvailable
-                            ? "User replication failed for reachable Node " + node.getNodeId()
-                            : "Backup Node " + node.getNodeId()
-                                    + " is unavailable; skipping user replication."
-            );
-        }
-    }
-}
-
-@Override
-public boolean replicateUser(
-        String username)
-        throws RemoteException {
-
-    if (users.contains(username)) {
-        return true;
-    }
-
-    users.add(username);
-
-    messages.put(
-            username,
-            Collections.synchronizedList(
-                    new ArrayList<>()
-            )
-    );
-
-    System.out.println(
-            "Node " + nodeId +
-            " replicated user: " +
-            username
-    );
-
-    return true;
-}
-
-    @Override
-public void sendMessage(
-        String sender,
-        String receiver,
-        String content)
-        throws RemoteException {
-
-    if (!primary) {
-
-        throw new RemoteException(
-                "This node is a BACKUP. " +
-                "Send write request to the PRIMARY."
-        );
-    }
-
-    if (!users.contains(receiver)) {
-
-        throw new RemoteException(
-                "Receiver does not exist."
-        );
-    }
-
-    Message message =
-            new Message(
-                    sender,
-                    receiver,
-                    content
-            );
-
-    /*
-     * Store message locally on primary.
-     */
-    messages.get(receiver).add(message);
-
-    System.out.println(
-            "Node " + nodeId +
-            " stored message locally."
-    );
-
-    /*
-     * STRONG CONSISTENCY
-     */
-    if (consistencyMode ==
-            ConsistencyMode.STRONG) {
-
-        System.out.println(
-                "STRONG CONSISTENCY: " +
-                "Waiting for backup acknowledgements..."
-        );
-
-        replicateToBackups(
-                sender,
-                receiver,
-                content
-        );
-
-        System.out.println(
-                "All available backups acknowledged."
-        );
-    }
-
-    /*
-     * EVENTUAL CONSISTENCY
-     */
-    else {
-
-        System.out.println(
-                "EVENTUAL CONSISTENCY: " +
-                "Replicating in background..."
-        );
-
-        pool.submit(() -> {
 
             try {
 
-                replicateToBackups(
+                Registry registry =
+                        LocateRegistry.getRegistry(
+                                node.getHost(),
+                                node.getPort()
+                        );
+
+                NodeService nodeService =
+                        (NodeService)
+                                registry.lookup(
+                                        "NodeService"
+                                );
+
+                if (nodeService.isPrimary()) {
+                    continue;
+                }
+
+                ReplicationService service =
+                        (ReplicationService)
+                                registry.lookup(
+                                        "ReplicationService"
+                                );
+
+                service.replicateMessage(
                         sender,
                         receiver,
                         content
                 );
 
+                System.out.println(
+                        "Replication ACK from Node "
+                                + node.getNodeId()
+                );
+
             } catch (Exception e) {
 
+                boolean nodeAvailable =
+                        isNodeAvailable(node);
+
+                if (consistencyMode ==
+                        ConsistencyMode.STRONG
+                        && nodeAvailable) {
+
+                    throw new RuntimeException(
+                            "Strong replication failed on reachable backup Node "
+                                    + node.getNodeId()
+                    );
+                }
+
                 System.out.println(
-                        "Background replication failed: "
-                                + e.getMessage()
+                        nodeAvailable
+                                ? "Replication failed for reachable Node "
+                                + node.getNodeId()
+                                : "Backup Node "
+                                + node.getNodeId()
+                                + " is unavailable; skipping replication for this operation."
                 );
             }
-        });
+        }
     }
-}
+
+    private boolean isNodeAvailable(
+            NodeInfo node) {
+
+        try {
+
+            Registry registry =
+                    LocateRegistry.getRegistry(
+                            node.getHost(),
+                            node.getPort()
+                    );
+
+            NodeService service =
+                    (NodeService)
+                            registry.lookup(
+                                    "NodeService"
+                            );
+
+            return service.isAlive();
+
+        } catch (Exception e) {
+
+            return false;
+        }
+    }
+
+    @Override
+    public boolean registerUser(
+            String username)
+            throws RemoteException {
+
+        if (!primary) {
+
+            throw new RemoteException(
+                    "This node is a BACKUP. " +
+                    "Register user through PRIMARY."
+            );
+        }
+
+        if (users.contains(username)) {
+            return false;
+        }
+
+        users.add(username);
+
+        messages.put(
+                username,
+                Collections.synchronizedList(
+                        new ArrayList<>()
+                )
+        );
+
+        System.out.println(
+                "Node " + nodeId +
+                " registered user: " +
+                username
+        );
+
+        if (consistencyMode ==
+                ConsistencyMode.STRONG) {
+
+            replicateUserToBackups(username);
+
+        } else {
+
+            pool.submit(() ->
+                    replicateUserToBackups(
+                            username
+                    )
+            );
+        }
+
+        return true;
+    }
+
+    @Override
+    public List<String> getRegisteredUsers()
+            throws RemoteException {
+
+        return users.stream()
+                .sorted()
+                .toList();
+    }
+
+    private void replicateUserToBackups(
+            String username) {
+
+        for (NodeInfo node : nodes.values()) {
+
+            if (node.getNodeId() == nodeId) {
+                continue;
+            }
+
+            try {
+
+                Registry registry =
+                        LocateRegistry.getRegistry(
+                                node.getHost(),
+                                node.getPort()
+                        );
+
+                NodeService nodeService =
+                        (NodeService)
+                                registry.lookup(
+                                        "NodeService"
+                                );
+
+                if (nodeService.isPrimary()) {
+                    continue;
+                }
+
+                ReplicationService service =
+                        (ReplicationService)
+                                registry.lookup(
+                                        "ReplicationService"
+                                );
+
+                service.replicateUser(username);
+
+                System.out.println(
+                        "User replication ACK from Node "
+                                + node.getNodeId()
+                );
+
+            } catch (Exception e) {
+
+                boolean nodeAvailable =
+                        isNodeAvailable(node);
+
+                if (consistencyMode ==
+                        ConsistencyMode.STRONG
+                        && nodeAvailable) {
+
+                    throw new RuntimeException(
+                            "User replication failed on reachable backup Node "
+                                    + node.getNodeId()
+                    );
+                }
+
+                System.out.println(
+                        nodeAvailable
+                                ? "User replication failed for reachable Node "
+                                + node.getNodeId()
+                                : "Backup Node "
+                                + node.getNodeId()
+                                + " is unavailable; skipping user replication."
+                );
+            }
+        }
+    }
+
+    @Override
+    public boolean replicateUser(
+            String username)
+            throws RemoteException {
+
+        if (users.contains(username)) {
+            return true;
+        }
+
+        users.add(username);
+
+        messages.put(
+                username,
+                Collections.synchronizedList(
+                        new ArrayList<>()
+                )
+        );
+
+        System.out.println(
+                "Node " + nodeId +
+                " replicated user: " +
+                username
+        );
+
+        return true;
+    }
+
+    @Override
+    public void sendMessage(
+            String sender,
+            String receiver,
+            String content)
+            throws RemoteException {
+
+        if (!primary) {
+
+            throw new RemoteException(
+                    "This node is a BACKUP. " +
+                    "Send write request to the PRIMARY."
+            );
+        }
+
+        if (!users.contains(receiver)) {
+
+            throw new RemoteException(
+                    "Receiver does not exist."
+            );
+        }
+
+        Message message =
+                new Message(
+                        sender,
+                        receiver,
+                        content
+                );
+
+        messages
+                .get(receiver)
+                .add(message);
+
+        System.out.println(
+                "Node " + nodeId +
+                " stored message locally."
+        );
+
+        if (consistencyMode ==
+                ConsistencyMode.STRONG) {
+
+            System.out.println(
+                    "STRONG CONSISTENCY: " +
+                    "Waiting for backup acknowledgements..."
+            );
+
+            replicateToBackups(
+                    sender,
+                    receiver,
+                    content
+            );
+
+            System.out.println(
+                    "All available backups acknowledged."
+            );
+
+        } else {
+
+            System.out.println(
+                    "EVENTUAL CONSISTENCY: " +
+                    "Replicating in background..."
+            );
+
+            pool.submit(() -> {
+
+                try {
+
+                    replicateToBackups(
+                            sender,
+                            receiver,
+                            content
+                    );
+
+                } catch (Exception e) {
+
+                    System.out.println(
+                            "Background replication failed: "
+                                    + e.getMessage()
+                    );
+                }
+            });
+        }
+    }
 
     @Override
     public List<Message> getMessages(
@@ -387,91 +414,369 @@ public void sendMessage(
             return new ArrayList<>();
         }
 
-        return new ArrayList<>(list);
+        synchronized (list) {
+            return new ArrayList<>(list);
+        }
     }
 
-        /** Map phase: count messages by sender within one batch. */
-        @Override
-        public Map<String, Long> mapMessageCounts(List<Message> batch)
-                        throws RemoteException {
+    // =====================================================
+    // PRIMARY-BACKUP STATE REPLICATION
+    // =====================================================
 
-                Map<String, Long> partialCounts = new HashMap<>();
-                for (Message message : batch) {
-                        partialCounts.merge(message.getSender(), 1L, Long::sum);
+    @Override
+    public Map<String, List<Message>> getState()
+            throws RemoteException {
+
+        Map<String, List<Message>> state =
+                new HashMap<>();
+
+        for (String username : users) {
+
+            List<Message> userMessages =
+                    messages.get(username);
+
+            if (userMessages == null) {
+
+                state.put(
+                        username,
+                        new ArrayList<>()
+                );
+
+            } else {
+
+                synchronized (userMessages) {
+
+                    state.put(
+                            username,
+                            new ArrayList<>(
+                                    userMessages
+                            )
+                    );
                 }
-                return partialCounts;
+            }
         }
 
-        /**
-         * Coordinator: snapshot the primary's data, distribute disjoint map
-         * batches to cluster nodes, then reduce their partial counts.
-         */
-        @Override
-        public Map<String, Long> getMessageCountsBySender()
-                        throws RemoteException {
+        return state;
+    }
 
-                if (!primary) {
-                        throw new RemoteException(
-                                        "Run chat analytics through the PRIMARY node."
+    @Override
+    public void installState(
+            Map<String, List<Message>> state)
+            throws RemoteException {
+
+        if (state == null) {
+            return;
+        }
+
+        users.clear();
+        messages.clear();
+
+        for (Map.Entry<String, List<Message>> entry :
+                state.entrySet()) {
+
+            String username =
+                    entry.getKey();
+
+            List<Message> userMessages =
+                    entry.getValue();
+
+            users.add(username);
+
+            messages.put(
+                    username,
+                    Collections.synchronizedList(
+                            new ArrayList<>(
+                                    userMessages == null
+                                            ? new ArrayList<>()
+                                            : userMessages
+                            )
+                    )
+            );
+        }
+
+        System.out.println(
+                "Node " + nodeId +
+                " restored replicated state."
+        );
+    }
+
+    private void synchronizeStateFromBackup() {
+
+        System.out.println(
+                "Starting state recovery..."
+        );
+
+        for (NodeInfo node : nodes.values()) {
+
+            if (node.getNodeId() == nodeId) {
+                continue;
+            }
+
+            try {
+
+                Registry registry =
+                        LocateRegistry.getRegistry(
+                                node.getHost(),
+                                node.getPort()
                         );
+
+                NodeService nodeService =
+                        (NodeService)
+                                registry.lookup(
+                                        "NodeService"
+                                );
+
+                if (!nodeService.isAlive()) {
+                    continue;
                 }
 
-                List<Message> snapshot = new ArrayList<>();
-                for (List<Message> inbox : messages.values()) {
-                        synchronized (inbox) {
-                                snapshot.addAll(inbox);
-                        }
+                ReplicationService replicationService =
+                        (ReplicationService)
+                                registry.lookup(
+                                        "ReplicationService"
+                                );
+
+                Map<String, List<Message>> state =
+                        replicationService.getState();
+
+                if (state == null) {
+                    continue;
                 }
 
-                List<NodeInfo> workers = new ArrayList<>(nodes.values());
-                workers.sort(Comparator.comparingInt(NodeInfo::getNodeId));
-                if (workers.isEmpty()) {
-                        workers.add(new NodeInfo(nodeId, "localhost", 0));
+                installState(state);
+
+                int totalMessages = 0;
+
+                for (List<Message> list :
+                        messages.values()) {
+
+                    totalMessages += list.size();
                 }
 
-                List<CompletableFuture<Map<String, Long>>> mapResults =
-                                new ArrayList<>();
-                int taskNumber = 0;
-                for (int start = 0; start < snapshot.size(); start += MAP_BATCH_SIZE) {
-                        int end = Math.min(start + MAP_BATCH_SIZE, snapshot.size());
-                        List<Message> batch = new ArrayList<>(snapshot.subList(start, end));
-                        NodeInfo worker = workers.get(taskNumber++ % workers.size());
+                System.out.println();
+                System.out.println(
+                        "================================="
+                );
+                System.out.println(
+                        "STATE RECOVERY SUCCESSFUL"
+                );
+                System.out.println(
+                        "Recovered from Node "
+                                + node.getNodeId()
+                );
+                System.out.println(
+                        "Users recovered: "
+                                + users.size()
+                );
+                System.out.println(
+                        "Messages recovered: "
+                                + totalMessages
+                );
+                System.out.println(
+                        "================================="
+                );
 
-                        mapResults.add(CompletableFuture.supplyAsync(() -> {
+                return;
+
+            } catch (Exception e) {
+
+                System.out.println(
+                        "Unable to recover state from Node "
+                                + node.getNodeId()
+                );
+            }
+        }
+
+        System.out.println(
+                "No backup was available for state recovery."
+        );
+    }
+
+    // =====================================================
+    // MAP REDUCE METHODS
+    // =====================================================
+
+    @Override
+    public Map<String, Long> mapMessageCounts(
+            List<Message> batch)
+            throws RemoteException {
+
+        Map<String, Long> partialCounts =
+                new HashMap<>();
+
+        for (Message message : batch) {
+
+            partialCounts.merge(
+                    message.getSender(),
+                    1L,
+                    Long::sum
+            );
+        }
+
+        return partialCounts;
+    }
+
+    @Override
+    public Map<String, Long> getMessageCountsBySender()
+            throws RemoteException {
+
+        if (!primary) {
+
+            throw new RemoteException(
+                    "Run chat analytics through the PRIMARY node."
+            );
+        }
+
+        List<Message> snapshot =
+                new ArrayList<>();
+
+        for (List<Message> inbox :
+                messages.values()) {
+
+            synchronized (inbox) {
+
+                snapshot.addAll(inbox);
+            }
+        }
+
+        List<NodeInfo> workers =
+                new ArrayList<>(
+                        nodes.values()
+                );
+
+        workers.sort(
+                Comparator.comparingInt(
+                        NodeInfo::getNodeId
+                )
+        );
+
+        if (workers.isEmpty()) {
+
+            workers.add(
+                    new NodeInfo(
+                            nodeId,
+                            "localhost",
+                            0
+                    )
+            );
+        }
+
+        List<CompletableFuture<Map<String, Long>>>
+                mapResults =
+                new ArrayList<>();
+
+        int taskNumber = 0;
+
+        for (
+                int start = 0;
+                start < snapshot.size();
+                start += MAP_BATCH_SIZE
+        ) {
+
+            int end =
+                    Math.min(
+                            start + MAP_BATCH_SIZE,
+                            snapshot.size()
+                    );
+
+            List<Message> batch =
+                    new ArrayList<>(
+                            snapshot.subList(
+                                    start,
+                                    end
+                            )
+                    );
+
+            NodeInfo worker =
+                    workers.get(
+                            taskNumber++
+                                    % workers.size()
+                    );
+
+            mapResults.add(
+                    CompletableFuture.supplyAsync(
+                            () -> {
+
                                 try {
-                                        if (worker.getNodeId() == nodeId) {
-                                                return mapMessageCounts(batch);
-                                        }
 
-                                        Registry registry = LocateRegistry.getRegistry(
-                                                        worker.getHost(), worker.getPort()
+                                    if (worker.getNodeId()
+                                            == nodeId) {
+
+                                        return mapMessageCounts(
+                                                batch
                                         );
-                                        MapReduceService service = (MapReduceService)
-                                                        registry.lookup("MapReduceService");
-                                        return service.mapMessageCounts(batch);
+                                    }
+
+                                    Registry registry =
+                                            LocateRegistry.getRegistry(
+                                                    worker.getHost(),
+                                                    worker.getPort()
+                                            );
+
+                                    MapReduceService service =
+                                            (MapReduceService)
+                                                    registry.lookup(
+                                                            "MapReduceService"
+                                                    );
+
+                                    return service.mapMessageCounts(
+                                            batch
+                                    );
+
                                 } catch (Exception e) {
-                                        System.err.println(
-                                                        "Map task failed on Node " + worker.getNodeId()
-                                                                        + "; mapping batch locally: " + e.getMessage()
-                                        );
-                                        try {
-                                                return mapMessageCounts(batch);
-                                        } catch (RemoteException impossible) {
-                                                throw new CompletionException(impossible);
-                                        }
-                                }
-                        }, pool));
-                }
 
-                // Reduce phase: sum each worker's partial count for each sender.
-                Map<String, Long> totals = new TreeMap<>();
-                for (CompletableFuture<Map<String, Long>> result : mapResults) {
-                        result.join().forEach(
-                                        (sender, count) -> totals.merge(sender, count, Long::sum)
-                        );
-                }
-                return totals;
+                                    System.err.println(
+                                            "Map task failed on Node "
+                                                    + worker.getNodeId()
+                                                    + "; mapping batch locally: "
+                                                    + e.getMessage()
+                                    );
+
+                                    try {
+
+                                        return mapMessageCounts(
+                                                batch
+                                        );
+
+                                    } catch (
+                                            RemoteException impossible) {
+
+                                        throw new CompletionException(
+                                                impossible
+                                        );
+                                    }
+                                }
+
+                            },
+                            pool
+                    )
+            );
         }
+
+        Map<String, Long> totals =
+                new TreeMap<>();
+
+        for (
+                CompletableFuture<Map<String, Long>>
+                        result : mapResults
+        ) {
+
+            result.join().forEach(
+                    (sender, count) ->
+                            totals.merge(
+                                    sender,
+                                    count,
+                                    Long::sum
+                            )
+            );
+        }
+
+        return totals;
+    }
+
+    // =====================================================
+    // SERVER METHODS
+    // =====================================================
 
     @Override
     public String getServerStatus()
@@ -543,11 +848,12 @@ public void sendMessage(
     }
 
     @Override
-public void setPrimary(boolean primary)
-        throws RemoteException {
+    public void setPrimary(
+            boolean primary)
+            throws RemoteException {
 
-    this.primary = primary;
-}
+        this.primary = primary;
+    }
 
     // =====================================================
     // BULLY ELECTION
@@ -565,8 +871,6 @@ public void setPrimary(boolean primary)
 
         election.startElection();
     }
-
-    
 
     // =====================================================
     // PRIMARY ANNOUNCEMENT
@@ -587,14 +891,19 @@ public void setPrimary(boolean primary)
             System.out.println(
                     "================================="
             );
-
             System.out.println(
                     "Node " + nodeId +
                     " IS NOW PRIMARY"
             );
-
+            System.out.println(
+                    "Starting state recovery..."
+            );
             System.out.println(
                     "================================="
+            );
+
+            pool.submit(
+                    this::synchronizeStateFromBackup
             );
 
         } else {
@@ -608,35 +917,41 @@ public void setPrimary(boolean primary)
         }
     }
 
+    // =====================================================
+    // BACKUP REPLICATION
+    // =====================================================
+
     @Override
-public void replicateMessage(
-        String sender,
-        String receiver,
-        String content)
-        throws RemoteException {
+    public void replicateMessage(
+            String sender,
+            String receiver,
+            String content)
+            throws RemoteException {
 
-    if (!users.contains(receiver)) {
+        if (!users.contains(receiver)) {
 
-        throw new RemoteException(
-                "Receiver does not exist on Node "
-                        + nodeId
+            throw new RemoteException(
+                    "Receiver does not exist on Node "
+                            + nodeId
+            );
+        }
+
+        messages
+                .get(receiver)
+                .add(
+                        new Message(
+                                sender,
+                                receiver,
+                                content
+                        )
+                );
+
+        System.out.println(
+                "Node " + nodeId +
+                " replicated message: " +
+                sender +
+                " -> " +
+                receiver
         );
     }
-
-    messages.get(receiver).add(
-            new Message(
-                    sender,
-                    receiver,
-                    content
-            )
-    );
-
-    System.out.println(
-            "Node " + nodeId +
-            " replicated message: " +
-            sender +
-            " -> " +
-            receiver
-    );
-}
 }

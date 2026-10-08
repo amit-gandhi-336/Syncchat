@@ -1,0 +1,70 @@
+
+=================================
+       SYNCCHAT NODE
+=================================
+Node ID  : 3
+Port     : 2003
+RMI object port: 3003
+Advertised host: localhost
+Primary  : false
+Clock    : 1791451119677
+Heartbeat: ACTIVE
+Consistency: STRONG
+=================================
+Node 3 replicated user: Sdawg
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 1 is not responding.
+Starting Bully Election...
+=================================
+
+=================================
+       BULLY ELECTION
+       Initiated by Node 3
+=================================
+
+*********************************
+Node 3 WINS THE BULLY ELECTION
+Node 3 is now PRIMARY
+*********************************
+
+=================================
+       BULLY ELECTION
+       Initiated by Node 3
+=================================
+
+*********************************
+Node 3 WINS THE BULLY ELECTION
+Node 3 is now PRIMARY
+*********************************
+
+=================================
+
+=================================
+Node 3 IS NOW PRIMARY
+Starting state recovery...
+=================================
+Node 3 IS NOW PRIMARY
+Starting state recovery...
+=================================
+Starting state recovery...
+Starting state recovery...
+Unable to recover state from Node 1
+Unable to recover state from Node 1
+Node 3 restored replicated state.
+
+=================================
+STATE RECOVERY SUCCESSFUL
+Node 3 restored replicated state.
+
+=================================
+STATE RECOVERY SUCCESSFUL
+Recovered from Node 2
+Recovered from Node 2
+Users recovered: 1
+Users recovered: 1
+Messages recovered: 0
+=================================
+Messages recovered: 0
+=================================
