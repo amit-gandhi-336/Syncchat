@@ -1,0 +1,267 @@
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 1 seconds (0.016666666666666666 minutes)
+=================================================
+Starting periodic synchronization daemon. Press Ctrl+C to stop.
+
+-------------------------------------------------
+ [Round #1 - 2026-10-13 22:44:11] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #2 - 2026-10-13 22:44:12] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #3 - 2026-10-13 22:44:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-13 22:44:14] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-13 22:44:15] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #6 - 2026-10-13 22:44:16] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #7 - 2026-10-13 22:44:17] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #8 - 2026-10-13 22:44:19] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #9 - 2026-10-13 22:44:20] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #10 - 2026-10-13 22:44:21] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #11 - 2026-10-13 22:44:22] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #12 - 2026-10-13 22:44:23] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #13 - 2026-10-13 22:44:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #14 - 2026-10-13 22:44:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #15 - 2026-10-13 22:44:26] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+
+-------------------------------------------------
+ [Round #16 - 2026-10-13 22:44:27] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+No nodes are currently reachable. Skipping synchronization.
+
+Next synchronization scheduled in 1s (0.016666666666666666 min)...
+

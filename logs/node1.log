@@ -1,0 +1,237 @@
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 127.0.0.1
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 127.0.0.1
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 1 registered user: dashboarduser
+User replication ACK from Node 2
+User replication ACK from Node 3
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 2 seconds (0.03333333333333333 minutes)
+Initial delay: 2 seconds (0.03333333333333333 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 2s, interval: 2s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-13 22:49:44] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911984715 ms
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+Only 1 node is reachable (Node 1 (localhost:2001)). No adjustment needed.
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #2 - 2026-10-13 22:49:46] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911986728 ms
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+Only 1 node is reachable (Node 1 (localhost:2001)). No adjustment needed.
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #3 - 2026-10-13 22:49:48] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911988743 ms
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+Only 1 node is reachable (Node 1 (localhost:2001)). No adjustment needed.
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-13 22:49:50] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911990749 ms
+  Node 2 (localhost:2002): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+Only 1 node is reachable (Node 1 (localhost:2001)). No adjustment needed.
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-13 22:49:52] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911992765 ms
+  Node 2 (localhost:2002): 1791911992891 ms
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+[2] Calculated Cluster Average Time: 1791911992828 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +63 ms
+  Node 2 (localhost:2002) adjustment: -63 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1791911992893 ms
+  Node 2 (localhost:2002): 1791911992867 ms
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #6 - 2026-10-13 22:49:54] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911994902 ms
+  Node 2 (localhost:2002): 1791911994885 ms
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+[2] Calculated Cluster Average Time: 1791911994893 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -9 ms
+  Node 2 (localhost:2002) adjustment: +8 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1791911994911 ms
+  Node 2 (localhost:2002): 1791911994905 ms
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #7 - 2026-10-13 22:49:56] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911996919 ms
+  Node 2 (localhost:2002): 1791911996918 ms
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+[2] Calculated Cluster Average Time: 1791911996918 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -1 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1791911996930 ms
+  Node 2 (localhost:2002): 1791911996922 ms
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+-------------------------------------------------
+ [Round #8 - 2026-10-13 22:49:58] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1791911998942 ms
+  Node 2 (localhost:2002): 1791911998944 ms
+  Node 3 (localhost:2003): [OFFLINE/UNREACHABLE - Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused]
+
+[2] Calculated Cluster Average Time: 1791911998943 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1791911998964 ms
+  Node 2 (localhost:2002): 1791911998957 ms
+
+Next synchronization scheduled in 2s (0.03333333333333333 min)...
+
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 100.68.59.4
+Registry Port : 2001
+RMI object port: 2100
+Primary       : true
+Consistency   : EVENTUAL
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (100.68.59.4:2001)
+  - Node 2 (100.67.169.23:2002)
+  - Node 3 (100.120.104.65:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-13 22:56:37] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1791912397584 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection timed out]

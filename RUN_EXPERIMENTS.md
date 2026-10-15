@@ -9,11 +9,7 @@ mkdir -p out
 javac -d out common/*.java server/*.java client/*.java
 ```
 
-The server command accepts the five required arguments below. Three optional
-node IP arguments are also accepted for compatibility. For Tailscale, prefer
-the `java.rmi.server.hostname`, `syncchat.rmi.exportPort`, and `syncchat.nodes`
-JVM properties shown in the cluster commands below; the explicit hostname is
-preserved in the RMI service stub.
+The server command format is:
 
 ```text
 java ... server.ClockServer <nodeId> <registryPort> <clockOffset> <primary> <STRONG|EVENTUAL>
@@ -37,38 +33,47 @@ Start the client in another terminal. If it is local, the default endpoint is `l
 java -cp out client.ChatClient
 ```
 
-For a remote endpoint, pass its host and RMI registry port. Use `2000` for the
-load balancer or `2001` to connect directly to Node 1. The older three-IP form
-remains available for client-side primary failover.
-
 The client menu includes send message, check inbox, server status, MapReduce chat activity analytics, and exit. Choose different usernames for separate clients.
 
-## Run three servers across Tailscale
+## Local browser dashboard
 
-To use the web client with manually started servers, start Node 1, Node 2, and
-Node 3 using the commands below, then start the load balancer on the machine
-whose Tailscale address serves the dashboard. Compile the updated project on
-each machine first; servers and the load balancer mirror terminal output to
-`logs/node1.log`, `logs/node2.log`, `logs/node3.log`, and
-`logs/load-balancer.log`, respectively. The dashboard reads logs from its local
-`logs/` directory, so each server-log tab shows only files present on that
-dashboard host. The load-balancer log is visible on the laptop running the
-load-balancer process.
+For a local simulation, the dashboard starts the three server JVMs and the
+load-balancer JVM, captures their terminal output, and provides a basic chat
+client in a browser. Compile and launch the dashboard from the project root:
 
-Start the dashboard on the load-balancer laptop. For example, on Node 1:
+```sh
+mkdir -p out
+javac --add-modules jdk.httpserver -d out common/*.java server/*.java client/*.java
+java --add-modules jdk.httpserver -cp out server.SimulationDashboard
+```
+
+By default, open <http://localhost:8080>, choose STRONG or EVENTUAL, and click **Start
+3-node simulation**. Use the Chat client tab to register a username, send
+messages, view the inbox, check status, and run MapReduce analytics. The Server
+logs tab selects a node's output; the Load balancer logs tab shows routing and
+health messages. **Stop simulation** shuts down the four child processes. The
+dashboard also stops them when it exits normally.
+
+Stop any manually started servers/load balancer first; the dashboard needs the
+same RMI ports (2000-2003 and 3001-3003, plus load-balancer object port 2200).
+
+To use the same dashboard from other laptops on your tailnet, stop it and
+restart it bound to this computer's Tailscale IP. For node 1 in this setup:
 
 ```sh
 java --add-modules jdk.httpserver -Dsyncchat.dashboard.host=100.68.59.4 -cp out server.SimulationDashboard
 ```
 
-Open <http://100.68.59.4:8080> from a trusted tailnet device. The dashboard UI
-must be hosted on the load-balancer laptop because the backend connects to a
-load balancer on its own host. Allow TCP 8080 to the dashboard host, TCP 2000
-and 2200 to the load-balancer host, and the node
-registry ports plus service port 2100 between cluster nodes. Keep these ports
-available to tailnet peers only. Browser registration, chat, status, and
-analytics are routed through the load balancer at the dashboard host's Tailscale
-IP on port 2000.
+Then visit <http://100.68.59.4:8080> from the other Tailscale-connected laptops.
+Allow TCP 8080 to this machine from trusted tailnet devices only. The dashboard
+has no login and can start/stop local processes, show server/load-balancer logs,
+and access chat functions; anyone who can reach it can use those controls, so
+do not bind it to `0.0.0.0` or expose it to the public internet. Binding to a
+Tailscale IP makes the UI remotely accessible, but simulation processes are
+still launched on the dashboard host itself; it does not start server JVMs on
+the other computers.
+
+## Run three servers across Tailscale
 
 The configured Tailscale IPs are:
 
@@ -105,93 +110,7 @@ java -Djava.rmi.server.hostname=100.120.104.65 -Dsyncchat.rmi.exportPort=2100 -D
 
 Allow TCP port 2100 and the node's registry port through each server firewall for tailnet traffic only: node 1 needs 2100 and 2001, node 2 needs 2100 and 2002, node 3 needs 2100 and 2003. Do not expose RMI ports to the public internet. Tailscale ping confirms VPN reachability, but does not confirm the firewall permits these TCP ports.
 
-### Exact role-by-role commands
-
-Use these roles for the three laptops whose Tailscale IPs are listed above:
-
-1. **Your laptop / Node 1 (`100.68.59.4`)**: run the Node 1 server command above, then start the load balancer below in a second terminal. Keep both running.
-2. **Teammate laptop / Node 2 (`100.67.169.23`)**: run the Node 2 server command above and keep it running.
-3. **Teammate laptop / Node 3 (`100.120.104.65`)**: run the Node 3 server command above and keep it running.
-4. **Every laptop that will use the Java client**: compile the project, then connect to Node 1's load balancer on port `2000`. Teammates who are only clients do not start another server or load balancer.
-
-On each server laptop, allow its registry port and RMI object port `2100` from the Tailscale network. If that laptop uses UFW, run the corresponding commands on that laptop:
-
-Node 1:
-
-```sh
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2001 proto tcp
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2100 proto tcp
-```
-
-Node 2:
-
-```sh
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2002 proto tcp
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2100 proto tcp
-```
-
-Node 3:
-
-```sh
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2003 proto tcp
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2100 proto tcp
-```
-
-On Node 1, also allow the load-balancer registry and object ports for Tailscale clients:
-
-```sh
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2000 proto tcp
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 2200 proto tcp
-sudo ufw allow in on tailscale0 from 100.64.0.0/10 to any port 8080 proto tcp
-```
-
-These UFW examples assume the Tailscale interface is named `tailscale0` (`ip addr` shows the interface name). If UFW is not the active firewall, add equivalent inbound TCP rules restricted to the Tailscale interface/network in the active firewall or Tailscale ACL. Keep these ports restricted to the tailnet; do not expose them publicly.
-
-After all three servers have started, start the load balancer **only on Node 1 (`100.68.59.4`)**, in another terminal:
-
-```sh
-java -Djava.rmi.server.hostname=100.68.59.4 -cp out server.LoadBalancer 2000 2200 "1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003"
-```
-
-On each teammate laptop that will run a Java client, from the project root:
-
-```sh
-mkdir -p out
-javac -d out common/*.java server/*.java client/*.java
-java -cp out client.ChatClient 100.68.59.4 2000
-```
-
-Use a different username on each client. The client command must point to the **load balancer** at `100.68.59.4:2000`, not a teammate's backend registry port. If the dashboard web client is being used instead, it connects through the same load balancer; the dashboard process itself runs on Node 1.
-
-For browser-based teammates, start the dashboard on Node 1 in another terminal after the load balancer is running:
-
-```sh
-java --add-modules jdk.httpserver -Dsyncchat.dashboard.host=100.68.59.4 -cp out server.SimulationDashboard
-```
-
-Each teammate opens `http://100.68.59.4:8080` in a browser while connected to Tailscale. They do not launch a server or dashboard locally.
-
-From each client laptop, verify both load-balancer TCP ports are reachable before launching Java:
-
-```sh
-nc -vz 100.68.59.4 2000
-nc -vz 100.68.59.4 2200
-```
-
-From Node 1, verify it can reach each backend's registry and RMI object ports:
-
-```sh
-nc -vz 100.68.59.4 2001
-nc -vz 100.68.59.4 2100
-nc -vz 100.67.169.23 2002
-nc -vz 100.67.169.23 2100
-nc -vz 100.120.104.65 2003
-nc -vz 100.120.104.65 2100
-```
-
-If a check says `Connection refused`, the target host is reachable but no process is listening on that port or its firewall is actively rejecting it. Confirm the corresponding server/load-balancer process is running and its startup output lists the expected ports. If it times out, check Tailscale connectivity, firewall rules, and ACLs. RMI needs **both** the registry and exported-object port open; opening only `2000` or `2001` is not sufficient.
-
-For a direct-to-primary test without the load balancer, a Tailscale-connected client can use:
+From a Tailscale-connected client machine, connect to node 1:
 
 ```sh
 java -cp out client.ChatClient 100.68.59.4 2001
@@ -238,10 +157,14 @@ acknowledge; this is not quorum replication, and an offline/restarted node may
 miss writes because this project does not yet synchronize it back up. A
 reachable backup that rejects replication still causes a STRONG write to fail.
 
-Run the same client command on a second computer for a second client, and use a different username. To run the Berkeley clock coordinator from a tailnet machine:
+Run the same client command on a second computer for a second client, and use a different username. To run the periodic Berkeley clock coordinator from a tailnet machine (default syncs every 60 seconds; specify custom interval as optional 4th argument or via `-Dsyncchat.berkeley.intervalSeconds`):
 
 ```sh
+# Synchronize every 60 seconds (default)
 java -cp out server.BerkeleyCoordinator 100.68.59.4 100.67.169.23 100.120.104.65
+
+# Or synchronize every 2 minutes (120 seconds)
+java -cp out server.BerkeleyCoordinator 100.68.59.4 100.67.169.23 100.120.104.65 120
 ```
 
 ## One Tailscale server with EVENTUAL consistency
@@ -254,12 +177,32 @@ java -Djava.rmi.server.hostname=100.68.59.4 -Dsyncchat.rmi.exportPort=2100 -Dsyn
 
 The one-node list keeps replication and MapReduce local. Start clients on any tailnet-connected computers with the same client command shown above. In this configuration, chat data exists only on the primary and is lost if that process stops.
 
-## Berkeley clock synchronization (local cluster)
+## Berkeley clock synchronization
 
-Start the three local nodes using the commands in **Local three-node cluster**, then run:
+### Automatic synchronization on Primary startup
+When you start the server cluster, the **Primary node automatically starts the Berkeley Coordinator** in the background. It waits for initial node discovery (default: 60s) and then synchronizes the clocks of all active nodes automatically every configured interval (default: 60 seconds / 1 minute).
+
+You can configure the interval (e.g., 2 minutes / 120s) and initial delay via JVM options when starting the primary node:
 
 ```sh
+# Start Primary with Berkeley clock sync every 2 minutes (120 seconds)
+java -Dsyncchat.berkeley.intervalSeconds=120 -cp out server.ClockServer 1 2001 0 true STRONG
+
+# Optional: set initial delay before first sync (e.g., 30s instead of default interval)
+java -Dsyncchat.berkeley.intervalSeconds=120 -Dsyncchat.berkeley.initialDelaySeconds=30 -cp out server.ClockServer 1 2001 0 true STRONG
+```
+
+If the primary node fails and a backup node wins the Bully election, the newly elected primary automatically takes over running the Berkeley clock coordinator.
+
+### Manual / Standalone coordinator execution
+You can also run the coordinator manually in its own terminal or from any machine:
+
+```sh
+# Default: runs every 60 seconds (1 minute)
 java -cp out server.BerkeleyCoordinator
+
+# Run every 2 minutes (120 seconds)
+java -cp out server.BerkeleyCoordinator 120
 ```
 
 ## Bully election (local cluster)

@@ -3,84 +3,51 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a1020" />
-    <title>SyncChat · Tailnet</title>
+    <title>SyncChat Control Room</title>
     <style>
       :root {
         color-scheme: dark;
-        --bg: #090e1b;
-        --panel: #111a2c;
-        --panel-hi: #17243a;
-        --line: #273651;
-        --text: #edf3ff;
-        --muted: #8c9bb5;
+        --bg: #0b1020;
+        --panel: #121a2d;
+        --panel2: #18233b;
+        --line: #263451;
+        --muted: #91a0bb;
+        --text: #eef3ff;
         --cyan: #62d6d0;
-        --blue: #779dff;
-        --green: #62dda0;
+        --blue: #729cff;
         --red: #ff7185;
-        --gold: #ffc96b;
+        --green: #5be0a0;
+        --amber: #ffc96b;
       }
       * {
         box-sizing: border-box;
       }
       body {
         margin: 0;
-        min-height: 100vh;
         background:
-          radial-gradient(ellipse at 16% -10%, #183251 0, transparent 42%),
-          radial-gradient(ellipse at 90% 30%, #171a36 0, transparent 36%),
+          radial-gradient(ellipse at 20% 0, #172847 0, transparent 45%),
           var(--bg);
         color: var(--text);
         font:
-          15px/1.55 Inter,
+          15px/1.5 Inter,
           ui-sans-serif,
           system-ui,
           -apple-system,
           "Segoe UI",
           sans-serif;
-      }
-      button,
-      input,
-      select {
-        font: inherit;
-      }
-      button {
-        border: 0;
-        border-radius: 10px;
-        padding: 10px 15px;
-        background: linear-gradient(120deg, var(--cyan), #8de6d5);
-        color: #08151b;
-        font-weight: 750;
-        cursor: pointer;
-        transition:
-          transform 0.15s,
-          filter 0.15s;
-      }
-      button:hover {
-        filter: brightness(1.07);
-        transform: translateY(-1px);
-      }
-      button:disabled {
-        opacity: 0.55;
-        cursor: wait;
-        transform: none;
-      }
-      .secondary {
-        background: #1b2940;
-        color: var(--text);
-        border: 1px solid var(--line);
+        min-height: 100vh;
       }
       .shell {
-        width: min(1180px, calc(100% - 36px));
+        max-width: 1200px;
         margin: auto;
-        padding: 34px 0 60px;
+        padding: 30px 24px 56px;
       }
-      .header {
+      .top {
         display: flex;
         justify-content: space-between;
         align-items: center;
         gap: 20px;
-        margin-bottom: 28px;
+        margin-bottom: 26px;
       }
       .brand {
         display: flex;
@@ -88,101 +55,153 @@
         gap: 14px;
       }
       .logo {
-        width: 48px;
-        height: 48px;
+        width: 46px;
+        height: 46px;
         border-radius: 15px;
         display: grid;
         place-items: center;
-        color: #06151c;
-        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        color: #08131e;
         font-weight: 900;
-        font-size: 22px;
-        box-shadow: 0 8px 32px #62d6d044;
+        font-size: 20px;
+        background: linear-gradient(135deg, var(--cyan), var(--blue));
+        box-shadow: 0 8px 30px #5bd6d055;
       }
-      .kicker {
-        text-transform: uppercase;
+      .eyebrow {
+        font-size: 11px;
         letter-spacing: 0.18em;
+        text-transform: uppercase;
         color: var(--cyan);
-        font-size: 10px;
-        font-weight: 800;
+        font-weight: 750;
       }
       .title {
-        font-size: 25px;
-        letter-spacing: -0.035em;
-        font-weight: 760;
+        font-size: 24px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
       }
-      .subtitle {
-        color: var(--muted);
+      .sub {
         font-size: 13px;
-      }
-      .tailnet {
-        padding: 7px 11px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        font-size: 12px;
         color: var(--muted);
-        white-space: nowrap;
       }
-      .hero {
-        display: grid;
-        grid-template-columns: 1.35fr 0.65fr;
-        gap: 16px;
-        margin-bottom: 19px;
-      }
-      .hero-card,
-      .panel,
-      .stat {
-        background: linear-gradient(150deg, #131e32f2, #0f1728f2);
-        border: 1px solid var(--line);
-        border-radius: 17px;
-        box-shadow: 0 12px 35px #02061138;
-      }
-      .hero-card {
-        padding: 23px;
-      }
-      .hero-card h1 {
-        font-size: 20px;
-        margin: 0 0 5px;
-        letter-spacing: -0.025em;
-      }
-      .hero-card p,
-      .panel p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 13px;
-      }
-      .hero-side {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 10px;
-        padding: 18px;
-      }
-      .health {
+      .top-right {
         display: flex;
         align-items: center;
-        gap: 9px;
-        font-size: 13px;
+        gap: 10px;
       }
-      .led {
-        width: 9px;
-        height: 9px;
+      .safe {
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        padding: 8px 12px;
+        border-radius: 999px;
+      }
+      button,
+      select,
+      input,
+      textarea {
+        font: inherit;
+      }
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        font-weight: 700;
+        color: #07141a;
+        background: var(--cyan);
+        cursor: pointer;
+        transition:
+          transform 0.16s,
+          filter 0.16s;
+      }
+      button:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: wait;
+        transform: none;
+      }
+      .secondary {
+        background: var(--panel2);
+        color: var(--text);
+        border: 1px solid var(--line);
+      }
+      .danger {
+        background: #482431;
+        color: #ffd9df;
+        border: 1px solid #733746;
+      }
+      .select {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 10px;
+        border-radius: 9px;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        background: #111a2cdd;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px;
+        margin-bottom: 18px;
+      }
+      .toolbar .hint {
+        margin-left: auto;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .card {
+        background: linear-gradient(145deg, var(--panel), #10182a);
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        padding: 15px 17px;
+      }
+      .card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .card h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .dot {
+        height: 8px;
+        width: 8px;
         border-radius: 50%;
-        background: #73819a;
-        display: inline-block;
+        background: #65718a;
       }
-      .led.good {
+      .dot.up {
         background: var(--green);
-        box-shadow: 0 0 12px #62dda077;
+        box-shadow: 0 0 12px #5be0a077;
       }
-      .led.bad {
-        background: var(--red);
+      .card-foot {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 11px;
       }
       .tabs {
         display: flex;
-        gap: 7px;
+        gap: 5px;
         border-bottom: 1px solid var(--line);
-        margin: 0 0 17px;
+        margin: 8px 0 16px;
       }
       .tab {
         background: transparent;
@@ -194,7 +213,7 @@
       .tab.active {
         color: var(--text);
         border-color: var(--cyan);
-        background: #15243a;
+        background: #142139;
       }
       .view {
         display: none;
@@ -202,202 +221,146 @@
       .view.active {
         display: block;
       }
-      .grid {
+      .layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+        grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
         gap: 16px;
       }
       .panel {
-        padding: 20px;
+        background: #111a2cdd;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 18px;
         min-width: 0;
       }
       .panel h2 {
         font-size: 16px;
-        margin: 0 0 5px;
+        margin: 0 0 4px;
       }
-      .panel-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 15px;
-      }
-      .pill {
-        border: 1px solid var(--line);
-        background: #0c1423;
-        border-radius: 999px;
-        padding: 5px 9px;
+      .panel p {
         color: var(--muted);
-        font-size: 11px;
-      }
-      .form {
-        display: grid;
-        gap: 11px;
-      }
-      .label {
-        font-size: 12px;
-        color: #bac6d9;
-        font-weight: 650;
-      }
-      .input,
-      .select {
-        width: 100%;
-        background: #0b1322;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        color: var(--text);
-        padding: 11px 12px;
-        outline: none;
-      }
-      .input:focus,
-      .select:focus {
-        border-color: var(--cyan);
-        box-shadow: 0 0 0 3px #62d6d018;
+        font-size: 13px;
+        margin: 0 0 16px;
       }
       .row {
         display: flex;
-        align-items: center;
         gap: 9px;
+        align-items: center;
       }
       .row > * {
         min-width: 0;
       }
-      .row .input {
-        flex: 1;
+      .field {
+        background: #0b1221;
+        border: 1px solid var(--line);
+        color: var(--text);
+        border-radius: 9px;
+        padding: 10px 12px;
+        width: 100%;
+        outline: none;
+      }
+      .field:focus {
+        border-color: var(--cyan);
+      }
+      .chat-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .chat-form .wide {
+        grid-column: 1/-1;
+      }
+      .msg-list {
+        margin-top: 16px;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+        min-height: 220px;
+        max-height: 390px;
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .message {
+        background: var(--panel2);
+        border: 1px solid #24314a;
+        border-radius: 11px;
+        padding: 10px 12px;
+        color: #e4ecff;
+        overflow-wrap: anywhere;
+      }
+      .empty {
+        color: var(--muted);
+        font-size: 13px;
+        padding: 12px 0;
       }
       .notice {
-        min-height: 22px;
+        margin-top: 12px;
+        min-height: 20px;
         font-size: 13px;
         color: var(--cyan);
-        margin-top: 9px;
       }
       .notice.error {
         color: var(--red);
       }
-      .user-summary {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-        padding: 13px;
-        border: 1px solid var(--line);
-        background: #0d1524;
-        border-radius: 12px;
-        margin-bottom: 15px;
-      }
-      .user-summary small {
-        display: block;
-        color: var(--muted);
-        font-size: 11px;
-      }
-      .recipient-area {
-        margin-top: 18px;
-      }
-      .inbox {
-        margin-top: 11px;
-        padding-top: 12px;
-        border-top: 1px solid var(--line);
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        max-height: 260px;
-        overflow: auto;
-      }
-      .message {
-        padding: 10px 12px;
-        background: var(--panel-hi);
-        border: 1px solid #263650;
-        border-radius: 11px;
-        overflow-wrap: anywhere;
-        font-size: 13px;
-      }
-      .empty {
-        color: var(--muted);
-        padding: 12px 0;
-        font-size: 13px;
-      }
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin: 14px 0;
-      }
-      .stat {
-        padding: 14px;
-      }
-      .stat-label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--muted);
-      }
-      .stat-value {
-        font-size: 22px;
-        font-weight: 750;
-        color: var(--cyan);
-        margin-top: 4px;
-      }
-      .analytics {
-        margin-top: 12px;
-      }
       .metric {
         display: flex;
         justify-content: space-between;
-        padding: 9px 2px;
+        padding: 9px 0;
         border-bottom: 1px solid var(--line);
-        font-size: 13px;
+        font-size: 14px;
       }
       .metric:last-child {
         border: 0;
       }
-      .metric strong {
+      .metric span:last-child {
         color: var(--cyan);
+        font-weight: 750;
       }
-      .toolbar {
+      .log-panel {
+        padding: 0;
+        overflow: hidden;
+      }
+      .log-toolbar {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 12px;
+        align-items: center;
+        padding: 13px 15px;
+        border-bottom: 1px solid var(--line);
+        gap: 10px;
       }
-      .logbox {
+      .log-toolbar label {
+        font-weight: 700;
+      }
+      .logs {
         margin: 0;
-        padding: 15px;
-        min-height: 390px;
-        max-height: 590px;
-        overflow: auto;
+        padding: 14px 16px;
         white-space: pre-wrap;
-        overflow-wrap: anywhere;
-        background: #070c15;
-        border: 1px solid #202d43;
-        border-radius: 12px;
-        color: #b9c9e2;
+        overflow: auto;
+        max-height: 550px;
+        min-height: 390px;
+        background: #080d18;
+        color: #b9c8df;
         font:
-          12px/1.7 ui-monospace,
+          12px/1.65 ui-monospace,
           SFMono-Regular,
           Menlo,
           monospace;
       }
-      .help {
-        color: var(--muted);
+      .log-note {
         font-size: 12px;
-        margin-top: 11px;
-      }
-      .footer {
-        text-align: center;
-        color: #64738c;
-        font-size: 11px;
-        margin-top: 24px;
+        color: var(--muted);
+        margin-top: 10px;
       }
       .toast {
         position: fixed;
-        right: 22px;
+        right: 24px;
         bottom: 22px;
-        max-width: min(440px, calc(100vw - 32px));
-        padding: 12px 15px;
-        background: #1a2941;
+        padding: 12px 16px;
+        background: #1b2940;
         border: 1px solid var(--line);
         border-radius: 12px;
+        box-shadow: 0 12px 40px #0006;
         opacity: 0;
         transform: translateY(8px);
         transition: 0.2s;
@@ -407,290 +370,234 @@
         opacity: 1;
         transform: none;
       }
+      .footer {
+        margin-top: 22px;
+        text-align: center;
+        color: #7584a0;
+        font-size: 11px;
+      }
       @media (max-width: 800px) {
-        .hero,
-        .grid {
+        .cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .layout {
           grid-template-columns: 1fr;
         }
-        .header {
+        .top {
           align-items: flex-start;
           flex-direction: column;
         }
-        .tailnet {
-          margin-left: 62px;
+        .top-right {
+          width: 100%;
+          justify-content: space-between;
         }
-        .hero-side {
-          flex-direction: row;
-          flex-wrap: wrap;
+        .toolbar .hint {
+          width: 100%;
+          margin: 0;
         }
-        .panel {
-          padding: 16px;
+        .shell {
+          padding: 20px 14px 40px;
         }
       }
-      @media (max-width: 460px) {
-        .shell {
-          width: calc(100% - 24px);
-          padding-top: 22px;
-        }
-        .tabs {
-          overflow: auto;
-        }
-        .tab {
-          white-space: nowrap;
-          padding: 10px;
-        }
-        .row.wrap {
-          align-items: stretch;
-          flex-direction: column;
-        }
-        .row.wrap button {
-          width: 100%;
-        }
-        .stats {
+      @media (max-width: 450px) {
+        .cards {
           grid-template-columns: 1fr 1fr;
         }
+        .chat-form {
+          grid-template-columns: 1fr;
+        }
+        .chat-form .wide {
+          grid-column: auto;
+        }
         .title {
-          font-size: 21px;
+          font-size: 20px;
         }
       }
     </style>
   </head>
   <body>
     <main class="shell">
-      <header class="header">
+      <header class="top">
         <div class="brand">
           <div class="logo">S</div>
           <div>
-            <div class="kicker">Distributed chat · tailnet</div>
-            <div class="title">SyncChat</div>
-            <div class="subtitle">
-              A simple client for your Tailscale cluster.
+            <div class="eyebrow">Distributed systems lab</div>
+            <div class="title">SyncChat Control Room</div>
+            <div class="sub">
+              Launch the simulation, chat, and inspect live process output.
             </div>
           </div>
         </div>
-        <div class="tailnet" id="hostLabel">Gateway · resolving</div>
+        <div class="top-right">
+          <span class="safe" id="scopeBadge">Local dashboard</span>
+        </div>
       </header>
 
-      <section class="hero">
-        <article class="hero-card">
-          <h1>Welcome to the cluster</h1>
-          <p>
-            Register your handle, choose a teammate, and chat. Teammates start
-            server processes from their own terminals; this dashboard never
-            starts or stops them.
-          </p>
-        </article>
-        <aside class="hero-side panel">
-          <div class="health">
-            <i class="led" id="clusterLed"></i
-            ><span id="clusterState">Checking server status…</span>
-          </div>
-          <div class="subtitle">
-            Connects to the load balancer on this dashboard machine at TCP 2000.
-          </div>
-        </aside>
+      <section class="toolbar">
+        <label for="consistency" class="sub">Consistency</label>
+        <select id="consistency" class="select">
+          <option value="STRONG">Strong</option>
+          <option value="EVENTUAL">Eventual</option>
+        </select>
+        <button id="startButton" onclick="startSimulation()">
+          ▶ Start 3-node simulation
+        </button>
+        <button class="danger" onclick="stopSimulation()">
+          ■ Stop simulation
+        </button>
+        <span class="hint"
+          >Starts 3 local server processes and the RMI load balancer.</span
+        >
       </section>
 
-      <nav class="tabs" aria-label="SyncChat sections">
-        <button class="tab active" data-view="client">Client</button>
-        <button class="tab" data-view="server">Server logs</button>
+      <section class="cards" id="processCards"></section>
+
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button class="tab active" data-view="chat">Chat client</button>
+        <button class="tab" data-view="servers">Server logs</button>
         <button class="tab" data-view="loadbalancer">Load balancer logs</button>
       </nav>
 
-      <section class="view active" id="view-client">
-        <div class="grid">
+      <section class="view active" id="view-chat">
+        <div class="layout">
           <article class="panel">
-            <div class="panel-head">
-              <div>
-                <h2>Your chat</h2>
-                <p>Register one name for this browser. It stays fixed here.</p>
-              </div>
-              <span class="pill">Java RMI</span>
+            <h2>Chat workspace</h2>
+            <p>
+              Use a different username for each browser/client. Start the
+              simulation before registering.
+            </p>
+            <div class="chat-form">
+              <input
+                class="field"
+                id="username"
+                placeholder="Your username"
+                autocomplete="off"
+              />
+              <button class="secondary" onclick="registerUser()">
+                Register username
+              </button>
+              <input
+                class="field"
+                id="receiver"
+                placeholder="Recipient username"
+                autocomplete="off"
+              />
+              <input
+                class="field"
+                id="content"
+                placeholder="Write a message…"
+                autocomplete="off"
+              />
+              <button class="wide" onclick="sendMessage()">Send message</button>
             </div>
-            <div class="user-summary">
-              <div>
-                <small>Signed in as</small
-                ><strong id="activeName">Not registered</strong>
-              </div>
+            <div id="chatNotice" class="notice"></div>
+            <div
+              class="row"
+              style="justify-content: space-between; margin-top: 14px"
+            >
+              <strong>Inbox</strong
+              ><button class="secondary" onclick="loadInbox()">
+                ↻ Refresh inbox
+              </button>
             </div>
-            <div class="form" id="registerForm">
-              <label class="label" for="username">Choose your chat name</label>
-              <div class="row wrap">
-                <input
-                  id="username"
-                  class="input"
-                  maxlength="40"
-                  autocomplete="nickname"
-                  placeholder="e.g. alex"
-                /><button id="registerButton">Register name</button>
-              </div>
-            </div>
-            <div id="clientNotice" class="notice" role="status"></div>
-            <div class="recipient-area">
-              <div class="form">
-                <label class="label" for="recipient">Send a message to</label>
-                <div class="row wrap">
-                  <select id="recipient" class="select">
-                    <option value="">
-                      Register your name to load teammates
-                    </option></select
-                  ><button
-                    id="refreshUsers"
-                    class="secondary"
-                    title="Refresh registered teammates"
-                  >
-                    Refresh
-                  </button>
-                </div>
-                <label class="label" for="messageText">Message</label>
-                <div class="row wrap">
-                  <input
-                    id="messageText"
-                    class="input"
-                    maxlength="2000"
-                    placeholder="Write a message…"
-                  /><button id="sendButton">Send</button>
-                </div>
-              </div>
-            </div>
-            <div class="recipient-area">
-              <div class="panel-head">
-                <div>
-                  <h2>Your inbox</h2>
-                  <p>Messages addressed to your registered name.</p>
-                </div>
-                <button class="secondary" id="refreshInbox">Refresh</button>
-              </div>
-              <div class="inbox" id="inbox">
-                <div class="empty">Register your name to view your inbox.</div>
+            <div class="msg-list" id="messages">
+              <div class="empty">
+                Register a username, then refresh your inbox.
               </div>
             </div>
           </article>
           <aside class="panel">
-            <div class="panel-head">
-              <div>
-                <h2>Cluster overview</h2>
-                <p>Live service check and sender activity.</p>
-              </div>
-              <button class="secondary" id="refreshOverview">Refresh</button>
+            <h2>Cluster tools</h2>
+            <p>
+              These calls use the load balancer. Reads may be served by healthy
+              replicas; writes go to the elected primary.
+            </p>
+            <button
+              class="secondary"
+              onclick="getServerStatus()"
+              style="width: 100%"
+            >
+              Check server status
+            </button>
+            <div
+              id="serverStatus"
+              class="notice"
+              style="margin: 10px 0 18px"
+            ></div>
+            <button
+              class="secondary"
+              onclick="getAnalytics()"
+              style="width: 100%"
+            >
+              Run MapReduce analytics
+            </button>
+            <div id="analytics" style="margin-top: 12px">
+              <div class="empty">Sender message counts will appear here.</div>
             </div>
-            <div class="stats">
-              <div class="stat">
-                <div class="stat-label">Chat service</div>
-                <div class="stat-value" id="serviceState">—</div>
-              </div>
-              <div class="stat">
-                <div class="stat-label">Registered users</div>
-                <div class="stat-value" id="userCount">—</div>
-              </div>
-            </div>
-            <div class="panel-head" style="margin: 16px 0 4px">
-              <div class="label">Messages by sender · MapReduce</div>
-              <button class="secondary" id="runAnalytics">Run MapReduce</button>
-            </div>
-            <div class="analytics" id="analytics">
-              <div class="empty">
-                Select “Run MapReduce” to calculate sender activity.
-              </div>
-            </div>
-            <div id="overviewNotice" class="notice" role="status"></div>
-            <div class="help">
-              Analytics are calculated by the primary. Cluster state and chat
-              data are in memory and reset when servers restart.
+            <div class="log-note">
+              Logs are captured separately under the Server logs and Load
+              balancer logs tabs.
             </div>
           </aside>
         </div>
       </section>
 
-      <section class="view" id="view-server">
-        <article class="panel">
-          <div class="toolbar">
-            <div>
-              <h2>Local server output</h2>
-              <p>
-                Logs written by the server process started in this laptop's
-                terminal.
-              </p>
-            </div>
-            <div class="row">
-              <label class="label" for="nodeSelect">Node</label
-              ><select class="select" id="nodeSelect">
-                <option value="node1">Node 1</option>
-                <option value="node2">Node 2</option>
-                <option value="node3">Node 3</option></select
-              ><button id="refreshServerLog" class="secondary">Refresh</button>
-            </div>
+      <section class="view" id="view-servers">
+        <article class="panel log-panel">
+          <div class="log-toolbar">
+            <label>Server process output</label
+            ><select
+              id="serverLogSelect"
+              class="select"
+              onchange="refreshLogs()"
+            >
+              <option value="node1">Node 1 · primary</option>
+              <option value="node2">Node 2 · backup</option>
+              <option value="node3">Node 3 · backup</option>
+            </select>
           </div>
-          <pre id="serverLog" class="logbox">Waiting for local server log…</pre>
-          <div class="help">
-            The matching node must be launched on this machine from a terminal
-            using the current compiled sources. Log files are stored under logs/
-            and output continues to appear in the terminal.
-          </div>
+          <pre id="serverLogs" class="logs">
+Start the simulation to capture server logs.</pre
+          >
         </article>
+        <div class="log-note">
+          Displays captured stdout/stderr from the selected local server
+          process. Election and replication messages appear here.
+        </div>
       </section>
 
       <section class="view" id="view-loadbalancer">
-        <article class="panel">
-          <div class="toolbar">
-            <div>
-              <h2>Load balancer output</h2>
-              <p>
-                Only available on the laptop running the load balancer process.
-              </p>
-            </div>
-            <button id="refreshLbLog" class="secondary">Refresh</button>
+        <article class="panel log-panel">
+          <div class="log-toolbar">
+            <label>Load balancer output</label
+            ><span class="status"
+              ><span class="dot" id="lbLogDot"></span
+              ><span id="lbLogState">Waiting for simulation</span></span
+            >
           </div>
-          <pre id="lbLog" class="logbox">Waiting for load-balancer log…</pre>
-          <div class="help">
-            The load balancer's stdout and stderr are mirrored to
-            logs/load-balancer.log on its host.
-          </div>
+          <pre id="lbLogs" class="logs">
+Start the simulation to capture load-balancer logs.</pre
+          >
         </article>
+        <div class="log-note">
+          Routing decisions and backend health failures are shown here.
+        </div>
       </section>
-      <footer class="footer">
-        SyncChat · Tailscale · Java RMI · Bully election · replication ·
-        MapReduce
-      </footer>
+
+      <div class="footer">
+        SyncChat · Java RMI · Bully election · replication · MapReduce · request
+        load balancing
+      </div>
     </main>
-    <div class="toast" id="toast" role="status"></div>
+    <div id="toast" class="toast"></div>
     <script>
-      const $ = (id) => document.getElementById(id);
-      const API = {
-        async get(path) {
-          const response = await fetch(path, { cache: "no-store" });
-          const data = await response.json();
-          if (!response.ok)
-            throw new Error(
-              data.error || `Request failed (${response.status})`,
-            );
-          return data;
-        },
-        async post(path, values) {
-          const response = await fetch(path, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(values),
-          });
-          const data = await response.json();
-          if (!response.ok)
-            throw new Error(
-              data.error || `Request failed (${response.status})`,
-            );
-          return data;
-        },
-      };
-      const store = {
-        get name() {
-          return localStorage.getItem("syncchat.username") || "";
-        },
-        set name(value) {
-          if (value) localStorage.setItem("syncchat.username", value);
-          else localStorage.removeItem("syncchat.username");
-        },
-      };
       let toastTimer;
-      $("hostLabel").textContent = `Gateway · ${location.hostname}:2000`;
+      const localHosts = ["localhost", "127.0.0.1", "::1"];
+      document.getElementById("scopeBadge").textContent = localHosts.includes(
+        location.hostname,
+      )
+        ? "Local dashboard · localhost"
+        : "Shared dashboard · network interface";
       document.querySelectorAll(".tab").forEach((button) =>
         button.addEventListener("click", () => {
           document
@@ -704,242 +611,214 @@
                 view.id === `view-${button.dataset.view}`,
               ),
             );
-          if (button.dataset.view === "server") refreshServerLog();
-          if (button.dataset.view === "loadbalancer") refreshLbLog();
+          refreshLogs();
         }),
       );
-      function toast(message) {
-        $("toast").textContent = message;
-        $("toast").classList.add("show");
+
+      async function api(path, options = {}) {
+        const response = await fetch(path, options);
+        const data = await response.json();
+        if (!response.ok)
+          throw new Error(data.error || `Request failed (${response.status})`);
+        return data;
+      }
+      function postForm(path, values) {
+        return api(path, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(values),
+        });
+      }
+      function showToast(message, error = false) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.style.borderColor = error ? "var(--red)" : "var(--cyan)";
+        toast.classList.add("show");
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(
-          () => $("toast").classList.remove("show"),
-          3000,
-        );
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
       }
-      function notice(id, message, error = false) {
-        $(id).textContent = message;
-        $(id).classList.toggle("error", error);
+      function showChatNotice(message, error = false) {
+        const notice = document.getElementById("chatNotice");
+        notice.textContent = message;
+        notice.classList.toggle("error", error);
       }
-      function setActiveName(name) {
-        $("activeName").textContent = name || "Not registered";
-        $("username").value = name;
-        $("registerForm").hidden = !!name;
-      }
-      async function registerName() {
-        const username = $("username").value.trim();
-        if (!username)
-          return notice(
-            "clientNotice",
-            "Choose a name before registering.",
-            true,
-          );
+      async function startSimulation() {
+        const button = document.getElementById("startButton");
+        button.disabled = true;
         try {
-          const result = await API.post("/api/register", { username });
-          if (!result.registered) {
-            store.name = username;
-            setActiveName(username);
-            notice(
-              "clientNotice",
-              "That name is already registered. Signed in with that name.",
-            );
-          } else {
-            store.name = username;
-            setActiveName(username);
-            notice("clientNotice", result.message);
-          }
-          await Promise.all([
-            refreshUsers(),
-            refreshInbox(),
-            refreshOverview(),
-          ]);
+          const result = await postForm("/api/start", {
+            consistency: document.getElementById("consistency").value,
+          });
+          showToast(result.message);
+          await refreshAll();
         } catch (error) {
-          notice("clientNotice", error.message, true);
+          showToast(error.message, true);
+        } finally {
+          button.disabled = false;
         }
       }
-      async function refreshUsers() {
+      async function stopSimulation() {
         try {
-          const data = await API.get("/api/users");
-          const select = $("recipient");
-          const previous = select.value;
-          select.replaceChildren();
-          const choices = data.users.filter((name) => name !== store.name);
-          if (!choices.length) {
-            const option = document.createElement("option");
-            option.value = "";
-            option.textContent = store.name
-              ? "No other registered teammates yet"
-              : "Register your name first";
-            select.append(option);
-          }
-          choices.forEach((name) => {
-            const option = document.createElement("option");
-            option.value = name;
-            option.textContent = name;
-            select.append(option);
-          });
-          if (choices.includes(previous)) select.value = previous;
-          $("userCount").textContent = data.users.length;
+          const result = await postForm("/api/stop", {});
+          showToast(result.message);
+          await refreshAll();
         } catch (error) {
-          $("recipient").innerHTML =
-            '<option value="">Load users after connecting to the primary</option>';
-          notice("overviewNotice", error.message, true);
+          showToast(error.message, true);
+        }
+      }
+      async function refreshStatus() {
+        try {
+          const data = await api("/api/status");
+          document.getElementById("processCards").replaceChildren(
+            ...data.processes.map((proc) => {
+              const card = document.createElement("article");
+              card.className = "card";
+              const title =
+                proc.name === "load-balancer"
+                  ? "Load balancer"
+                  : proc.name.replace("node", "Node ");
+              const role =
+                proc.name === "node1"
+                  ? "Configured primary"
+                  : proc.name === "load-balancer"
+                    ? "RMI gateway"
+                    : "Configured backup";
+              card.innerHTML = `<div class="card-head"><h3>${title}</h3><span class="status"><i class="dot ${proc.running ? "up" : ""}"></i>${proc.running ? "Running" : "Stopped"}</span></div><div class="card-foot">${role}${proc.pid ? ` · PID ${proc.pid}` : ""}</div>`;
+              return card;
+            }),
+          );
+          const lb = data.processes.find(
+            (proc) => proc.name === "load-balancer",
+          );
+          document
+            .getElementById("lbLogDot")
+            .classList.toggle("up", !!lb?.running);
+          document.getElementById("lbLogState").textContent = lb?.running
+            ? "Running"
+            : "Stopped";
+        } catch (error) {
+          showToast(error.message, true);
+        }
+      }
+      async function refreshLogs() {
+        const component = document.getElementById("serverLogSelect").value;
+        try {
+          const [server, lb] = await Promise.all([
+            api(`/api/logs?component=${encodeURIComponent(component)}`),
+            api("/api/logs?component=load-balancer"),
+          ]);
+          setLog("serverLogs", server.lines);
+          setLog("lbLogs", lb.lines);
+        } catch (_) {}
+      }
+      function setLog(id, lines) {
+        const panel = document.getElementById(id);
+        const atBottom =
+          panel.scrollHeight - panel.scrollTop - panel.clientHeight < 45;
+        panel.textContent = lines.join("\n") || "No output captured yet.";
+        if (atBottom) panel.scrollTop = panel.scrollHeight;
+      }
+      async function registerUser() {
+        const username = document.getElementById("username").value.trim();
+        if (!username) return showChatNotice("Enter a username first.", true);
+        try {
+          const result = await postForm("/api/register", { username });
+          showChatNotice(result.message, !result.registered);
+          if (result.registered) await loadInbox();
+        } catch (error) {
+          showChatNotice(error.message, true);
         }
       }
       async function sendMessage() {
-        if (!store.name)
-          return notice(
-            "clientNotice",
-            "Register your name before sending messages.",
-            true,
-          );
-        const receiver = $("recipient").value,
-          content = $("messageText").value.trim();
-        if (!receiver || !content)
-          return notice(
-            "clientNotice",
-            "Choose a teammate and enter a message.",
+        const sender = document.getElementById("username").value.trim();
+        const receiver = document.getElementById("receiver").value.trim();
+        const content = document.getElementById("content").value.trim();
+        if (!sender || !receiver || !content)
+          return showChatNotice(
+            "Enter your username, a recipient, and a message.",
             true,
           );
         try {
-          const result = await API.post("/api/send", {
-            sender: store.name,
+          const result = await postForm("/api/send", {
+            sender,
             receiver,
             content,
           });
-          $("messageText").value = "";
-          notice("clientNotice", result.message);
-          toast(result.message);
-          await refreshInbox();
+          document.getElementById("content").value = "";
+          showChatNotice(result.message);
+          await loadInbox();
         } catch (error) {
-          notice("clientNotice", error.message, true);
+          showChatNotice(error.message, true);
         }
       }
-      async function refreshInbox() {
-        if (!store.name) {
-          $("inbox").innerHTML =
-            '<div class="empty">Register your name to view your inbox.</div>';
-          return;
-        }
+      async function loadInbox() {
+        const username = document.getElementById("username").value.trim();
+        if (!username)
+          return showChatNotice("Enter your username first.", true);
         try {
-          const data = await API.get(
-            `/api/inbox?username=${encodeURIComponent(store.name)}`,
+          const data = await api(
+            `/api/inbox?username=${encodeURIComponent(username)}`,
           );
-          const list = $("inbox");
+          const list = document.getElementById("messages");
           list.replaceChildren();
           if (!data.messages.length) {
-            list.innerHTML = '<div class="empty">No messages yet.</div>';
+            const empty = document.createElement("div");
+            empty.className = "empty";
+            empty.textContent = "No messages yet.";
+            list.append(empty);
             return;
           }
-          [...data.messages].reverse().forEach((item) => {
-            const entry = document.createElement("div");
-            entry.className = "message";
-            entry.textContent = item.text;
-            list.append(entry);
+          data.messages.forEach((item) => {
+            const message = document.createElement("div");
+            message.className = "message";
+            message.textContent = item.text;
+            list.append(message);
           });
         } catch (error) {
-          $("inbox").innerHTML =
-            `<div class="empty">${escapeHtml(error.message)}</div>`;
+          showChatNotice(error.message, true);
         }
       }
-      function escapeHtml(text) {
-        const div = document.createElement("div");
-        div.textContent = text;
-        return div.innerHTML;
-      }
-      async function refreshOverview() {
+      async function getServerStatus() {
         try {
-          const status = await API.get("/api/server-status");
-          $("serviceState").textContent = "Online";
-          $("clusterState").textContent = status.status;
-          $("clusterLed").className = "led good";
-          notice("overviewNotice", "");
-          await refreshUsers();
+          const data = await api("/api/server-status");
+          document.getElementById("serverStatus").textContent = data.status;
         } catch (error) {
-          $("serviceState").textContent = "Offline";
-          $("clusterState").textContent =
-            "Load balancer or primary is unreachable";
-          $("clusterLed").className = "led bad";
-          notice("overviewNotice", error.message, true);
+          document.getElementById("serverStatus").textContent = error.message;
         }
       }
-      async function runMapReduce() {
-        const button = $("runAnalytics");
-        button.disabled = true;
-        button.textContent = "Calculating…";
+      async function getAnalytics() {
         try {
-          const data = await API.get("/api/analytics");
-          const target = $("analytics");
+          const data = await api("/api/analytics");
+          const target = document.getElementById("analytics");
           target.replaceChildren();
           const entries = Object.entries(data.counts);
           if (!entries.length) {
-            target.innerHTML =
-              '<div class="empty">No messages counted yet.</div>';
-          } else {
-            entries
-              .sort((a, b) => b[1] - a[1])
-              .forEach(([name, count]) => {
-                const row = document.createElement("div");
-                row.className = "metric";
-                const user = document.createElement("span");
-                user.textContent = name;
-                const total = document.createElement("strong");
-                total.textContent = count;
-                row.append(user, total);
-                target.append(row);
-              });
+            const empty = document.createElement("div");
+            empty.className = "empty";
+            empty.textContent = "No messages to analyze.";
+            target.append(empty);
+            return;
           }
-          notice("overviewNotice", "MapReduce analytics completed.");
+          entries.forEach(([user, count]) => {
+            const row = document.createElement("div");
+            row.className = "metric";
+            const who = document.createElement("span");
+            who.textContent = user;
+            const total = document.createElement("span");
+            total.textContent = count;
+            row.append(who, total);
+            target.append(row);
+          });
         } catch (error) {
-          notice("overviewNotice", error.message, true);
-        } finally {
-          button.disabled = false;
-          button.textContent = "Run MapReduce";
+          showChatNotice(error.message, true);
         }
       }
-      async function refreshLog(component, target) {
-        try {
-          const data = await API.get(
-            `/api/logs?component=${encodeURIComponent(component)}`,
-          );
-          target.textContent = data.lines.join("\n") || "Log file is empty.";
-          target.scrollTop = target.scrollHeight;
-        } catch (error) {
-          target.textContent = `Unable to read ${component} logs: ${error.message}`;
-        }
+      async function refreshAll() {
+        await Promise.all([refreshStatus(), refreshLogs()]);
       }
-      function refreshServerLog() {
-        return refreshLog($("nodeSelect").value, $("serverLog"));
-      }
-      function refreshLbLog() {
-        return refreshLog("load-balancer", $("lbLog"));
-      }
-      $("registerButton").addEventListener("click", registerName);
-      $("username").addEventListener("keydown", (event) => {
-        if (event.key === "Enter") registerName();
-      });
-      $("sendButton").addEventListener("click", sendMessage);
-      $("messageText").addEventListener("keydown", (event) => {
-        if (event.key === "Enter") sendMessage();
-      });
-      $("refreshUsers").addEventListener("click", refreshUsers);
-      $("refreshInbox").addEventListener("click", refreshInbox);
-      $("refreshOverview").addEventListener("click", refreshOverview);
-      $("runAnalytics").addEventListener("click", runMapReduce);
-      $("nodeSelect").addEventListener("change", refreshServerLog);
-      $("refreshServerLog").addEventListener("click", refreshServerLog);
-      $("refreshLbLog").addEventListener("click", refreshLbLog);
-      setActiveName(store.name);
-      refreshOverview();
-      refreshInbox();
-      refreshServerLog();
-      refreshLbLog();
-      setInterval(refreshOverview, 10000);
-      setInterval(refreshInbox, 7000);
-      setInterval(() => {
-        if ($("view-server").classList.contains("active")) refreshServerLog();
-        if ($("view-loadbalancer").classList.contains("active")) refreshLbLog();
-      }, 2000);
+      refreshAll();
+      setInterval(refreshStatus, 2000);
+      setInterval(refreshLogs, 1200);
     </script>
   </body>
 </html>

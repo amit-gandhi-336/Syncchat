@@ -1,0 +1,17 @@
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@127.0.0.1@2001,2@127.0.0.1@2002,3@127.0.0.1@2003
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@127.0.0.1@2001,2@127.0.0.1@2002,3@127.0.0.1@2003
+Load balancer: routing primary-only request to Node 1
+java.lang.IllegalArgumentException: Invalid node entry '1'; expected id@host@registryPort
+	at server.LoadBalancer.parseNodes(LoadBalancer.java:57)
+	at server.LoadBalancer.<init>(LoadBalancer.java:46)
+	at server.LoadBalancer.main(LoadBalancer.java:268)
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001

@@ -111,7 +111,7 @@ public class HeartbeatManager
             );
 
             System.out.println(
-                    "Starting Bully Election..."
+                    "Starting Ring Election..."
             );
 
             System.out.println(
@@ -120,7 +120,7 @@ public class HeartbeatManager
 
             try {
 
-                server.startBullyElection();
+                server.startRingElection();
 
             } catch (Exception ex) {
 

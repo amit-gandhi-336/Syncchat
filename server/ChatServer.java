@@ -39,6 +39,8 @@ public class ChatServer
 
     private final ConsistencyMode consistencyMode;
 
+    private BerkeleyCoordinator berkeleyCoordinator;
+
     private static final int MAP_BATCH_SIZE = 100;
 
     public ChatServer(
@@ -852,23 +854,100 @@ public class ChatServer
             throws RemoteException {
 
         this.primary = primary;
+        if (primary) {
+            startBerkeleyCoordinator();
+        } else {
+            stopBerkeleyCoordinator();
+        }
     }
 
     // =====================================================
-    // BULLY ELECTION
+    // BERKELEY COORDINATOR MANAGEMENT
+    // =====================================================
+
+    public synchronized void startBerkeleyCoordinator() {
+        boolean enabled = Boolean.parseBoolean(
+                System.getProperty("syncchat.berkeley.enabled", "true")
+        );
+        if (!enabled) {
+            return;
+        }
+        if (berkeleyCoordinator != null && berkeleyCoordinator.isRunning()) {
+            return;
+        }
+        int intervalSeconds = Integer.getInteger(
+                "syncchat.berkeley.intervalSeconds",
+                60
+        );
+        int initialDelaySeconds = Integer.getInteger(
+                "syncchat.berkeley.initialDelaySeconds",
+                intervalSeconds
+        );
+        berkeleyCoordinator = new BerkeleyCoordinator(
+                this::getCoordinatorTargets,
+                initialDelaySeconds,
+                intervalSeconds,
+                true
+        );
+        berkeleyCoordinator.start();
+        System.out.println(
+                "Berkeley clock coordinator started on Primary (Node " + nodeId
+                        + ", initial delay: " + initialDelaySeconds + "s, interval: "
+                        + intervalSeconds + "s)."
+        );
+    }
+
+    public synchronized void stopBerkeleyCoordinator() {
+        if (berkeleyCoordinator != null) {
+            berkeleyCoordinator.stop();
+            berkeleyCoordinator = null;
+            System.out.println(
+                    "Berkeley clock coordinator stopped on Node " + nodeId + "."
+            );
+        }
+    }
+
+    private List<BerkeleyCoordinator.NodeTarget> getCoordinatorTargets() {
+        List<BerkeleyCoordinator.NodeTarget> list = new ArrayList<>();
+        for (NodeInfo info : nodes.values()) {
+            list.add(new BerkeleyCoordinator.NodeTarget(
+                    info.getNodeId(),
+                    info.getHost(),
+                    info.getPort()
+            ));
+        }
+        return list;
+    }
+
+    // =====================================================
+    // RING ELECTION
     // =====================================================
 
     @Override
-    public void startBullyElection()
+    public void startRingElection()
             throws RemoteException {
 
-        BullyElection election =
-                new BullyElection(
+        RingElection election =
+                new RingElection(
                         nodeId,
                         nodes
                 );
 
         election.startElection();
+    }
+
+    @Override
+    public void forwardElectionMessage(
+            int candidateId)
+            throws RemoteException {
+
+        RingElection election =
+                new RingElection(
+                        nodeId,
+                        nodes
+                );
+
+        election.receiveElectionMessage(candidateId);
     }
 
     // =====================================================
@@ -908,9 +987,13 @@ public class ChatServer
                     this::synchronizeStateFromBackup
             );
 
+            startBerkeleyCoordinator();
+
         } else {
 
             primary = false;
+
+            stopBerkeleyCoordinator();
 
             System.out.println(
                     "Node " + nodeId +

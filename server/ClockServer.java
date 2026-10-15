@@ -195,6 +195,15 @@ public class ClockServer {
                     "Heartbeat manager started."
             );
 
+            if (primary) {
+                server.startBerkeleyCoordinator();
+            }
+
+            Runtime.getRuntime().addShutdownHook(new Thread(
+                    server::stopBerkeleyCoordinator,
+                    "syncchat-berkeley-stop-" + nodeId
+            ));
+
             System.out.println(
                     "Node is ready."
             );

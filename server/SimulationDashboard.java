@@ -58,8 +58,12 @@ public final class SimulationDashboard {
         dashboard.startHttpServer();
     }
 
+    private String dashboardHost() {
+        return System.getProperty("syncchat.dashboard.host", "127.0.0.1");
+    }
+
     private void startHttpServer() throws IOException {
-        String bindHost = System.getProperty("syncchat.dashboard.host", "127.0.0.1");
+        String bindHost = dashboardHost();
         int bindPort = Integer.getInteger("syncchat.dashboard.port", HTTP_PORT);
         httpServer = HttpServer.create(
             new InetSocketAddress(InetAddress.getByName(bindHost), bindPort),
@@ -72,7 +76,6 @@ public final class SimulationDashboard {
         httpServer.createContext("/api/start", this::handleStart);
         httpServer.createContext("/api/stop", this::handleStop);
         httpServer.createContext("/api/register", this::handleRegister);
-        httpServer.createContext("/api/users", this::handleUsers);
         httpServer.createContext("/api/send", this::handleSend);
         httpServer.createContext("/api/inbox", this::handleInbox);
         httpServer.createContext("/api/server-status", this::handleServerStatus);
@@ -123,31 +126,16 @@ public final class SimulationDashboard {
     private void handleLogs(HttpExchange exchange) throws IOException {
         if (!requireMethod(exchange, "GET")) return;
         String component = query(exchange).getOrDefault("component", "node1");
-        if (!List.of("node1", "node2", "node3", "load-balancer").contains(component)) {
-            sendJson(exchange, 400, Map.of("error", "Unknown log component."));
+        ManagedProcess process = processes.get(component);
+        if (process == null) {
+            sendJson(exchange, 200, Map.of("component", component, "running", false,
+                    "lines", List.of("No captured output yet. Start the simulation first.")));
             return;
         }
-        ManagedProcess process = processes.get(component);
-        if (process != null) {
-            sendJson(exchange, 200, Map.of(
+        sendJson(exchange, 200, Map.of(
                 "component", component,
                 "running", process.process.isAlive(),
                 "lines", process.logSnapshot()
-            ));
-            return;
-        }
-        Path logFile = logDirectory().resolve(component + ".log");
-        if (!Files.isRegularFile(logFile)) {
-            sendJson(exchange, 200, Map.of("component", component, "running", false,
-                "lines", List.of("No log file yet. Recompile and start this server from its terminal.")));
-            return;
-        }
-        List<String> lines = Files.readAllLines(logFile, StandardCharsets.UTF_8);
-        int firstLine = Math.max(0, lines.size() - LOG_LIMIT);
-        sendJson(exchange, 200, Map.of(
-            "component", component,
-            "running", true,
-            "lines", lines.subList(firstLine, lines.size())
         ));
     }
 
@@ -168,13 +156,14 @@ public final class SimulationDashboard {
             processes.clear();
             try {
                 String classpath = absoluteClasspath();
+                String advertisedHost = dashboardHost();
                 for (int nodeId = 1; nodeId <= 3; nodeId++) {
                     int registryPort = 2000 + nodeId;
                     long offset = nodeId == 1 ? 0 : (nodeId == 2 ? 100 : -100);
                     boolean primary = nodeId == 1;
                     startProcess("node" + nodeId, List.of(
                             javaExecutable(),
-                            "-Djava.rmi.server.hostname=localhost",
+                            "-Djava.rmi.server.hostname=" + advertisedHost,
                             "-cp", classpath,
                             "server.ClockServer",
                             Integer.toString(nodeId),
@@ -186,13 +175,14 @@ public final class SimulationDashboard {
                 }
                 startProcess("load-balancer", List.of(
                         javaExecutable(),
-                        "-Djava.rmi.server.hostname=localhost",
+                        "-Djava.rmi.server.hostname=" + advertisedHost,
                         "-cp", classpath,
                         "server.LoadBalancer",
                         Integer.toString(LOAD_BALANCER_REGISTRY_PORT),
                         Integer.toString(LOAD_BALANCER_EXPORT_PORT),
-                        "1@localhost@2001,2@localhost@2002,3@localhost@2003"
+                        "1@" + advertisedHost + "@2001,2@" + advertisedHost + "@2002,3@" + advertisedHost + "@2003"
                 ));
+                waitForLoadBalancer();
                 sendJson(exchange, 200, Map.of(
                         "message", "Started three servers and the load balancer in " + consistency + " mode."
                 ));
@@ -260,15 +250,6 @@ public final class SimulationDashboard {
         }
     }
 
-    private void handleUsers(HttpExchange exchange) throws IOException {
-        if (!requireMethod(exchange, "GET")) return;
-        try {
-            sendJson(exchange, 200, Map.of("users", chatService().getRegisteredUsers()));
-        } catch (Exception e) {
-            sendJson(exchange, 502, Map.of("error", message(e)));
-        }
-    }
-
     private void handleSend(HttpExchange exchange) throws IOException {
         if (!requireMethod(exchange, "POST")) return;
         try {
@@ -315,14 +296,30 @@ public final class SimulationDashboard {
         }
     }
 
-    private ChatService chatService() throws Exception {
-        Registry registry = LocateRegistry.getRegistry("localhost", LOAD_BALANCER_REGISTRY_PORT);
-        return (ChatService) registry.lookup("ChatService");
+    private void waitForLoadBalancer() throws InterruptedException {
+        for (int attempt = 1; attempt <= 30; attempt++) {
+            try {
+                chatService();
+                return;
+            } catch (Exception ignored) {
+                Thread.sleep(500);
+            }
+        }
+        throw new IllegalStateException("Load balancer did not become reachable on " + dashboardHost() + ":" + LOAD_BALANCER_REGISTRY_PORT);
     }
 
-    private Path logDirectory() {
-        Path configured = Path.of(System.getProperty("syncchat.logs.dir", "logs"));
-        return (configured.isAbsolute() ? configured : projectRoot.resolve(configured)).normalize();
+    private ChatService chatService() throws Exception {
+        Exception lastError = null;
+        for (int attempt = 1; attempt <= 30; attempt++) {
+            try {
+                Registry registry = LocateRegistry.getRegistry(dashboardHost(), LOAD_BALANCER_REGISTRY_PORT);
+                return (ChatService) registry.lookup("ChatService");
+            } catch (Exception e) {
+                lastError = e;
+                Thread.sleep(500);
+            }
+        }
+        throw lastError;
     }
 
     private boolean requireMethod(HttpExchange exchange, String method) throws IOException {

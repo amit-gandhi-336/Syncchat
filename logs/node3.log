@@ -68,3 +68,30 @@ Messages recovered: 0
 =================================
 Messages recovered: 0
 =================================
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: 127.0.0.1
+Registry Port : 2003
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: 127.0.0.1
+Registry Port : 2003
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 3 replicated user: dashboarduser

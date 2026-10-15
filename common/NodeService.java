@@ -14,9 +14,16 @@ public interface NodeService extends Remote {
     void setPrimary(boolean primary)
             throws RemoteException;
 
-    void startBullyElection()
+    /** Initiate a new ring election from this node. */
+    void startRingElection()
             throws RemoteException;
 
+    /**
+     * Receive a ring-election token carrying the given candidateId
+     * and apply the Chang-Roberts forwarding logic.
+     */
+    void forwardElectionMessage(int candidateId)
+            throws RemoteException;
 
     void announcePrimary(int winnerId)
             throws RemoteException;
