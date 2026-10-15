@@ -3,822 +3,657 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SyncChat Control Room</title>
+    <title>SyncChat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
       :root {
-        color-scheme: dark;
-        --bg: #0b1020;
-        --panel: #121a2d;
-        --panel2: #18233b;
-        --line: #263451;
-        --muted: #91a0bb;
-        --text: #eef3ff;
-        --cyan: #62d6d0;
-        --blue: #729cff;
-        --red: #ff7185;
-        --green: #5be0a0;
-        --amber: #ffc96b;
+        --bg:        #080c14;
+        --surface:   #0f1520;
+        --surface2:  #151d2e;
+        --surface3:  #1c2640;
+        --border:    #243047;
+        --border2:   #2e3d58;
+        --muted:     #7a8fb5;
+        --text:      #e8eeff;
+        --subtext:   #aab4ce;
+        --cyan:      #38c8c2;
+        --cyan-glow: rgba(56,200,194,.18);
+        --blue:      #5b8dff;
+        --purple:    #8b5cf6;
+        --green:     #34d399;
+        --red:       #f87171;
+        --amber:     #fbbf24;
+        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
       }
-      * {
-        box-sizing: border-box;
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+
+      /* ── REGISTRATION MODAL ── */
+      #regOverlay {
+        position: fixed; inset: 0; z-index: 100;
+        background: rgba(4,7,14,.92); backdrop-filter: blur(18px);
+        display: flex; align-items: center; justify-content: center; padding: 20px;
       }
-      body {
-        margin: 0;
-        background:
-          radial-gradient(ellipse at 20% 0, #172847 0, transparent 45%),
-          var(--bg);
-        color: var(--text);
-        font:
-          15px/1.5 Inter,
-          ui-sans-serif,
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          sans-serif;
-        min-height: 100vh;
+      #regOverlay.hidden { display: none; }
+      .reg-card {
+        background: var(--surface); border: 1px solid var(--border2); border-radius: 24px;
+        padding: 48px 44px 40px; width: 100%; max-width: 420px;
+        box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.04);
+        animation: popIn .35s cubic-bezier(.34,1.56,.64,1);
       }
-      .shell {
-        max-width: 1200px;
-        margin: auto;
-        padding: 30px 24px 56px;
-      }
-      .top {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-        margin-bottom: 26px;
-      }
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-      .logo {
-        width: 46px;
-        height: 46px;
-        border-radius: 15px;
-        display: grid;
-        place-items: center;
-        color: #08131e;
-        font-weight: 900;
-        font-size: 20px;
+      @keyframes popIn { from { transform: scale(.88); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      .reg-logo {
+        width: 56px; height: 56px; border-radius: 18px;
         background: linear-gradient(135deg, var(--cyan), var(--blue));
-        box-shadow: 0 8px 30px #5bd6d055;
+        display: grid; place-items: center;
+        font-size: 24px; font-weight: 800; color: #07141a;
+        box-shadow: 0 8px 32px rgba(56,200,194,.35); margin-bottom: 28px;
       }
-      .eyebrow {
-        font-size: 11px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--cyan);
-        font-weight: 750;
-      }
-      .title {
-        font-size: 24px;
-        font-weight: 750;
-        letter-spacing: -0.03em;
-      }
-      .sub {
-        font-size: 13px;
-        color: var(--muted);
-      }
-      .top-right {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .safe {
-        font-size: 12px;
-        color: var(--muted);
-        border: 1px solid var(--line);
-        padding: 8px 12px;
-        border-radius: 999px;
-      }
-      button,
-      select,
-      input,
-      textarea {
-        font: inherit;
-      }
-      button {
-        border: 0;
-        border-radius: 10px;
-        padding: 10px 15px;
-        font-weight: 700;
-        color: #07141a;
-        background: var(--cyan);
-        cursor: pointer;
-        transition:
-          transform 0.16s,
-          filter 0.16s;
-      }
-      button:hover {
-        filter: brightness(1.08);
-        transform: translateY(-1px);
-      }
-      button:disabled {
-        opacity: 0.5;
-        cursor: wait;
-        transform: none;
-      }
-      .secondary {
-        background: var(--panel2);
-        color: var(--text);
-        border: 1px solid var(--line);
-      }
-      .danger {
-        background: #482431;
-        color: #ffd9df;
-        border: 1px solid #733746;
-      }
-      .select {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        color: var(--text);
-        padding: 10px;
-        border-radius: 9px;
-      }
-      .toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-        background: #111a2cdd;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 14px;
-        margin-bottom: 18px;
-      }
-      .toolbar .hint {
-        margin-left: auto;
-        color: var(--muted);
-        font-size: 12px;
-      }
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-        margin-bottom: 20px;
-      }
-      .card {
-        background: linear-gradient(145deg, var(--panel), #10182a);
-        border: 1px solid var(--line);
-        border-radius: 15px;
-        padding: 15px 17px;
-      }
-      .card-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .card h3 {
-        margin: 0;
-        font-size: 14px;
-      }
-      .status {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        font-size: 12px;
-        color: var(--muted);
-      }
-      .dot {
-        height: 8px;
-        width: 8px;
-        border-radius: 50%;
-        background: #65718a;
-      }
-      .dot.up {
-        background: var(--green);
-        box-shadow: 0 0 12px #5be0a077;
-      }
-      .card-foot {
-        font-size: 11px;
-        color: var(--muted);
-        margin-top: 11px;
-      }
-      .tabs {
-        display: flex;
-        gap: 5px;
-        border-bottom: 1px solid var(--line);
-        margin: 8px 0 16px;
-      }
-      .tab {
-        background: transparent;
-        color: var(--muted);
-        border-radius: 9px 9px 0 0;
-        padding: 11px 15px;
-        border-bottom: 2px solid transparent;
-      }
-      .tab.active {
-        color: var(--text);
-        border-color: var(--cyan);
-        background: #142139;
-      }
-      .view {
-        display: none;
-      }
-      .view.active {
-        display: block;
-      }
-      .layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
-        gap: 16px;
-      }
-      .panel {
-        background: #111a2cdd;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 18px;
-        min-width: 0;
-      }
-      .panel h2 {
-        font-size: 16px;
-        margin: 0 0 4px;
-      }
-      .panel p {
-        color: var(--muted);
-        font-size: 13px;
-        margin: 0 0 16px;
-      }
-      .row {
-        display: flex;
-        gap: 9px;
-        align-items: center;
-      }
-      .row > * {
-        min-width: 0;
-      }
+      .reg-card h1 { font-size: 26px; font-weight: 800; letter-spacing: -.03em; }
+      .reg-card p  { font-size: 14px; color: var(--muted); margin-top: 8px; margin-bottom: 32px; line-height: 1.6; }
+      .field-wrap { position: relative; margin-bottom: 14px; }
+      .field-wrap label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
       .field {
-        background: #0b1221;
-        border: 1px solid var(--line);
-        color: var(--text);
-        border-radius: 9px;
-        padding: 10px 12px;
-        width: 100%;
-        outline: none;
+        width: 100%; background: var(--surface2); border: 1.5px solid var(--border);
+        color: var(--text); border-radius: 10px; padding: 12px 14px;
+        font: inherit; font-size: 15px; outline: none; transition: border-color .2s, box-shadow .2s;
       }
-      .field:focus {
-        border-color: var(--cyan);
+      .field:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px var(--cyan-glow); }
+      .field::placeholder { color: var(--muted); }
+      .btn {
+        width: 100%; padding: 14px; border: 0; border-radius: 10px;
+        font: inherit; font-size: 15px; font-weight: 700; cursor: pointer;
+        transition: filter .18s, transform .18s;
+        background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #07141a;
       }
-      .chat-form {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+      .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+      .btn:disabled { opacity: .5; cursor: wait; transform: none; }
+      .btn.secondary { background: var(--surface3); color: var(--text); border: 1px solid var(--border2); }
+      .reg-error { font-size: 13px; color: var(--red); margin-top: 12px; min-height: 20px; }
+
+      /* ── APP LAYOUT ── */
+      .app { display: flex; flex: 1; overflow: hidden; }
+
+      /* ── SIDEBAR ── */
+      .sidebar {
+        width: 260px; flex-shrink: 0;
+        background: var(--surface); border-right: 1px solid var(--border);
+        display: flex; flex-direction: column; overflow: hidden;
       }
-      .chat-form .wide {
-        grid-column: 1/-1;
+      .sidebar-header { padding: 18px 18px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+      .app-logo { width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, var(--cyan), var(--blue)); display: grid; place-items: center; font-size: 15px; font-weight: 800; color: #07141a; flex-shrink: 0; }
+      .app-name { font-size: 16px; font-weight: 800; letter-spacing: -.02em; }
+      .app-node { font-size: 11px; color: var(--cyan); letter-spacing: .05em; }
+
+      .me-badge { margin: 12px 14px 8px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 10px; padding: 9px 12px; display: flex; align-items: center; gap: 10px; }
+      .avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--blue)); display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+      .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
+      .me-info .name { font-size: 13px; font-weight: 600; }
+      .me-info .role { font-size: 11px; color: var(--green); }
+
+      .section-label { padding: 12px 18px 5px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+      .user-list { flex: 1; overflow-y: auto; padding: 3px 8px 8px; }
+      .user-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px; cursor: pointer; transition: background .15s; border: 1px solid transparent; }
+      .user-item:hover  { background: var(--surface2); }
+      .user-item.active { background: var(--surface3); border-color: var(--border2); }
+      .user-item .uname { font-size: 13px; font-weight: 500; }
+      .user-item .ustatus { font-size: 11px; color: var(--muted); }
+
+      /* Sidebar nav tabs */
+      .sidebar-tabs { display: flex; border-top: 1px solid var(--border); }
+      .stab {
+        flex: 1; padding: 11px 0; font: inherit; font-size: 12px; font-weight: 600;
+        border: 0; background: transparent; color: var(--muted); cursor: pointer;
+        border-top: 2px solid transparent; transition: color .15s, border-color .15s;
       }
-      .msg-list {
-        margin-top: 16px;
-        border-top: 1px solid var(--line);
-        padding-top: 12px;
-        min-height: 220px;
-        max-height: 390px;
-        overflow: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .message {
-        background: var(--panel2);
-        border: 1px solid #24314a;
-        border-radius: 11px;
-        padding: 10px 12px;
-        color: #e4ecff;
-        overflow-wrap: anywhere;
-      }
-      .empty {
-        color: var(--muted);
-        font-size: 13px;
-        padding: 12px 0;
-      }
-      .notice {
-        margin-top: 12px;
-        min-height: 20px;
-        font-size: 13px;
-        color: var(--cyan);
-      }
-      .notice.error {
-        color: var(--red);
-      }
-      .metric {
-        display: flex;
-        justify-content: space-between;
-        padding: 9px 0;
-        border-bottom: 1px solid var(--line);
-        font-size: 14px;
-      }
-      .metric:last-child {
-        border: 0;
-      }
-      .metric span:last-child {
-        color: var(--cyan);
-        font-weight: 750;
-      }
-      .log-panel {
-        padding: 0;
-        overflow: hidden;
-      }
-      .log-toolbar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 13px 15px;
-        border-bottom: 1px solid var(--line);
-        gap: 10px;
-      }
-      .log-toolbar label {
-        font-weight: 700;
-      }
-      .logs {
-        margin: 0;
-        padding: 14px 16px;
-        white-space: pre-wrap;
-        overflow: auto;
-        max-height: 550px;
-        min-height: 390px;
-        background: #080d18;
-        color: #b9c8df;
-        font:
-          12px/1.65 ui-monospace,
-          SFMono-Regular,
-          Menlo,
-          monospace;
-      }
-      .log-note {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 10px;
-      }
-      .toast {
-        position: fixed;
-        right: 24px;
-        bottom: 22px;
-        padding: 12px 16px;
-        background: #1b2940;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        box-shadow: 0 12px 40px #0006;
-        opacity: 0;
-        transform: translateY(8px);
-        transition: 0.2s;
-        pointer-events: none;
-      }
-      .toast.show {
-        opacity: 1;
-        transform: none;
-      }
-      .footer {
-        margin-top: 22px;
-        text-align: center;
-        color: #7584a0;
-        font-size: 11px;
-      }
-      @media (max-width: 800px) {
-        .cards {
-          grid-template-columns: repeat(2, 1fr);
-        }
-        .layout {
-          grid-template-columns: 1fr;
-        }
-        .top {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-        .top-right {
-          width: 100%;
-          justify-content: space-between;
-        }
-        .toolbar .hint {
-          width: 100%;
-          margin: 0;
-        }
-        .shell {
-          padding: 20px 14px 40px;
-        }
-      }
-      @media (max-width: 450px) {
-        .cards {
-          grid-template-columns: 1fr 1fr;
-        }
-        .chat-form {
-          grid-template-columns: 1fr;
-        }
-        .chat-form .wide {
-          grid-column: auto;
-        }
-        .title {
-          font-size: 20px;
-        }
+      .stab.active { color: var(--cyan); border-color: var(--cyan); background: rgba(56,200,194,.06); }
+      .stab:hover:not(.active) { color: var(--subtext); }
+
+      /* ── MAIN ── */
+      .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+      /* ── TOPBAR ── */
+      .topbar { padding: 13px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--surface); flex-shrink: 0; }
+      .topbar .peer-name { font-size: 16px; font-weight: 700; }
+      .topbar .peer-sub  { font-size: 12px; color: var(--muted); }
+      .topbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+      .icon-btn { background: var(--surface3); border: 1px solid var(--border2); color: var(--text); border-radius: 8px; padding: 7px 13px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .15s; }
+      .icon-btn:hover { background: var(--surface2); }
+
+      /* ── CHAT AREA ── */
+      .chat-area { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 10px; }
+      .msg-group { display: flex; gap: 8px; align-items: flex-end; max-width: 70%; }
+      .msg-group.mine { margin-left: auto; flex-direction: row-reverse; }
+      .bubble { padding: 10px 14px; border-radius: 17px; font-size: 14px; line-height: 1.55; word-break: break-word; }
+      .bubble.mine   { background: linear-gradient(135deg, #1b3a6b, #1e4e8c); border-bottom-right-radius: 4px; color: #d4e8ff; }
+      .bubble.theirs { background: var(--surface3); border-bottom-left-radius: 4px; }
+      .bubble-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+      .bubble-meta.r { text-align: right; }
+      .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--muted); gap: 12px; text-align: center; padding: 40px; }
+      .empty-state .icon { font-size: 44px; opacity: .3; }
+      .welcome { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 40px; color: var(--muted); }
+      .welcome .wlogo { width: 64px; height: 64px; border-radius: 22px; background: linear-gradient(135deg, var(--cyan), var(--blue), var(--purple)); display: grid; place-items: center; font-size: 28px; font-weight: 800; color: #07141a; box-shadow: 0 16px 48px rgba(56,200,194,.2); }
+      .welcome h2 { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -.02em; }
+      .welcome p  { font-size: 14px; max-width: 280px; line-height: 1.7; }
+
+      /* ── COMPOSE ── */
+      .compose { padding: 14px 20px 18px; border-top: 1px solid var(--border); background: var(--surface); display: flex; gap: 10px; align-items: flex-end; flex-shrink: 0; }
+      .compose-input { flex: 1; background: var(--surface2); border: 1.5px solid var(--border2); color: var(--text); border-radius: 13px; padding: 11px 14px; font: inherit; font-size: 14px; outline: none; resize: none; max-height: 120px; transition: border-color .2s, box-shadow .2s; line-height: 1.5; }
+      .compose-input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px var(--cyan-glow); }
+      .compose-input::placeholder { color: var(--muted); }
+      .send-btn { width: 44px; height: 44px; border-radius: 13px; border: 0; background: linear-gradient(135deg, var(--cyan), var(--blue)); color: #07141a; font-size: 17px; cursor: pointer; display: grid; place-items: center; transition: filter .18s, transform .18s; flex-shrink: 0; }
+      .send-btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+      .send-btn:disabled { opacity: .45; cursor: wait; transform: none; }
+
+      /* ── LOG PANEL ── */
+      .log-view { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+      .log-toolbar { padding: 12px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; background: var(--surface); flex-shrink: 0; }
+      .log-select { background: var(--surface2); border: 1px solid var(--border2); color: var(--text); border-radius: 8px; padding: 7px 10px; font: inherit; font-size: 13px; outline: none; }
+      .log-body { flex: 1; overflow-y: auto; background: #060a12; padding: 14px 18px; font: 12px/1.65 ui-monospace, SFMono-Regular, Menlo, monospace; color: #9ab0d0; white-space: pre-wrap; }
+      .log-info { font-size: 11px; color: var(--muted); padding: 8px 20px; background: var(--surface); border-top: 1px solid var(--border); flex-shrink: 0; }
+
+      /* ── TOOLS PANEL ── */
+      .tools-panel { width: 0; flex-shrink: 0; overflow: hidden; transition: width .25s; background: var(--surface); border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+      .tools-panel.open { width: 280px; }
+      .tpanel-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+      .tpanel-body { flex: 1; overflow-y: auto; padding: 14px; }
+      .tool-btn { display: flex; align-items: center; gap: 10px; width: 100%; background: var(--surface2); border: 1px solid var(--border2); color: var(--text); border-radius: 10px; padding: 10px 13px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 8px; transition: background .15s; text-align: left; }
+      .tool-btn:hover { background: var(--surface3); }
+      .tool-result { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; font-size: 13px; color: var(--subtext); margin-bottom: 12px; line-height: 1.6; min-height: 36px; }
+      .tool-result.ok  { color: var(--green); }
+      .tool-result.err { color: var(--red); }
+      .metric { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+      .metric:last-child { border: 0; }
+      .metric span:last-child { color: var(--cyan); font-weight: 700; }
+
+      /* ── STATUS BAR ── */
+      .status-bar { background: var(--surface); border-top: 1px solid var(--border); padding: 5px 18px; font-size: 11px; color: var(--muted); display: flex; gap: 18px; align-items: center; flex-shrink: 0; }
+      .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); display: inline-block; margin-right: 5px; transition: background .3s, box-shadow .3s; }
+      .dot.green { background: var(--green); box-shadow: 0 0 8px rgba(52,211,153,.5); }
+      .dot.red   { background: var(--red); }
+
+      /* ── TOAST ── */
+      .toast { position: fixed; bottom: 18px; right: 20px; z-index: 200; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 11px 16px; font-size: 13px; box-shadow: 0 12px 40px rgba(0,0,0,.5); transform: translateY(16px); opacity: 0; transition: transform .22s, opacity .22s; pointer-events: none; max-width: 300px; }
+      .toast.show { transform: translateY(0); opacity: 1; }
+      .toast.err  { border-color: rgba(248,113,113,.4); color: var(--red); }
+
+      /* ── SCROLLBAR ── */
+      ::-webkit-scrollbar { width: 5px; height: 5px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+      @media (max-width: 700px) {
+        .tools-panel.open { width: 0; }
+        .sidebar { width: 220px; }
+        .chat-area { padding: 14px; }
       }
     </style>
   </head>
   <body>
-    <main class="shell">
-      <header class="top">
-        <div class="brand">
-          <div class="logo">S</div>
-          <div>
-            <div class="eyebrow">Distributed systems lab</div>
-            <div class="title">SyncChat Control Room</div>
-            <div class="sub">
-              Launch the simulation, chat, and inspect live process output.
-            </div>
-          </div>
-        </div>
-        <div class="top-right">
-          <span class="safe" id="scopeBadge">Local dashboard</span>
-        </div>
-      </header>
 
-      <section class="toolbar">
-        <label for="consistency" class="sub">Consistency</label>
-        <select id="consistency" class="select">
-          <option value="STRONG">Strong</option>
-          <option value="EVENTUAL">Eventual</option>
-        </select>
-        <button id="startButton" onclick="startSimulation()">
-          ▶ Start 3-node simulation
-        </button>
-        <button class="danger" onclick="stopSimulation()">
-          ■ Stop simulation
-        </button>
-        <span class="hint"
-          >Starts 3 local server processes and the RMI load balancer.</span
-        >
-      </section>
-
-      <section class="cards" id="processCards"></section>
-
-      <nav class="tabs" aria-label="Dashboard sections">
-        <button class="tab active" data-view="chat">Chat client</button>
-        <button class="tab" data-view="servers">Server logs</button>
-        <button class="tab" data-view="loadbalancer">Load balancer logs</button>
-      </nav>
-
-      <section class="view active" id="view-chat">
-        <div class="layout">
-          <article class="panel">
-            <h2>Chat workspace</h2>
-            <p>
-              Use a different username for each browser/client. Start the
-              simulation before registering.
-            </p>
-            <div class="chat-form">
-              <input
-                class="field"
-                id="username"
-                placeholder="Your username"
-                autocomplete="off"
-              />
-              <button class="secondary" onclick="registerUser()">
-                Register username
-              </button>
-              <input
-                class="field"
-                id="receiver"
-                placeholder="Recipient username"
-                autocomplete="off"
-              />
-              <input
-                class="field"
-                id="content"
-                placeholder="Write a message…"
-                autocomplete="off"
-              />
-              <button class="wide" onclick="sendMessage()">Send message</button>
-            </div>
-            <div id="chatNotice" class="notice"></div>
-            <div
-              class="row"
-              style="justify-content: space-between; margin-top: 14px"
-            >
-              <strong>Inbox</strong
-              ><button class="secondary" onclick="loadInbox()">
-                ↻ Refresh inbox
-              </button>
-            </div>
-            <div class="msg-list" id="messages">
-              <div class="empty">
-                Register a username, then refresh your inbox.
-              </div>
-            </div>
-          </article>
-          <aside class="panel">
-            <h2>Cluster tools</h2>
-            <p>
-              These calls use the load balancer. Reads may be served by healthy
-              replicas; writes go to the elected primary.
-            </p>
-            <button
-              class="secondary"
-              onclick="getServerStatus()"
-              style="width: 100%"
-            >
-              Check server status
-            </button>
-            <div
-              id="serverStatus"
-              class="notice"
-              style="margin: 10px 0 18px"
-            ></div>
-            <button
-              class="secondary"
-              onclick="getAnalytics()"
-              style="width: 100%"
-            >
-              Run MapReduce analytics
-            </button>
-            <div id="analytics" style="margin-top: 12px">
-              <div class="empty">Sender message counts will appear here.</div>
-            </div>
-            <div class="log-note">
-              Logs are captured separately under the Server logs and Load
-              balancer logs tabs.
-            </div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="view" id="view-servers">
-        <article class="panel log-panel">
-          <div class="log-toolbar">
-            <label>Server process output</label
-            ><select
-              id="serverLogSelect"
-              class="select"
-              onchange="refreshLogs()"
-            >
-              <option value="node1">Node 1 · primary</option>
-              <option value="node2">Node 2 · backup</option>
-              <option value="node3">Node 3 · backup</option>
-            </select>
-          </div>
-          <pre id="serverLogs" class="logs">
-Start the simulation to capture server logs.</pre
-          >
-        </article>
-        <div class="log-note">
-          Displays captured stdout/stderr from the selected local server
-          process. Election and replication messages appear here.
-        </div>
-      </section>
-
-      <section class="view" id="view-loadbalancer">
-        <article class="panel log-panel">
-          <div class="log-toolbar">
-            <label>Load balancer output</label
-            ><span class="status"
-              ><span class="dot" id="lbLogDot"></span
-              ><span id="lbLogState">Waiting for simulation</span></span
-            >
-          </div>
-          <pre id="lbLogs" class="logs">
-Start the simulation to capture load-balancer logs.</pre
-          >
-        </article>
-        <div class="log-note">
-          Routing decisions and backend health failures are shown here.
-        </div>
-      </section>
-
-      <div class="footer">
-        SyncChat · Java RMI · Bully election · replication · MapReduce · request
-        load balancing
+  <!-- REGISTRATION MODAL -->
+  <div id="regOverlay">
+    <div class="reg-card">
+      <div class="reg-logo">S</div>
+      <h1>Welcome to SyncChat</h1>
+      <p>Choose a unique username to join the distributed cluster. Each device/person needs a different username.</p>
+      <div class="field-wrap">
+        <label for="regUsername">Username</label>
+        <input id="regUsername" class="field" placeholder="e.g. alice, node1-user" autocomplete="off" maxlength="32" />
       </div>
-    </main>
-    <div id="toast" class="toast"></div>
-    <script>
-      let toastTimer;
-      const localHosts = ["localhost", "127.0.0.1", "::1"];
-      document.getElementById("scopeBadge").textContent = localHosts.includes(
-        location.hostname,
-      )
-        ? "Local dashboard · localhost"
-        : "Shared dashboard · network interface";
-      document.querySelectorAll(".tab").forEach((button) =>
-        button.addEventListener("click", () => {
-          document
-            .querySelectorAll(".tab")
-            .forEach((tab) => tab.classList.toggle("active", tab === button));
-          document
-            .querySelectorAll(".view")
-            .forEach((view) =>
-              view.classList.toggle(
-                "active",
-                view.id === `view-${button.dataset.view}`,
-              ),
-            );
-          refreshLogs();
-        }),
-      );
+      <button class="btn" id="regBtn" onclick="doRegister()">Join Cluster →</button>
+      <div class="reg-error" id="regError"></div>
+    </div>
+  </div>
 
-      async function api(path, options = {}) {
-        const response = await fetch(path, options);
-        const data = await response.json();
-        if (!response.ok)
-          throw new Error(data.error || `Request failed (${response.status})`);
-        return data;
+  <!-- MAIN APP -->
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="app-logo">S</div>
+        <div>
+          <div class="app-name">SyncChat</div>
+          <div class="app-node" id="nodeLabel">Node —</div>
+        </div>
+      </div>
+
+      <div class="me-badge" id="meBadge" style="display:none">
+        <div class="avatar" id="meAvatar">?</div>
+        <div class="me-info">
+          <div class="name" id="meName">—</div>
+          <div class="role">● Online</div>
+        </div>
+      </div>
+
+      <div class="section-label">Users</div>
+      <div class="user-list" id="userList">
+        <div style="padding:8px 10px;font-size:13px;color:var(--muted)">Loading…</div>
+      </div>
+
+      <!-- Bottom nav: Chat / My Logs / LB Logs -->
+      <div class="sidebar-tabs">
+        <button class="stab active" id="tabChat" onclick="switchView('chat')">💬 Chat</button>
+        <button class="stab" id="tabMyLog" onclick="switchView('mylog')">📋 My Logs</button>
+        <button class="stab" id="tabLbLog" onclick="switchView('lblog')">⚡ LB Logs</button>
+      </div>
+    </aside>
+
+    <!-- MAIN PANEL -->
+    <div class="main" id="mainPanel">
+
+      <!-- ─── CHAT VIEW ─── -->
+      <div id="viewChat" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+        <div class="topbar">
+          <div>
+            <div class="peer-name" id="topbarName">Select a user</div>
+            <div class="peer-sub"  id="topbarSub">Choose from the sidebar to start chatting</div>
+          </div>
+          <div class="topbar-right">
+            <button class="icon-btn" onclick="toggleTools()">⚙ Tools</button>
+            <button class="icon-btn" onclick="refreshInbox()">↻</button>
+          </div>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+          <div class="welcome">
+            <div class="wlogo">S</div>
+            <h2>SyncChat</h2>
+            <p>Select a user from the sidebar to open a conversation across the distributed cluster.</p>
+          </div>
+        </div>
+
+        <div class="compose">
+          <textarea id="composeInput" class="compose-input" rows="1"
+            placeholder="Select a user to start typing…" disabled
+            oninput="autoResize(this)" onkeydown="handleKey(event)"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>➤</button>
+        </div>
+      </div>
+
+      <!-- ─── MY NODE LOG VIEW ─── -->
+      <div id="viewMyLog" style="display:none;flex-direction:column;flex:1;overflow:hidden" class="log-view">
+        <div class="log-toolbar">
+          <span style="font-weight:700;font-size:14px">My Node Logs</span>
+          <span id="myLogFile" style="font-size:12px;color:var(--muted)"></span>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <label style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px">
+              <input type="checkbox" id="autoScrollMyLog" checked> Auto-scroll
+            </label>
+            <button class="icon-btn" onclick="refreshMyLog()">↻ Refresh</button>
+          </div>
+        </div>
+        <pre class="log-body" id="myLogBody">Starting log capture…</pre>
+        <div class="log-info" id="myLogInfo">Polling every 2 s</div>
+      </div>
+
+      <!-- ─── LOAD BALANCER LOG VIEW ─── -->
+      <div id="viewLbLog" style="display:none;flex-direction:column;flex:1;overflow:hidden" class="log-view">
+        <div class="log-toolbar">
+          <span style="font-weight:700;font-size:14px">Load Balancer Logs</span>
+          <span id="lbLogFile" style="font-size:12px;color:var(--muted)"></span>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <label style="font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px">
+              <input type="checkbox" id="autoScrollLbLog" checked> Auto-scroll
+            </label>
+            <button class="icon-btn" onclick="refreshLbLog()">↻ Refresh</button>
+          </div>
+        </div>
+        <pre class="log-body" id="lbLogBody">Starting log capture…</pre>
+        <div class="log-info" id="lbLogInfo">Polling every 2 s</div>
+      </div>
+    </div>
+
+    <!-- TOOLS PANEL -->
+    <aside class="tools-panel" id="toolsPanel">
+      <div class="tpanel-head">
+        <span>⚡ Cluster Tools</span>
+        <button onclick="toggleTools()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px">✕</button>
+      </div>
+      <div class="tpanel-body">
+        <button class="tool-btn" onclick="checkStatus()"><span>🖥</span>Check server status</button>
+        <div class="tool-result" id="statusResult">Click to check.</div>
+
+        <button class="tool-btn" onclick="runAnalytics()"><span>📊</span>MapReduce analytics</button>
+        <div id="analyticsResult" class="tool-result">Click to run.</div>
+
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:4px 0 8px">Registered Users</div>
+        <div id="usersResult" class="tool-result">—</div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span><span class="dot" id="clusterDot"></span><span id="clusterState">Connecting…</span></span>
+    <span id="myLabel" style="color:var(--subtext)"></span>
+    <span id="nodeInfo" style="margin-left:auto;color:var(--muted)"></span>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ──────────────────────────────────────────────────────────────────
+    // STATE
+    // ──────────────────────────────────────────────────────────────────
+    let myUsername = localStorage.getItem('syncchat_user') || '';
+    let activePeer = null;
+    let allMessages = [];
+    let knownUsers  = [];
+    let myNodeId    = null;
+    let lbInfo      = '';
+    let toolsOpen   = false;
+    let currentView = 'chat';   // 'chat' | 'mylog' | 'lblog'
+    let toastTimer  = null;
+
+    // ──────────────────────────────────────────────────────────────────
+    // BOOT
+    // ──────────────────────────────────────────────────────────────────
+    (async function boot() {
+      // Discover node info from the dashboard
+      try {
+        const info = await api('/api/node-id');
+        myNodeId = info.nodeId;
+        lbInfo   = info.lbHost + ':' + info.lbPort;
+        document.getElementById('nodeLabel').textContent = 'Node ' + myNodeId;
+        document.getElementById('nodeInfo').textContent  = 'LB: ' + lbInfo;
+      } catch (e) {
+        document.getElementById('nodeLabel').textContent = 'Node ?';
       }
-      function postForm(path, values) {
-        return api(path, {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(values),
-        });
-      }
-      function showToast(message, error = false) {
-        const toast = document.getElementById("toast");
-        toast.textContent = message;
-        toast.style.borderColor = error ? "var(--red)" : "var(--cyan)";
-        toast.classList.add("show");
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
-      }
-      function showChatNotice(message, error = false) {
-        const notice = document.getElementById("chatNotice");
-        notice.textContent = message;
-        notice.classList.toggle("error", error);
-      }
-      async function startSimulation() {
-        const button = document.getElementById("startButton");
-        button.disabled = true;
+
+      if (myUsername) {
+        // Try to silently re-validate
         try {
-          const result = await postForm("/api/start", {
-            consistency: document.getElementById("consistency").value,
-          });
-          showToast(result.message);
-          await refreshAll();
-        } catch (error) {
-          showToast(error.message, true);
-        } finally {
-          button.disabled = false;
-        }
-      }
-      async function stopSimulation() {
-        try {
-          const result = await postForm("/api/stop", {});
-          showToast(result.message);
-          await refreshAll();
-        } catch (error) {
-          showToast(error.message, true);
-        }
-      }
-      async function refreshStatus() {
-        try {
-          const data = await api("/api/status");
-          document.getElementById("processCards").replaceChildren(
-            ...data.processes.map((proc) => {
-              const card = document.createElement("article");
-              card.className = "card";
-              const title =
-                proc.name === "load-balancer"
-                  ? "Load balancer"
-                  : proc.name.replace("node", "Node ");
-              const role =
-                proc.name === "node1"
-                  ? "Configured primary"
-                  : proc.name === "load-balancer"
-                    ? "RMI gateway"
-                    : "Configured backup";
-              card.innerHTML = `<div class="card-head"><h3>${title}</h3><span class="status"><i class="dot ${proc.running ? "up" : ""}"></i>${proc.running ? "Running" : "Stopped"}</span></div><div class="card-foot">${role}${proc.pid ? ` · PID ${proc.pid}` : ""}</div>`;
-              return card;
-            }),
-          );
-          const lb = data.processes.find(
-            (proc) => proc.name === "load-balancer",
-          );
-          document
-            .getElementById("lbLogDot")
-            .classList.toggle("up", !!lb?.running);
-          document.getElementById("lbLogState").textContent = lb?.running
-            ? "Running"
-            : "Stopped";
-        } catch (error) {
-          showToast(error.message, true);
-        }
-      }
-      async function refreshLogs() {
-        const component = document.getElementById("serverLogSelect").value;
-        try {
-          const [server, lb] = await Promise.all([
-            api(`/api/logs?component=${encodeURIComponent(component)}`),
-            api("/api/logs?component=load-balancer"),
-          ]);
-          setLog("serverLogs", server.lines);
-          setLog("lbLogs", lb.lines);
+          await postForm('/api/register', { username: myUsername });
         } catch (_) {}
+        showApp(myUsername);
       }
-      function setLog(id, lines) {
-        const panel = document.getElementById(id);
-        const atBottom =
-          panel.scrollHeight - panel.scrollTop - panel.clientHeight < 45;
-        panel.textContent = lines.join("\n") || "No output captured yet.";
-        if (atBottom) panel.scrollTop = panel.scrollHeight;
+
+      document.getElementById('regUsername').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doRegister();
+      });
+    })();
+
+    // ──────────────────────────────────────────────────────────────────
+    // REGISTRATION
+    // ──────────────────────────────────────────────────────────────────
+    async function doRegister() {
+      const input = document.getElementById('regUsername');
+      const name  = input.value.trim();
+      const errEl = document.getElementById('regError');
+      const btn   = document.getElementById('regBtn');
+      errEl.textContent = '';
+      if (!name) { errEl.textContent = 'Please enter a username.'; return; }
+      btn.disabled = true; btn.textContent = 'Joining…';
+      try {
+        await postForm('/api/register', { username: name });
+        localStorage.setItem('syncchat_user', name);
+        myUsername = name;
+        showApp(name);
+      } catch (e) {
+        errEl.textContent = e.message || 'Cannot reach the cluster. Is the dashboard running?';
+        btn.disabled = false; btn.textContent = 'Join Cluster →';
       }
-      async function registerUser() {
-        const username = document.getElementById("username").value.trim();
-        if (!username) return showChatNotice("Enter a username first.", true);
-        try {
-          const result = await postForm("/api/register", { username });
-          showChatNotice(result.message, !result.registered);
-          if (result.registered) await loadInbox();
-        } catch (error) {
-          showChatNotice(error.message, true);
-        }
+    }
+
+    function showApp(name) {
+      document.getElementById('regOverlay').classList.add('hidden');
+      document.getElementById('meBadge').style.display = 'flex';
+      document.getElementById('meName').textContent    = name;
+      document.getElementById('meAvatar').textContent  = name[0].toUpperCase();
+      document.getElementById('myLabel').textContent   = 'Logged in as: ' + name;
+      startPolling();
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // POLLING
+    // ──────────────────────────────────────────────────────────────────
+    function startPolling() {
+      loadUsers();
+      refreshInbox();
+      refreshMyLog();
+      refreshLbLog();
+      setInterval(loadUsers,   5000);
+      setInterval(refreshInbox, 2000);
+      setInterval(refreshMyLog, 2000);
+      setInterval(refreshLbLog, 2000);
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // USER LIST
+    // ──────────────────────────────────────────────────────────────────
+    async function loadUsers() {
+      try {
+        const data = await api('/api/users');
+        knownUsers = data.users || [];
+        renderUserList();
+        setCluster(true);
+        // Update tools panel user list
+        const el = document.getElementById('usersResult');
+        if (el) el.innerHTML = knownUsers.length
+          ? knownUsers.map(u => `<div class="metric"><span>${esc(u)}</span><span style="color:var(--green)">●</span></div>`).join('')
+          : 'No users yet.';
+      } catch (e) { setCluster(false); }
+    }
+
+    function renderUserList() {
+      const ul = document.getElementById('userList');
+      if (!knownUsers.length) {
+        ul.innerHTML = '<div style="padding:8px 10px;font-size:13px;color:var(--muted)">No users registered yet.</div>';
+        return;
       }
-      async function sendMessage() {
-        const sender = document.getElementById("username").value.trim();
-        const receiver = document.getElementById("receiver").value.trim();
-        const content = document.getElementById("content").value.trim();
-        if (!sender || !receiver || !content)
-          return showChatNotice(
-            "Enter your username, a recipient, and a message.",
-            true,
-          );
-        try {
-          const result = await postForm("/api/send", {
-            sender,
-            receiver,
-            content,
-          });
-          document.getElementById("content").value = "";
-          showChatNotice(result.message);
-          await loadInbox();
-        } catch (error) {
-          showChatNotice(error.message, true);
-        }
+      ul.innerHTML = knownUsers.map(u => {
+        const isMe     = u === myUsername;
+        const isActive = u === activePeer;
+        return `<div class="user-item ${isActive?'active':''}" onclick="selectPeer('${esc(u)}')">
+          <div class="avatar sm" style="${avatarGrad(u)}">${u[0].toUpperCase()}</div>
+          <div>
+            <div class="uname">${esc(u)}${isMe?' <span style="font-size:10px;color:var(--muted)">(me)</span>':''}</div>
+            <div class="ustatus">registered</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function avatarGrad(name) {
+      const h = [...name].reduce((a,c)=>a+c.charCodeAt(0),0)%360;
+      return `background:linear-gradient(135deg,hsl(${h},60%,42%),hsl(${(h+70)%360},60%,52%))`;
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // SELECT PEER & CHAT
+    // ──────────────────────────────────────────────────────────────────
+    function selectPeer(peer) {
+      activePeer = peer;
+      switchView('chat');
+      renderUserList();
+      document.getElementById('topbarName').textContent = peer;
+      document.getElementById('topbarSub').textContent  = peer === myUsername ? 'Messages to yourself' : 'Chat with ' + peer;
+      const inp = document.getElementById('composeInput');
+      const btn = document.getElementById('sendBtn');
+      inp.disabled = false; btn.disabled = false;
+      inp.placeholder = 'Message ' + peer + '…';
+      inp.focus();
+      renderChat();
+    }
+
+    async function refreshInbox() {
+      if (!myUsername) return;
+      try {
+        const data = await api('/api/inbox?username=' + encodeURIComponent(myUsername));
+        allMessages = data.messages || [];
+        renderChat();
+      } catch (_) {}
+    }
+
+    function renderChat() {
+      const area = document.getElementById('chatArea');
+      if (!activePeer) return;
+
+      const conv = allMessages.filter(m => {
+        const p = parseMsg(m.text);
+        return p && (
+          (p.sender === myUsername && p.receiver === activePeer) ||
+          (p.sender === activePeer && p.receiver === myUsername)
+        );
+      });
+
+      if (!conv.length) {
+        area.innerHTML = `<div class="empty-state"><div class="icon">💬</div><p>No messages with <strong>${esc(activePeer)}</strong> yet.</p></div>`;
+        return;
       }
-      async function loadInbox() {
-        const username = document.getElementById("username").value.trim();
-        if (!username)
-          return showChatNotice("Enter your username first.", true);
-        try {
-          const data = await api(
-            `/api/inbox?username=${encodeURIComponent(username)}`,
-          );
-          const list = document.getElementById("messages");
-          list.replaceChildren();
-          if (!data.messages.length) {
-            const empty = document.createElement("div");
-            empty.className = "empty";
-            empty.textContent = "No messages yet.";
-            list.append(empty);
-            return;
-          }
-          data.messages.forEach((item) => {
-            const message = document.createElement("div");
-            message.className = "message";
-            message.textContent = item.text;
-            list.append(message);
-          });
-        } catch (error) {
-          showChatNotice(error.message, true);
-        }
-      }
-      async function getServerStatus() {
-        try {
-          const data = await api("/api/server-status");
-          document.getElementById("serverStatus").textContent = data.status;
-        } catch (error) {
-          document.getElementById("serverStatus").textContent = error.message;
-        }
-      }
-      async function getAnalytics() {
-        try {
-          const data = await api("/api/analytics");
-          const target = document.getElementById("analytics");
-          target.replaceChildren();
-          const entries = Object.entries(data.counts);
-          if (!entries.length) {
-            const empty = document.createElement("div");
-            empty.className = "empty";
-            empty.textContent = "No messages to analyze.";
-            target.append(empty);
-            return;
-          }
-          entries.forEach(([user, count]) => {
-            const row = document.createElement("div");
-            row.className = "metric";
-            const who = document.createElement("span");
-            who.textContent = user;
-            const total = document.createElement("span");
-            total.textContent = count;
-            row.append(who, total);
-            target.append(row);
-          });
-        } catch (error) {
-          showChatNotice(error.message, true);
-        }
-      }
-      async function refreshAll() {
-        await Promise.all([refreshStatus(), refreshLogs()]);
-      }
-      refreshAll();
-      setInterval(refreshStatus, 2000);
-      setInterval(refreshLogs, 1200);
-    </script>
+
+      const atBottom = area.scrollHeight - area.scrollTop - area.clientHeight < 60;
+      area.innerHTML = conv.map(m => {
+        const p    = parseMsg(m.text);
+        const mine = p.sender === myUsername;
+        const ts   = p.time ? `<span style="opacity:.5"> · ${p.time.slice(11,16)}</span>` : '';
+        return `<div class="msg-group ${mine?'mine':''}">
+          ${!mine ? `<div class="avatar sm" style="${avatarGrad(p.sender)}">${p.sender[0].toUpperCase()}</div>` : ''}
+          <div>
+            <div class="bubble ${mine?'mine':'theirs'}">${esc(p.content)}</div>
+            <div class="bubble-meta ${mine?'r':''}">${esc(p.sender)}${ts}</div>
+          </div>
+        </div>`;
+      }).join('');
+
+      if (atBottom) area.scrollTop = area.scrollHeight;
+    }
+
+    function parseMsg(text) {
+      const stripped = text.replace(/^\[\S+\]\s*/, '');
+      const m = stripped.match(/^(.+?) -> (.+?): (.+)$/s);
+      if (!m) return null;
+      const ts = text.match(/^\[(\S+)\]/);
+      return { sender: m[1].trim(), receiver: m[2].trim(), content: m[3].trim(), time: ts ? ts[1].replace('T',' ').slice(0,19) : '' };
+    }
+
+    async function sendMessage() {
+      const inp     = document.getElementById('composeInput');
+      const content = inp.value.trim();
+      const btn     = document.getElementById('sendBtn');
+      if (!content || !activePeer || !myUsername) return;
+      btn.disabled = inp.disabled = true;
+      try {
+        await postForm('/api/send', { sender: myUsername, receiver: activePeer, content });
+        inp.value = ''; autoResize(inp);
+        await refreshInbox();
+      } catch (e) { showToast(e.message, true); }
+      finally { btn.disabled = inp.disabled = false; inp.focus(); }
+    }
+
+    function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+    function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 120) + 'px'; }
+
+    // ──────────────────────────────────────────────────────────────────
+    // LOG VIEWS
+    // ──────────────────────────────────────────────────────────────────
+    async function refreshMyLog() {
+      if (!myNodeId) return;
+      await fetchLog('node' + myNodeId, 'myLogBody', 'myLogFile', 'myLogInfo', 'autoScrollMyLog');
+    }
+
+    async function refreshLbLog() {
+      await fetchLog('load-balancer', 'lbLogBody', 'lbLogFile', 'lbLogInfo', 'autoScrollLbLog');
+    }
+
+    async function fetchLog(component, bodyId, fileId, infoId, autoId) {
+      try {
+        const data = await api('/api/logs?component=' + encodeURIComponent(component));
+        const el   = document.getElementById(bodyId);
+        if (!el) return;
+        const fileEl = document.getElementById(fileId);
+        if (fileEl) fileEl.textContent = data.file || '';
+        const infoEl = document.getElementById(infoId);
+        if (infoEl) infoEl.textContent = data.exists ? `Last updated: ${new Date().toLocaleTimeString()} · polling every 2 s` : 'Log file not found — start the node server first.';
+
+        const shouldScroll = document.getElementById(autoId)?.checked;
+        const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 60;
+        el.textContent = (data.lines || []).join('\n') || 'No output yet.';
+        if (shouldScroll && atBottom) el.scrollTop = el.scrollHeight;
+      } catch (_) {}
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // VIEW SWITCHING
+    // ──────────────────────────────────────────────────────────────────
+    function switchView(view) {
+      currentView = view;
+      document.getElementById('viewChat').style.display  = view === 'chat'  ? 'flex' : 'none';
+      document.getElementById('viewMyLog').style.display = view === 'mylog' ? 'flex' : 'none';
+      document.getElementById('viewLbLog').style.display = view === 'lblog' ? 'flex' : 'none';
+      ['chat','mylog','lblog'].forEach(v => {
+        document.getElementById('tab' + v.charAt(0).toUpperCase() + v.slice(1))
+                ?.classList.toggle('active', v === view);
+      });
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // CLUSTER TOOLS
+    // ──────────────────────────────────────────────────────────────────
+    async function checkStatus() {
+      const el = document.getElementById('statusResult');
+      el.textContent = 'Checking…'; el.className = 'tool-result';
+      try {
+        const d = await api('/api/server-status');
+        el.textContent = d.status; el.className = 'tool-result ok';
+      } catch (e) { el.textContent = e.message; el.className = 'tool-result err'; }
+    }
+
+    async function runAnalytics() {
+      const el = document.getElementById('analyticsResult');
+      el.textContent = 'Running MapReduce…'; el.className = 'tool-result';
+      try {
+        const d = await api('/api/analytics');
+        const entries = Object.entries(d.counts);
+        el.className = 'tool-result';
+        el.innerHTML = entries.length
+          ? entries.map(([u,c]) => `<div class="metric"><span>${esc(u)}</span><span>${c}</span></div>`).join('')
+          : 'No messages to analyze.';
+      } catch (e) { el.textContent = e.message; el.className = 'tool-result err'; }
+    }
+
+    function toggleTools() {
+      toolsOpen = !toolsOpen;
+      document.getElementById('toolsPanel').classList.toggle('open', toolsOpen);
+    }
+
+    // ──────────────────────────────────────────────────────────────────
+    // HELPERS
+    // ──────────────────────────────────────────────────────────────────
+    function setCluster(online) {
+      document.getElementById('clusterDot').className   = 'dot ' + (online ? 'green' : 'red');
+      document.getElementById('clusterState').textContent = online ? 'Cluster online' : 'Cluster unreachable';
+    }
+
+    function showToast(msg, err = false) {
+      const t = document.getElementById('toast');
+      t.textContent = msg; t.className = 'toast show' + (err ? ' err' : '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.className = 'toast', 3500);
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    async function api(path, opts) {
+      const res  = await fetch(path, opts);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error ' + res.status);
+      return data;
+    }
+    function postForm(path, values) {
+      return api(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(values)
+      });
+    }
+  </script>
   </body>
 </html>

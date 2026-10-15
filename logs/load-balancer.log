@@ -15,3 +15,124 @@ SyncChat load balancer is running.
 Registry port: 2000
 RMI object port: 2200
 Configured nodes: 1@100.68.59.4@2001
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001,2@100.67.169.23@2002
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused
+Load balancer: Node 2 is unavailable: error during JRMP connection establishment; nested exception is: 
+	java.net.SocketTimeoutException: Read timed out
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001,2@100.67.169.23@2002
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001,2@100.67.169.23@2002
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003
+java.rmi.server.ExportException: Port already in use: 2000; nested exception is: 
+	java.net.BindException: Address already in use
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:309)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:223)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:405)
+	at java.rmi/sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at java.rmi/sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:226)
+	at java.rmi/sun.rmi.registry.RegistryImpl.setup(RegistryImpl.java:177)
+	at java.rmi/sun.rmi.registry.RegistryImpl.<init>(RegistryImpl.java:163)
+	at java.rmi/java.rmi.registry.LocateRegistry.createRegistry(LocateRegistry.java:203)
+	at server.LoadBalancer.main(LoadBalancer.java:267)
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:525)
+	at java.base/sun.nio.ch.Net.bind(Net.java:514)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:641)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:222)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:138)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createServerSocket(TCPDirectSocketFactory.java:45)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:662)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:299)
+	... 8 more
+SyncChat load balancer is running.
+Registry port: 2000
+RMI object port: 2200
+Configured nodes: 1@100.68.59.4@2001
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing primary-only request to Node 1
+Load balancer: routing read to Node 1
+Load balancer: routing read to Node 1

@@ -131,3 +131,16 @@ Initial delay: 60 seconds (1.0 minutes)
 Periodic clock synchronization active.
 
 Berkeley clock coordinator started on Primary (Node 2, initial delay: 60s, interval: 60s).
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 2
+Advertised host: 100.68.59.4
+Registry Port : 2002
+RMI object port: 3002
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.

@@ -93,19 +93,19 @@ Start each command on its respective computer. The peer-list property must be id
 Node 1:
 
 ```sh
-java -Djava.rmi.server.hostname=100.68.59.4 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 1 2001 0 true STRONG
+java -Djava.rmi.server.hostname=100.68.59.4 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 1 2001 0 true EVENTUAL
 ```
 
 Node 2:
 
 ```sh
-java -Djava.rmi.server.hostname=100.67.169.23 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 2 2002 100 false STRONG
+java -Djava.rmi.server.hostname=100.67.169.23 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 2 2002 100 false EVENTUAL
 ```
 
 Node 3:
 
 ```sh
-java -Djava.rmi.server.hostname=100.120.104.65 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 3 2003 -100 false STRONG
+java -Djava.rmi.server.hostname=100.120.104.65 -Dsyncchat.rmi.exportPort=2100 -Dsyncchat.nodes="1@100.68.59.4@2001,2@100.67.169.23@2002,3@100.120.104.65@2003" -cp out server.ClockServer 3 2003 -100 false EVENTUAL
 ```
 
 Allow TCP port 2100 and the node's registry port through each server firewall for tailnet traffic only: node 1 needs 2100 and 2001, node 2 needs 2100 and 2002, node 3 needs 2100 and 2003. Do not expose RMI ports to the public internet. Tailscale ping confirms VPN reachability, but does not confirm the firewall permits these TCP ports.

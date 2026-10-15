@@ -173,6 +173,8 @@ public class BerkeleyCoordinator {
 
         if (reachableReadings.isEmpty()) {
             System.out.println("\nNo nodes are currently reachable. Skipping synchronization.");
+            System.out.println("\n[4] Verified Clocks (After Synchronization):");
+            System.out.println("  (no reachable nodes)");
             return;
         }
 
@@ -180,6 +182,14 @@ public class BerkeleyCoordinator {
             System.out.println("\nOnly 1 node is reachable ("
                     + reachableReadings.get(0).target
                     + "). No adjustment needed.");
+            System.out.println("\n[4] Verified Clocks (After Synchronization):");
+            NodeReading only = reachableReadings.get(0);
+            try {
+                long verifiedTime = only.service.getTime();
+                System.out.println("  " + only.target + ": " + verifiedTime + " ms (unchanged)");
+            } catch (Exception e) {
+                System.err.println("  Could not verify time on " + only.target + ": " + e.getMessage());
+            }
             return;
         }
 

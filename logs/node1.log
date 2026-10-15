@@ -235,3 +235,324 @@ Node is ready.
   Node 1 (100.68.59.4:2001): 1791912397584 ms
   Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
 	java.net.ConnectException: Connection timed out]
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 100.68.59.4
+Registry Port : 2001
+RMI object port: 2100
+Primary       : true
+Consistency   : EVENTUAL
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (100.68.59.4:2001)
+  - Node 2 (100.67.169.23:2002)
+  - Node 3 (100.120.104.65:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-15 14:48:43] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792055923708 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+Only 1 node is reachable (Node 1 (100.68.59.4:2001)). No adjustment needed.
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #2 - 2026-10-15 14:51:56] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056116907 ms
+  Node 2 (100.67.169.23:2002): 1792056116818 ms
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+[2] Calculated Cluster Average Time: 1792056116862 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: -45 ms
+  Node 2 (100.67.169.23:2002) adjustment: +44 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056321693 ms
+  Node 2 (100.67.169.23:2002): 1792056321283 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #3 - 2026-10-15 14:56:21] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056381751 ms
+  Node 2 (100.67.169.23:2002): 1792056381475 ms
+  Node 3 (100.120.104.65:2003): 1792056382241 ms
+
+[2] Calculated Cluster Average Time: 1792056381822 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +71 ms
+  Node 2 (100.67.169.23:2002) adjustment: +347 ms
+  Node 3 (100.120.104.65:2003) adjustment: -419 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056382563 ms
+  Node 2 (100.67.169.23:2002): 1792056382446 ms
+  Node 3 (100.120.104.65:2003): 1792056382040 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-15 14:57:22] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056442669 ms
+  Node 2 (100.67.169.23:2002): 1792056442781 ms
+  Node 3 (100.120.104.65:2003): 1792056442771 ms
+
+[2] Calculated Cluster Average Time: 1792056442740 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +71 ms
+  Node 2 (100.67.169.23:2002) adjustment: -41 ms
+  Node 3 (100.120.104.65:2003) adjustment: -31 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056443586 ms
+  Node 2 (100.67.169.23:2002): 1792056443365 ms
+  Node 3 (100.120.104.65:2003): 1792056442968 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-15 14:58:23] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056503684 ms
+  Node 2 (100.67.169.23:2002): 1792056503846 ms
+  Node 3 (100.120.104.65:2003): 1792056503810 ms
+
+[2] Calculated Cluster Average Time: 1792056503780 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +96 ms
+  Node 2 (100.67.169.23:2002) adjustment: -66 ms
+  Node 3 (100.120.104.65:2003) adjustment: -30 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056504831 ms
+  Node 2 (100.67.169.23:2002): 1792056504467 ms
+  Node 3 (100.120.104.65:2003): 1792056504115 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+java.rmi.server.ExportException: Port already in use: 2001; nested exception is: 
+	java.net.BindException: Address already in use
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:309)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:223)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:405)
+	at java.rmi/sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at java.rmi/sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:226)
+	at java.rmi/sun.rmi.registry.RegistryImpl.setup(RegistryImpl.java:177)
+	at java.rmi/sun.rmi.registry.RegistryImpl.<init>(RegistryImpl.java:163)
+	at java.rmi/java.rmi.registry.LocateRegistry.createRegistry(LocateRegistry.java:203)
+	at server.ClockServer.main(ClockServer.java:115)
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:525)
+	at java.base/sun.nio.ch.Net.bind(Net.java:514)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:641)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:222)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:138)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createServerSocket(TCPDirectSocketFactory.java:45)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:662)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:299)
+	... 8 more
+-------------------------------------------------
+ [Round #6 - 2026-10-15 14:59:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056564992 ms
+  Node 2 (100.67.169.23:2002): 1792056566433 ms
+  Node 3 (100.120.104.65:2003): 1792056567723 ms
+
+[2] Calculated Cluster Average Time: 1792056566382 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +1390 ms
+  Node 2 (100.67.169.23:2002) adjustment: -51 ms
+  Node 3 (100.120.104.65:2003) adjustment: -1341 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056570180 ms
+  Node 2 (100.67.169.23:2002): 1792056568410 ms
+  Node 3 (100.120.104.65:2003): 1792056566830 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #7 - 2026-10-15 15:00:28] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056630403 ms
+  Node 2 (100.67.169.23:2002): 1792056628735 ms
+  Node 3 (100.120.104.65:2003): 1792056627881 ms
+
+[2] Calculated Cluster Average Time: 1792056629006 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: -1397 ms
+  Node 2 (100.67.169.23:2002) adjustment: +271 ms
+  Node 3 (100.120.104.65:2003) adjustment: +1125 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056630848 ms
+  Node 2 (100.67.169.23:2002): 1792056630741 ms
+  Node 3 (100.120.104.65:2003): 1792056629956 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #8 - 2026-10-15 15:01:30] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056691034 ms
+  Node 2 (100.67.169.23:2002): 1792056691244 ms
+  Node 3 (100.120.104.65:2003): 1792056692919 ms
+
+[2] Calculated Cluster Average Time: 1792056691732 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +698 ms
+  Node 2 (100.67.169.23:2002) adjustment: +488 ms
+  Node 3 (100.120.104.65:2003) adjustment: -1187 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056695363 ms
+  Node 2 (100.67.169.23:2002): 1792056695118 ms
+  Node 3 (100.120.104.65:2003): 1792056692665 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #9 - 2026-10-15 15:02:34] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056755655 ms
+  Node 2 (100.67.169.23:2002): 1792056755699 ms
+  Node 3 (100.120.104.65:2003): 1792056753783 ms
+
+[2] Calculated Cluster Average Time: 1792056755045 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: -610 ms
+  Node 2 (100.67.169.23:2002) adjustment: -654 ms
+  Node 3 (100.120.104.65:2003) adjustment: +1262 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056756370 ms
+  Node 2 (100.67.169.23:2002): 1792056755921 ms
+  Node 3 (100.120.104.65:2003): 1792056755365 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #10 - 2026-10-15 15:03:36] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792056816471 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+Only 1 node is reachable (Node 1 (100.68.59.4:2001)). No adjustment needed.
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #11 - 2026-10-15 15:09:04] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792057145275 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 100.68.59.4
+Registry Port : 2001
+RMI object port: 2100
+Primary       : true
+Consistency   : EVENTUAL
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (100.68.59.4:2001)
+  - Node 2 (100.67.169.23:2002)
+  - Node 3 (100.120.104.65:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+Node 1 registered user: amit
+User replication ACK from Node 2
+-------------------------------------------------
+ [Round #1 - 2026-10-15 15:22:15] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792057935247 ms
+  Node 2 (100.67.169.23:2002): 1792057934876 ms
+  Node 3 (100.120.104.65:2003): 1792057935934 ms
+
+[2] Calculated Cluster Average Time: 1792057935352 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +105 ms
+  Node 2 (100.67.169.23:2002) adjustment: +476 ms
+  Node 3 (100.120.104.65:2003) adjustment: -582 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792057937014 ms
+  Node 2 (100.67.169.23:2002): 1792057936984 ms
+  Node 3 (100.120.104.65:2003): 1792057935889 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+

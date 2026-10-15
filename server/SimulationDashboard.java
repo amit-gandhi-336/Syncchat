@@ -80,6 +80,7 @@ public final class SimulationDashboard {
         httpServer.createContext("/api/inbox", this::handleInbox);
         httpServer.createContext("/api/server-status", this::handleServerStatus);
         httpServer.createContext("/api/analytics", this::handleAnalytics);
+        httpServer.createContext("/api/users", this::handleUsers);
         httpServer.start();
         System.out.println("SyncChat dashboard: http://" + bindHost + ":" + bindPort);
         if (InetAddress.getByName(bindHost).isLoopbackAddress()) {
@@ -291,6 +292,15 @@ public final class SimulationDashboard {
         if (!requireMethod(exchange, "GET")) return;
         try {
             sendJson(exchange, 200, Map.of("counts", chatService().getMessageCountsBySender()));
+        } catch (Exception e) {
+            sendJson(exchange, 502, Map.of("error", message(e)));
+        }
+    }
+
+    private void handleUsers(HttpExchange exchange) throws IOException {
+        if (!requireMethod(exchange, "GET")) return;
+        try {
+            sendJson(exchange, 200, Map.of("users", chatService().getRegisteredUsers()));
         } catch (Exception e) {
             sendJson(exchange, 502, Map.of("error", message(e)));
         }

@@ -95,3 +95,16 @@ Consistency   : STRONG
 Heartbeat manager started.
 Node is ready.
 Node 3 replicated user: dashboarduser
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: 100.68.59.4
+Registry Port : 2003
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
