@@ -144,3 +144,164 @@ Consistency   : STRONG
 ======================================
 Heartbeat manager started.
 Node is ready.
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 2
+Advertised host: localhost
+Registry Port : 2002
+RMI object port: 3002
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 2, initial delay: 60s, interval: 60s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-21 09:19:39] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554579344 ms
+  Node 2 (localhost:2002): 1792554579340 ms
+  Node 3 (localhost:2003): 1792554579336 ms
+
+[2] Calculated Cluster Average Time: 1792554579340 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -4 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +4 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554579360 ms
+  Node 2 (localhost:2002): 1792554579352 ms
+  Node 3 (localhost:2003): 1792554579348 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 2
+Advertised host: localhost
+Registry Port : 2002
+RMI object port: 3002
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 2 received election token with candidate 3
+Node 2 forwarding candidate 3 (candidate > self)
+Node 2 forwarding candidate 3 to successor Node 3
+Node 2 is BACKUP
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 2
+Advertised host: localhost
+Registry Port : 2002
+RMI object port: 3002
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 2
+  From Root : Root Node 1
+  Data      : "EMERGENCY CLUSTER BROADCAST: ALL NODES SYNC STATE"
+-------------------------------------------------
+
+-------------------------------------------------
+[MPI SCATTER RECEIVED] on Rank 1 (Node 2)
+  Received Chunk (2 items): [record_3, record_4]
+  Processed Chunk: [[Rank 1 PROCESSED]: RECORD_3, [Rank 1 PROCESSED]: RECORD_4]
+-------------------------------------------------
+[MPI GATHER] Node 2 (Rank 1) transmitting 2 items back to Root.
+Node 2 replicated user: amit
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 2
+  From Root : Root Node 1
+  Data      : "hi"
+-------------------------------------------------
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 2
+Advertised host: localhost
+Registry Port : 2002
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 2 replicated user: amit
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 2
+  From Root : Root Node 1
+  Data      : "hi"
+-------------------------------------------------
+
+-------------------------------------------------
+[MPI SCATTER RECEIVED] on Rank 1 (Node 2)
+  Received Chunk (2 items): [c, d]
+  Processed Chunk: [[Rank 1 PROCESSED]: C, [Rank 1 PROCESSED]: D]
+-------------------------------------------------
+[MPI GATHER] Node 2 (Rank 1) transmitting 2 items back to Root.
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 1 is not responding.
+Starting Ring Election...
+=================================
+
+=================================
+       RING ELECTION
+       Initiated by Node 2
+=================================
+Node 2 forwarding candidate 2 to successor Node 3
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 2
+Advertised host: localhost
+Registry Port : 2002
+RMI object port: 3002
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 2 replicated user: amit
+[MPI_Bcast] Node 2 received full Matrix B (200x200)
+[MPI_Scatter] Rank 1 (Node 2) received 67 rows of Matrix A
+[MPI_Compute & Gather] Rank 1 (Node 2) computed 67 rows of Matrix C
+[MPI_Bcast] Node 2 received full Matrix B (150x150)
+[MPI_Scatter] Rank 1 (Node 2) received 50 rows of Matrix A
+[MPI_Compute & Gather] Rank 1 (Node 2) computed 50 rows of Matrix C
+[MPI_Bcast] Node 2 received full Matrix B (300x300)
+[MPI_Scatter] Rank 1 (Node 2) received 100 rows of Matrix A
+[MPI_Compute & Gather] Rank 1 (Node 2) computed 100 rows of Matrix C

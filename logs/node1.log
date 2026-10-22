@@ -556,3 +556,1944 @@ User replication ACK from Node 2
 
 Next synchronization scheduled in 60s (1.0 min)...
 
+-------------------------------------------------
+ [Round #2 - 2026-10-15 15:23:17] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792057997378 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (100.120.104.65:2003): 1792057997572 ms
+
+[2] Calculated Cluster Average Time: 1792057997475 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +97 ms
+  Node 3 (100.120.104.65:2003) adjustment: -97 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792057998756 ms
+  Node 3 (100.120.104.65:2003): 1792057997623 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #3 - 2026-10-15 15:24:18] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058058517 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+Only 1 node is reachable (Node 1 (100.68.59.4:2001)). No adjustment needed.
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058195068 ms (unchanged)
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-15 15:27:35] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058255084 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+Only 1 node is reachable (Node 1 (100.68.59.4:2001)). No adjustment needed.
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058387580 ms (unchanged)
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-15 15:30:47] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058447602 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused]
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+Only 1 node is reachable (Node 1 (100.68.59.4:2001)). No adjustment needed.
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058584187 ms (unchanged)
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #6 - 2026-10-15 15:34:04] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058644203 ms
+  Node 2 (100.67.169.23:2002): [OFFLINE/UNREACHABLE - Connection refused to host: 100.67.169.23; nested exception is: 
+	java.net.ConnectException: Connection refused]
+java.rmi.server.ExportException: Port already in use: 2100; nested exception is: 
+	java.net.BindException: Address already in use
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:309)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:223)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:405)
+	at java.rmi/sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at java.rmi/sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:226)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:473)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:358)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.<init>(UnicastRemoteObject.java:230)
+	at server.ChatServer.<init>(ChatServer.java:54)
+	at server.ClockServer.main(ClockServer.java:90)
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:525)
+	at java.base/sun.nio.ch.Net.bind(Net.java:514)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:641)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:222)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:138)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createServerSocket(TCPDirectSocketFactory.java:45)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:662)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:299)
+	... 9 more
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 100.68.59.4
+Registry Port : 2001
+RMI object port: 2100
+Primary       : true
+Consistency   : EVENTUAL
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (100.68.59.4:2001)
+  - Node 2 (100.67.169.23:2002)
+  - Node 3 (100.120.104.65:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-15 15:37:58] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792058878134 ms
+  Node 2 (100.67.169.23:2002): 1792058877958 ms
+java.rmi.server.ExportException: Port already in use: 2100; nested exception is: 
+	java.net.BindException: Address already in use
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:309)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:223)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:405)
+	at java.rmi/sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at java.rmi/sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:226)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:473)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:358)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.<init>(UnicastRemoteObject.java:230)
+	at server.ChatServer.<init>(ChatServer.java:54)
+	at server.ClockServer.main(ClockServer.java:90)
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:525)
+	at java.base/sun.nio.ch.Net.bind(Net.java:514)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:641)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:222)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:138)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createServerSocket(TCPDirectSocketFactory.java:45)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:662)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:299)
+	... 9 more
+java.rmi.server.ExportException: Port already in use: 2100; nested exception is: 
+	java.net.BindException: Address already in use
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:309)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:223)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:405)
+	at java.rmi/sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at java.rmi/sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:226)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:473)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:358)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.<init>(UnicastRemoteObject.java:230)
+	at server.ChatServer.<init>(ChatServer.java:54)
+	at server.ClockServer.main(ClockServer.java:90)
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:525)
+	at java.base/sun.nio.ch.Net.bind(Net.java:514)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:641)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:222)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:138)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createServerSocket(TCPDirectSocketFactory.java:45)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:662)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:299)
+	... 9 more
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: 100.68.59.4
+Registry Port : 2001
+RMI object port: 2100
+Primary       : true
+Consistency   : EVENTUAL
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (100.68.59.4:2001)
+  - Node 2 (100.67.169.23:2002)
+  - Node 3 (100.120.104.65:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-15 15:41:57] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792059117112 ms
+  Node 2 (100.67.169.23:2002): 1792059117381 ms
+Node 1 registered user: amit
+User replication ACK from Node 2
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+[2] Calculated Cluster Average Time: 1792059117246 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: +134 ms
+  Node 2 (100.67.169.23:2002) adjustment: -135 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (100.68.59.4:2001): 1792059252238 ms
+  Node 2 (100.67.169.23:2002): 1792059251482 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #2 - 2026-10-15 15:45:12] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (100.68.59.4:2001): 1792059312353 ms
+  Node 2 (100.67.169.23:2002): 1792059311743 ms
+Backup Node 3 is unavailable; skipping user replication.
+  Node 3 (100.120.104.65:2003): [OFFLINE/UNREACHABLE - Connection refused to host: 100.120.104.65; nested exception is: 
+	java.net.ConnectException: Connection timed out]
+
+[2] Calculated Cluster Average Time: 1792059312048 ms (across 2 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (100.68.59.4:2001) adjustment: -305 ms
+  Node 2 (100.67.169.23:2002) adjustment: +305 ms
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+Node 1 registered user: amit
+-------------------------------------------------
+ [Round #1 - 2026-10-21 09:19:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554564474 ms
+  Node 2 (localhost:2002): 1792554564586 ms
+  Node 3 (localhost:2003): 1792554564395 ms
+
+[2] Calculated Cluster Average Time: 1792554564485 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +11 ms
+  Node 2 (localhost:2002) adjustment: -101 ms
+  Node 3 (localhost:2003) adjustment: +90 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554564538 ms
+  Node 2 (localhost:2002): 1792554564527 ms
+  Node 3 (localhost:2003): 1792554564519 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #2 - 2026-10-21 09:20:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554624537 ms
+  Node 2 (localhost:2002): 1792554624685 ms
+  Node 3 (localhost:2003): 1792554624503 ms
+
+[2] Calculated Cluster Average Time: 1792554624575 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +38 ms
+  Node 2 (localhost:2002) adjustment: -110 ms
+  Node 3 (localhost:2003) adjustment: +72 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554624660 ms
+  Node 2 (localhost:2002): 1792554624608 ms
+  Node 3 (localhost:2003): 1792554624590 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #3 - 2026-10-21 09:21:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554684676 ms
+  Node 2 (localhost:2002): 1792554684635 ms
+  Node 3 (localhost:2003): 1792554684623 ms
+
+[2] Calculated Cluster Average Time: 1792554684644 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -32 ms
+  Node 2 (localhost:2002) adjustment: +9 ms
+  Node 3 (localhost:2003) adjustment: +21 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554684665 ms
+  Node 2 (localhost:2002): 1792554684654 ms
+  Node 3 (localhost:2003): 1792554684648 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-21 09:22:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554744679 ms
+  Node 2 (localhost:2002): 1792554744679 ms
+  Node 3 (localhost:2003): 1792554744680 ms
+
+[2] Calculated Cluster Average Time: 1792554744679 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +0 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554744700 ms
+  Node 2 (localhost:2002): 1792554744688 ms
+  Node 3 (localhost:2003): 1792554744681 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-21 09:23:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554804722 ms
+  Node 2 (localhost:2002): 1792554804733 ms
+  Node 3 (localhost:2003): 1792554804746 ms
+
+[2] Calculated Cluster Average Time: 1792554804733 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +11 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -13 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554804781 ms
+  Node 2 (localhost:2002): 1792554804760 ms
+  Node 3 (localhost:2003): 1792554804741 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #6 - 2026-10-21 09:24:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554864795 ms
+  Node 2 (localhost:2002): 1792554864781 ms
+  Node 3 (localhost:2003): 1792554864769 ms
+
+[2] Calculated Cluster Average Time: 1792554864781 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -14 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +12 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554864804 ms
+  Node 2 (localhost:2002): 1792554864798 ms
+  Node 3 (localhost:2003): 1792554864793 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #7 - 2026-10-21 09:25:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554924820 ms
+  Node 2 (localhost:2002): 1792554924813 ms
+  Node 3 (localhost:2003): 1792554924809 ms
+
+[2] Calculated Cluster Average Time: 1792554924814 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -6 ms
+  Node 2 (localhost:2002) adjustment: +1 ms
+  Node 3 (localhost:2003) adjustment: +5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554924821 ms
+  Node 2 (localhost:2002): 1792554924819 ms
+  Node 3 (localhost:2003): 1792554924815 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #8 - 2026-10-21 09:26:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554984834 ms
+  Node 2 (localhost:2002): 1792554984840 ms
+  Node 3 (localhost:2003): 1792554984840 ms
+
+[2] Calculated Cluster Average Time: 1792554984838 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +4 ms
+  Node 2 (localhost:2002) adjustment: -2 ms
+  Node 3 (localhost:2003) adjustment: -2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554984851 ms
+  Node 2 (localhost:2002): 1792554984843 ms
+  Node 3 (localhost:2003): 1792554984839 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #9 - 2026-10-21 09:27:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555044857 ms
+  Node 2 (localhost:2002): 1792555044855 ms
+  Node 3 (localhost:2003): 1792555044854 ms
+
+[2] Calculated Cluster Average Time: 1792555044855 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -2 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555044867 ms
+  Node 2 (localhost:2002): 1792555044861 ms
+  Node 3 (localhost:2003): 1792555044859 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #10 - 2026-10-21 09:28:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555104878 ms
+  Node 2 (localhost:2002): 1792555104890 ms
+  Node 3 (localhost:2003): 1792555104908 ms
+
+[2] Calculated Cluster Average Time: 1792555104892 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +14 ms
+  Node 2 (localhost:2002) adjustment: +2 ms
+  Node 3 (localhost:2003) adjustment: -16 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555104940 ms
+  Node 2 (localhost:2002): 1792555104923 ms
+  Node 3 (localhost:2003): 1792555104904 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #11 - 2026-10-21 09:29:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555164950 ms
+  Node 2 (localhost:2002): 1792555164944 ms
+  Node 3 (localhost:2003): 1792555164935 ms
+
+[2] Calculated Cluster Average Time: 1792555164943 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -7 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +8 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555164973 ms
+  Node 2 (localhost:2002): 1792555164961 ms
+  Node 3 (localhost:2003): 1792555164950 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #12 - 2026-10-21 09:30:24] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555224984 ms
+  Node 2 (localhost:2002): 1792555224981 ms
+  Node 3 (localhost:2003): 1792555224980 ms
+
+[2] Calculated Cluster Average Time: 1792555224981 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -3 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555225007 ms
+  Node 2 (localhost:2002): 1792555225000 ms
+  Node 3 (localhost:2003): 1792555224991 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #13 - 2026-10-21 09:31:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555285022 ms
+  Node 2 (localhost:2002): 1792555285022 ms
+  Node 3 (localhost:2003): 1792555285019 ms
+
+[2] Calculated Cluster Average Time: 1792555285021 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555285048 ms
+  Node 2 (localhost:2002): 1792555285041 ms
+  Node 3 (localhost:2003): 1792555285035 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #14 - 2026-10-21 09:32:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555345064 ms
+  Node 2 (localhost:2002): 1792555345066 ms
+  Node 3 (localhost:2003): 1792555345066 ms
+
+[2] Calculated Cluster Average Time: 1792555345065 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555345089 ms
+  Node 2 (localhost:2002): 1792555345079 ms
+  Node 3 (localhost:2003): 1792555345073 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #15 - 2026-10-21 09:33:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555405101 ms
+  Node 2 (localhost:2002): 1792555405099 ms
+  Node 3 (localhost:2003): 1792555405099 ms
+
+[2] Calculated Cluster Average Time: 1792555405099 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -2 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +0 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555405120 ms
+  Node 2 (localhost:2002): 1792555405112 ms
+  Node 3 (localhost:2003): 1792555405105 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #16 - 2026-10-21 09:34:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555465132 ms
+  Node 2 (localhost:2002): 1792555465125 ms
+  Node 3 (localhost:2003): 1792555465121 ms
+
+[2] Calculated Cluster Average Time: 1792555465126 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -6 ms
+  Node 2 (localhost:2002) adjustment: +1 ms
+  Node 3 (localhost:2003) adjustment: +5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555465133 ms
+  Node 2 (localhost:2002): 1792555465131 ms
+  Node 3 (localhost:2003): 1792555465128 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #17 - 2026-10-21 09:35:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555525146 ms
+  Node 2 (localhost:2002): 1792555525154 ms
+  Node 3 (localhost:2003): 1792555525159 ms
+
+[2] Calculated Cluster Average Time: 1792555525153 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +7 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -6 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555525179 ms
+  Node 2 (localhost:2002): 1792555525170 ms
+  Node 3 (localhost:2003): 1792555525161 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #18 - 2026-10-21 09:36:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555585184 ms
+  Node 2 (localhost:2002): 1792555585179 ms
+  Node 3 (localhost:2003): 1792555585174 ms
+
+[2] Calculated Cluster Average Time: 1792555585179 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -5 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555585190 ms
+  Node 2 (localhost:2002): 1792555585185 ms
+  Node 3 (localhost:2003): 1792555585182 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #19 - 2026-10-21 09:37:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555645200 ms
+  Node 2 (localhost:2002): 1792555645204 ms
+  Node 3 (localhost:2003): 1792555645209 ms
+
+[2] Calculated Cluster Average Time: 1792555645204 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +4 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555645224 ms
+  Node 2 (localhost:2002): 1792555645215 ms
+  Node 3 (localhost:2003): 1792555645207 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #20 - 2026-10-21 09:38:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555705250 ms
+  Node 2 (localhost:2002): 1792555705244 ms
+  Node 3 (localhost:2003): 1792555705238 ms
+
+[2] Calculated Cluster Average Time: 1792555705244 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -6 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +6 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555705251 ms
+  Node 2 (localhost:2002): 1792555705248 ms
+  Node 3 (localhost:2003): 1792555705245 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #21 - 2026-10-21 09:39:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555765261 ms
+  Node 2 (localhost:2002): 1792555765268 ms
+  Node 3 (localhost:2003): 1792555765273 ms
+
+[2] Calculated Cluster Average Time: 1792555765267 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +6 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -6 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555765290 ms
+  Node 2 (localhost:2002): 1792555765281 ms
+  Node 3 (localhost:2003): 1792555765274 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #22 - 2026-10-21 09:40:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555825302 ms
+  Node 2 (localhost:2002): 1792555825300 ms
+  Node 3 (localhost:2003): 1792555825304 ms
+
+[2] Calculated Cluster Average Time: 1792555825302 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +0 ms
+  Node 2 (localhost:2002) adjustment: +2 ms
+  Node 3 (localhost:2003) adjustment: -2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555825324 ms
+  Node 2 (localhost:2002): 1792555825316 ms
+  Node 3 (localhost:2003): 1792555825304 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #23 - 2026-10-21 09:41:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555885328 ms
+  Node 2 (localhost:2002): 1792555885322 ms
+  Node 3 (localhost:2003): 1792555885312 ms
+
+[2] Calculated Cluster Average Time: 1792555885320 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -8 ms
+  Node 2 (localhost:2002) adjustment: -2 ms
+  Node 3 (localhost:2003) adjustment: +8 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555885327 ms
+  Node 2 (localhost:2002): 1792555885325 ms
+  Node 3 (localhost:2003): 1792555885323 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #24 - 2026-10-21 09:42:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792555945335 ms
+  Node 2 (localhost:2002): 1792555945342 ms
+  Node 3 (localhost:2003): 1792555945348 ms
+
+[2] Calculated Cluster Average Time: 1792555945341 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +6 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -7 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792555945363 ms
+  Node 2 (localhost:2002): 1792555945355 ms
+  Node 3 (localhost:2003): 1792555945347 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #25 - 2026-10-21 09:43:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556005370 ms
+  Node 2 (localhost:2002): 1792556005365 ms
+  Node 3 (localhost:2003): 1792556005364 ms
+
+[2] Calculated Cluster Average Time: 1792556005366 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -4 ms
+  Node 2 (localhost:2002) adjustment: +1 ms
+  Node 3 (localhost:2003) adjustment: +2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556005383 ms
+  Node 2 (localhost:2002): 1792556005380 ms
+  Node 3 (localhost:2003): 1792556005373 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #26 - 2026-10-21 09:44:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556065400 ms
+  Node 2 (localhost:2002): 1792556065407 ms
+  Node 3 (localhost:2003): 1792556065412 ms
+
+[2] Calculated Cluster Average Time: 1792556065406 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +6 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -6 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556065434 ms
+  Node 2 (localhost:2002): 1792556065424 ms
+  Node 3 (localhost:2003): 1792556065412 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #27 - 2026-10-21 09:45:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556125438 ms
+  Node 2 (localhost:2002): 1792556125430 ms
+  Node 3 (localhost:2003): 1792556125421 ms
+
+[2] Calculated Cluster Average Time: 1792556125429 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -9 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +8 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556125436 ms
+  Node 2 (localhost:2002): 1792556125433 ms
+  Node 3 (localhost:2003): 1792556125431 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #28 - 2026-10-21 09:46:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556185444 ms
+  Node 2 (localhost:2002): 1792556185450 ms
+  Node 3 (localhost:2003): 1792556185454 ms
+
+[2] Calculated Cluster Average Time: 1792556185449 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +5 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556185471 ms
+  Node 2 (localhost:2002): 1792556185463 ms
+  Node 3 (localhost:2003): 1792556185457 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #29 - 2026-10-21 09:47:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556245482 ms
+  Node 2 (localhost:2002): 1792556245481 ms
+  Node 3 (localhost:2003): 1792556245484 ms
+
+[2] Calculated Cluster Average Time: 1792556245482 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +0 ms
+  Node 2 (localhost:2002) adjustment: +1 ms
+  Node 3 (localhost:2003) adjustment: -2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556245506 ms
+  Node 2 (localhost:2002): 1792556245500 ms
+  Node 3 (localhost:2003): 1792556245491 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #30 - 2026-10-21 09:48:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556305518 ms
+  Node 2 (localhost:2002): 1792556305519 ms
+  Node 3 (localhost:2003): 1792556305516 ms
+
+[2] Calculated Cluster Average Time: 1792556305517 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -1 ms
+  Node 2 (localhost:2002) adjustment: -2 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556305539 ms
+  Node 2 (localhost:2002): 1792556305531 ms
+  Node 3 (localhost:2003): 1792556305524 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #31 - 2026-10-21 09:49:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556365549 ms
+  Node 2 (localhost:2002): 1792556365546 ms
+  Node 3 (localhost:2003): 1792556365550 ms
+
+[2] Calculated Cluster Average Time: 1792556365548 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -1 ms
+  Node 2 (localhost:2002) adjustment: +2 ms
+  Node 3 (localhost:2003) adjustment: -2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556365567 ms
+  Node 2 (localhost:2002): 1792556365561 ms
+  Node 3 (localhost:2003): 1792556365551 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #32 - 2026-10-21 09:50:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556425578 ms
+  Node 2 (localhost:2002): 1792556425580 ms
+  Node 3 (localhost:2003): 1792556425579 ms
+
+[2] Calculated Cluster Average Time: 1792556425579 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +0 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556425602 ms
+  Node 2 (localhost:2002): 1792556425595 ms
+  Node 3 (localhost:2003): 1792556425586 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #33 - 2026-10-21 09:51:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556485613 ms
+  Node 2 (localhost:2002): 1792556485612 ms
+  Node 3 (localhost:2003): 1792556485610 ms
+
+[2] Calculated Cluster Average Time: 1792556485611 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -2 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556485634 ms
+  Node 2 (localhost:2002): 1792556485629 ms
+  Node 3 (localhost:2003): 1792556485623 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #34 - 2026-10-21 09:52:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556545649 ms
+  Node 2 (localhost:2002): 1792556545651 ms
+  Node 3 (localhost:2003): 1792556545650 ms
+
+[2] Calculated Cluster Average Time: 1792556545650 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +0 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556545672 ms
+  Node 2 (localhost:2002): 1792556545665 ms
+  Node 3 (localhost:2003): 1792556545659 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #35 - 2026-10-21 09:53:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556605687 ms
+  Node 2 (localhost:2002): 1792556605692 ms
+  Node 3 (localhost:2003): 1792556605698 ms
+
+[2] Calculated Cluster Average Time: 1792556605692 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +5 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -6 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556605726 ms
+  Node 2 (localhost:2002): 1792556605714 ms
+  Node 3 (localhost:2003): 1792556605703 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #36 - 2026-10-21 09:54:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556665742 ms
+  Node 2 (localhost:2002): 1792556665737 ms
+  Node 3 (localhost:2003): 1792556665733 ms
+
+[2] Calculated Cluster Average Time: 1792556665737 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -5 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +4 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556665761 ms
+  Node 2 (localhost:2002): 1792556665754 ms
+  Node 3 (localhost:2003): 1792556665746 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #37 - 2026-10-21 09:55:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556725774 ms
+  Node 2 (localhost:2002): 1792556725774 ms
+  Node 3 (localhost:2003): 1792556725775 ms
+
+[2] Calculated Cluster Average Time: 1792556725774 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +0 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556725800 ms
+  Node 2 (localhost:2002): 1792556725793 ms
+  Node 3 (localhost:2003): 1792556725784 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #38 - 2026-10-21 09:56:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556785817 ms
+  Node 2 (localhost:2002): 1792556785821 ms
+  Node 3 (localhost:2003): 1792556785825 ms
+
+[2] Calculated Cluster Average Time: 1792556785821 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +4 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -4 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556785853 ms
+  Node 2 (localhost:2002): 1792556785841 ms
+  Node 3 (localhost:2003): 1792556785829 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #39 - 2026-10-21 09:57:25] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556845867 ms
+  Node 2 (localhost:2002): 1792556845864 ms
+  Node 3 (localhost:2003): 1792556845858 ms
+
+[2] Calculated Cluster Average Time: 1792556845863 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -4 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556845885 ms
+  Node 2 (localhost:2002): 1792556845875 ms
+  Node 3 (localhost:2003): 1792556845868 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+Berkeley clock coordinator stopped.
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+
+=================================================
+ [MPI BROADCAST] Root (Node 1) broadcasting to 3 processes
+ Broadcast Message: "EMERGENCY CLUSTER BROADCAST: ALL NODES SYNC STATE"
+=================================================
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 1
+  From Root : Root Rank 0 (Node 1)
+  Data      : "EMERGENCY CLUSTER BROADCAST: ALL NODES SYNC STATE"
+-------------------------------------------------
+  [ACK] Broadcast successfully sent to Rank 0 (Node 1)
+  [ACK] Broadcast successfully sent to Rank 1 (Node 2)
+  [ACK] Broadcast successfully sent to Rank 2 (Node 3)
+=================================================
+
+=================================================
+ [MPI SCATTER] Root (Node 1) scattering 6 items across 3 processes
+ Input Buffer: [record_1, record_2, record_3, record_4, record_5, record_6]
+=================================================
+
+-------------------------------------------------
+[MPI SCATTER RECEIVED] on Rank 0 (Node 1)
+  Received Chunk (2 items): [record_1, record_2]
+  Processed Chunk: [[Rank 0 PROCESSED]: RECORD_1, [Rank 0 PROCESSED]: RECORD_2]
+-------------------------------------------------
+  -> Dispatched chunk [record_1, record_2] to Rank 0 (Node 1)
+  -> Dispatched chunk [record_3, record_4] to Rank 1 (Node 2)
+  -> Dispatched chunk [record_5, record_6] to Rank 2 (Node 3)
+
+=================================================
+ [MPI GATHER] Root (Node 1) gathering processed chunks in rank order
+=================================================
+[MPI GATHER] Node 1 (Rank 0) transmitting 2 items back to Root.
+  <- Gathered 2 items from Rank 0 (Node 1): [[Rank 0 PROCESSED]: RECORD_1, [Rank 0 PROCESSED]: RECORD_2]
+  <- Gathered 2 items from Rank 1 (Node 2): [[Rank 1 PROCESSED]: RECORD_3, [Rank 1 PROCESSED]: RECORD_4]
+  <- Gathered 2 items from Rank 2 (Node 3): [[Rank 2 PROCESSED]: RECORD_5, [Rank 2 PROCESSED]: RECORD_6]
+=================================================
+ [MPI GATHER COMPLETE] Assembled 6 items:
+ Result: [[Rank 0 PROCESSED]: RECORD_1, [Rank 0 PROCESSED]: RECORD_2, [Rank 1 PROCESSED]: RECORD_3, [Rank 1 PROCESSED]: RECORD_4, [Rank 2 PROCESSED]: RECORD_5, [Rank 2 PROCESSED]: RECORD_6]
+=================================================
+Node 1 registered user: amit
+User replication ACK from Node 2
+User replication ACK from Node 3
+
+=================================================
+ [MPI BROADCAST] Root (Node 1) broadcasting to 3 processes
+ Broadcast Message: "hi"
+=================================================
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 1
+  From Root : Root Rank 0 (Node 1)
+  Data      : "hi"
+-------------------------------------------------
+  [ACK] Broadcast successfully sent to Rank 0 (Node 1)
+  [ACK] Broadcast successfully sent to Rank 1 (Node 2)
+  [ACK] Broadcast successfully sent to Rank 2 (Node 3)
+=================================================
+-------------------------------------------------
+ [Round #1 - 2026-10-21 09:59:00] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792556940898 ms
+  Node 2 (localhost:2002): 1792556941039 ms
+  Node 3 (localhost:2003): 1792556940867 ms
+
+[2] Calculated Cluster Average Time: 1792556940934 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +36 ms
+  Node 2 (localhost:2002) adjustment: -105 ms
+  Node 3 (localhost:2003) adjustment: +67 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792556941068 ms
+  Node 2 (localhost:2002): 1792556941028 ms
+  Node 3 (localhost:2003): 1792556941001 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+java.rmi.server.ExportException: Port already in use: 3001; nested exception is: 
+	java.net.BindException: Address already in use
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:309)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.exportObject(TCPTransport.java:223)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.exportObject(TCPEndpoint.java:405)
+	at java.rmi/sun.rmi.transport.LiveRef.exportObject(LiveRef.java:147)
+	at java.rmi/sun.rmi.server.UnicastServerRef.exportObject(UnicastServerRef.java:226)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:473)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.exportObject(UnicastRemoteObject.java:358)
+	at java.rmi/java.rmi.server.UnicastRemoteObject.<init>(UnicastRemoteObject.java:230)
+	at server.ChatServer.<init>(ChatServer.java:58)
+	at server.ClockServer.main(ClockServer.java:90)
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:525)
+	at java.base/sun.nio.ch.Net.bind(Net.java:514)
+	at java.base/sun.nio.ch.NioSocketImpl.bind(NioSocketImpl.java:641)
+	at java.base/java.net.ServerSocket.bind(ServerSocket.java:326)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:222)
+	at java.base/java.net.ServerSocket.<init>(ServerSocket.java:138)
+	at java.rmi/sun.rmi.transport.tcp.TCPDirectSocketFactory.createServerSocket(TCPDirectSocketFactory.java:45)
+	at java.rmi/sun.rmi.transport.tcp.TCPEndpoint.newServerSocket(TCPEndpoint.java:662)
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.listen(TCPTransport.java:299)
+	... 9 more
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3002
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3002
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+Node 1 registered user: amit
+User replication ACK from Node 2
+User replication ACK from Node 3
+
+=================================================
+ [MPI BROADCAST] Root (Node 1) broadcasting to 3 processes
+ Broadcast Message: "hi"
+=================================================
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 1
+  From Root : Root Rank 0 (Node 1)
+  Data      : "hi"
+-------------------------------------------------
+  [ACK] Broadcast successfully sent to Rank 0 (Node 1)
+  [ACK] Broadcast successfully sent to Rank 1 (Node 2)
+  [ACK] Broadcast successfully sent to Rank 2 (Node 3)
+=================================================
+
+=================================================
+ [MPI SCATTER] Root (Node 1) scattering 4 items across 3 processes
+ Input Buffer: [a, b, c, d]
+=================================================
+
+-------------------------------------------------
+[MPI SCATTER RECEIVED] on Rank 0 (Node 1)
+  Received Chunk (2 items): [a, b]
+  Processed Chunk: [[Rank 0 PROCESSED]: A, [Rank 0 PROCESSED]: B]
+-------------------------------------------------
+  -> Dispatched chunk [a, b] to Rank 0 (Node 1)
+  -> Dispatched chunk [c, d] to Rank 1 (Node 2)
+  -> Dispatched chunk [] to Rank 2 (Node 3)
+
+=================================================
+ [MPI GATHER] Root (Node 1) gathering processed chunks in rank order
+=================================================
+[MPI GATHER] Node 1 (Rank 0) transmitting 2 items back to Root.
+  <- Gathered 2 items from Rank 0 (Node 1): [[Rank 0 PROCESSED]: A, [Rank 0 PROCESSED]: B]
+  <- Gathered 2 items from Rank 1 (Node 2): [[Rank 1 PROCESSED]: C, [Rank 1 PROCESSED]: D]
+  <- Gathered 0 items from Rank 2 (Node 3): []
+=================================================
+ [MPI GATHER COMPLETE] Assembled 4 items:
+ Result: [[Rank 0 PROCESSED]: A, [Rank 0 PROCESSED]: B, [Rank 1 PROCESSED]: C, [Rank 1 PROCESSED]: D]
+=================================================
+-------------------------------------------------
+ [Round #1 - 2026-10-21 14:11:39] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792572099138 ms
+  Node 2 (localhost:2002): 1792572099245 ms
+  Node 3 (localhost:2003): 1792572099049 ms
+
+[2] Calculated Cluster Average Time: 1792572099144 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +6 ms
+  Node 2 (localhost:2002) adjustment: -101 ms
+  Node 3 (localhost:2003) adjustment: +95 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792572099172 ms
+  Node 2 (localhost:2002): 1792572099166 ms
+  Node 3 (localhost:2003): 1792572099162 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #2 - 2026-10-21 14:12:39] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792572159181 ms
+  Node 2 (localhost:2002): 1792572159182 ms
+  Node 3 (localhost:2003): 1792572159180 ms
+
+[2] Calculated Cluster Average Time: 1792572159181 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +0 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792572159195 ms
+  Node 2 (localhost:2002): 1792572159188 ms
+  Node 3 (localhost:2003): 1792572159186 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #3 - 2026-10-21 14:13:39] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792572219202 ms
+  Node 2 (localhost:2002): 1792572219199 ms
+  Node 3 (localhost:2003): 1792572219206 ms
+
+[2] Calculated Cluster Average Time: 1792572219202 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +0 ms
+  Node 2 (localhost:2002) adjustment: +3 ms
+  Node 3 (localhost:2003) adjustment: -4 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792572219223 ms
+  Node 2 (localhost:2002): 1792572219219 ms
+  Node 3 (localhost:2003): 1792572219212 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-21 14:14:39] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792572279233 ms
+  Node 2 (localhost:2002): 1792572279233 ms
+  Node 3 (localhost:2003): 1792572279232 ms
+
+[2] Calculated Cluster Average Time: 1792572279232 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +0 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792572279248 ms
+  Node 2 (localhost:2002): 1792572279244 ms
+  Node 3 (localhost:2003): 1792572279236 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-21 14:15:39] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792572339260 ms
+  Node 2 (localhost:2002): 1792572339268 ms
+  Node 3 (localhost:2003): 1792572339270 ms
+
+[2] Calculated Cluster Average Time: 1792572339266 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +6 ms
+  Node 2 (localhost:2002) adjustment: -2 ms
+  Node 3 (localhost:2003) adjustment: -4 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792572339293 ms
+  Node 2 (localhost:2002): 1792572339281 ms
+  Node 3 (localhost:2003): 1792572339271 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+
+[MPI MATRIX MULT] 1. MPI_Bcast: Broadcasting Matrix B to 3 processes...
+[MPI_Bcast] Node 1 received full Matrix B (100x100)
+Failed to broadcast Matrix B to Rank 1: Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused
+Failed to broadcast Matrix B to Rank 2: Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused
+[MPI MATRIX MULT] 2. MPI_Scatter: Distributing rows of Matrix A among 3 processes...
+[MPI_Scatter] Rank 0 (Node 1) received 34 rows of Matrix A
+Failed to scatter rows of A to Rank 1: Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused
+Failed to scatter rows of A to Rank 2: Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused
+[MPI MATRIX MULT] 3 & 4. Parallel Computing & MPI_Gather: Collecting rows into Matrix C...
+Compute/Gather failed on Rank 2: Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused
+Compute/Gather failed on Rank 1: Connection refused to host: localhost; nested exception is: 
+	java.net.ConnectException: Connection refused
+[MPI_Compute & Gather] Rank 0 (Node 1) computed 34 rows of Matrix C
+
+=================================================
+      PARALLEL MATRIX MULTIPLICATION (MPI)
+=================================================
+Matrix Dimension (N x N)    : 100 x 100
+Total Processes (Communicator): 3
+Sequential Execution Time   : 8.829 ms
+Parallel MPI Execution Time : 16.510 ms
+Calculated Speedup (S)      : 0.53x
+Parallel Efficiency (E)     : 17.82%
+Correctness Verification    : FAILED
+=================================================
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+
+[MPI MATRIX MULT] 1. MPI_Bcast: Broadcasting Matrix B to 1 processes...
+[MPI_Bcast] Node 1 received full Matrix B (100x100)
+[MPI MATRIX MULT] 2. MPI_Scatter: Distributing rows of Matrix A among 1 processes...
+[MPI_Scatter] Rank 0 (Node 1) received 100 rows of Matrix A
+[MPI MATRIX MULT] 3 & 4. Parallel Computing & MPI_Gather: Collecting rows into Matrix C...
+[MPI_Compute & Gather] Rank 0 (Node 1) computed 100 rows of Matrix C
+
+=================================================
+      PARALLEL MATRIX MULTIPLICATION (MPI)
+=================================================
+Matrix Dimension (N x N)    : 100 x 100
+Total Processes (Communicator): 1
+Sequential Execution Time   : 12.644 ms
+Parallel MPI Execution Time : 11.364 ms
+Calculated Speedup (S)      : 1.11x
+Parallel Efficiency (E)     : 111.27%
+Correctness Verification    : PASSED (Results match sequentially)
+=================================================
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 1
+Advertised host: localhost
+Registry Port : 2001
+RMI object port: 3001
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 1, initial delay: 60s, interval: 60s).
+Node is ready.
+Node 1 registered user: amit
+User replication ACK from Node 2
+User replication ACK from Node 3
+
+[MPI MATRIX MULT] 1. MPI_Bcast: Broadcasting Matrix B to 3 processes...
+[MPI_Bcast] Node 1 received full Matrix B (200x200)
+[MPI MATRIX MULT] 2. MPI_Scatter: Distributing rows of Matrix A among 3 processes...
+[MPI_Scatter] Rank 0 (Node 1) received 67 rows of Matrix A
+[MPI MATRIX MULT] 3 & 4. Parallel Computing & MPI_Gather: Collecting rows into Matrix C...
+[MPI_Compute & Gather] Rank 0 (Node 1) computed 67 rows of Matrix C
+
+=================================================
+      PARALLEL MATRIX MULTIPLICATION (MPI)
+=================================================
+Matrix Dimension (N x N)    : 200 x 200
+Total Processes (Communicator): 3
+Sequential Execution Time   : 75.439 ms
+Parallel MPI Execution Time : 100.478 ms
+Calculated Speedup (S)      : 0.75x
+Parallel Efficiency (E)     : 25.03%
+Correctness Verification    : PASSED (Results match sequentially)
+=================================================
+-------------------------------------------------
+ [Round #1 - 2026-10-21 16:45:12] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581312960 ms
+  Node 2 (localhost:2002): 1792581313102 ms
+  Node 3 (localhost:2003): 1792581312930 ms
+
+[2] Calculated Cluster Average Time: 1792581312997 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +37 ms
+  Node 2 (localhost:2002) adjustment: -105 ms
+  Node 3 (localhost:2003) adjustment: +67 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581313143 ms
+  Node 2 (localhost:2002): 1792581313104 ms
+  Node 3 (localhost:2003): 1792581313078 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+
+[MPI MATRIX MULT] 1. MPI_Bcast: Broadcasting Matrix B to 3 processes...
+[MPI_Bcast] Node 1 received full Matrix B (150x150)
+[MPI MATRIX MULT] 2. MPI_Scatter: Distributing rows of Matrix A among 3 processes...
+[MPI_Scatter] Rank 0 (Node 1) received 50 rows of Matrix A
+[MPI MATRIX MULT] 3 & 4. Parallel Computing & MPI_Gather: Collecting rows into Matrix C...
+[MPI_Compute & Gather] Rank 0 (Node 1) computed 50 rows of Matrix C
+
+=================================================
+      PARALLEL MATRIX MULTIPLICATION (MPI)
+=================================================
+Matrix Dimension (N x N)    : 150 x 150
+Total Processes (Communicator): 3
+Sequential Execution Time   : 13.740 ms
+Parallel MPI Execution Time : 89.031 ms
+Calculated Speedup (S)      : 0.15x
+Parallel Efficiency (E)     : 5.14%
+Correctness Verification    : PASSED (Results match sequentially)
+=================================================
+-------------------------------------------------
+ [Round #2 - 2026-10-21 16:46:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581373168 ms
+  Node 2 (localhost:2002): 1792581373133 ms
+  Node 3 (localhost:2003): 1792581373112 ms
+
+[2] Calculated Cluster Average Time: 1792581373137 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -31 ms
+  Node 2 (localhost:2002) adjustment: +4 ms
+  Node 3 (localhost:2003) adjustment: +25 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581373162 ms
+  Node 2 (localhost:2002): 1792581373157 ms
+  Node 3 (localhost:2003): 1792581373153 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+
+[MPI MATRIX MULT] 1. MPI_Bcast: Broadcasting Matrix B to 3 processes...
+[MPI_Bcast] Node 1 received full Matrix B (300x300)
+[MPI MATRIX MULT] 2. MPI_Scatter: Distributing rows of Matrix A among 3 processes...
+[MPI_Scatter] Rank 0 (Node 1) received 100 rows of Matrix A
+[MPI MATRIX MULT] 3 & 4. Parallel Computing & MPI_Gather: Collecting rows into Matrix C...
+[MPI_Compute & Gather] Rank 0 (Node 1) computed 100 rows of Matrix C
+
+=================================================
+      PARALLEL MATRIX MULTIPLICATION (MPI)
+=================================================
+Matrix Dimension (N x N)    : 300 x 300
+Total Processes (Communicator): 3
+Sequential Execution Time   : 150.893 ms
+Parallel MPI Execution Time : 61.657 ms
+Calculated Speedup (S)      : 2.45x
+Parallel Efficiency (E)     : 81.58%
+Correctness Verification    : PASSED (Results match sequentially)
+=================================================
+-------------------------------------------------
+ [Round #3 - 2026-10-21 16:47:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581433190 ms
+  Node 2 (localhost:2002): 1792581433191 ms
+  Node 3 (localhost:2003): 1792581433192 ms
+
+[2] Calculated Cluster Average Time: 1792581433191 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +1 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581433216 ms
+  Node 2 (localhost:2002): 1792581433210 ms
+  Node 3 (localhost:2003): 1792581433205 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #4 - 2026-10-21 16:48:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581493237 ms
+  Node 2 (localhost:2002): 1792581493239 ms
+  Node 3 (localhost:2003): 1792581493240 ms
+
+[2] Calculated Cluster Average Time: 1792581493238 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +1 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: -2 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581493265 ms
+  Node 2 (localhost:2002): 1792581493257 ms
+  Node 3 (localhost:2003): 1792581493249 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #5 - 2026-10-21 16:49:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581553280 ms
+  Node 2 (localhost:2002): 1792581553287 ms
+  Node 3 (localhost:2003): 1792581553294 ms
+
+[2] Calculated Cluster Average Time: 1792581553287 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +7 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: -7 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581553331 ms
+  Node 2 (localhost:2002): 1792581553316 ms
+  Node 3 (localhost:2003): 1792581553302 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #6 - 2026-10-21 16:50:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581613347 ms
+  Node 2 (localhost:2002): 1792581613340 ms
+  Node 3 (localhost:2003): 1792581613335 ms
+
+[2] Calculated Cluster Average Time: 1792581613340 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -7 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +5 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581613370 ms
+  Node 2 (localhost:2002): 1792581613362 ms
+  Node 3 (localhost:2003): 1792581613353 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #7 - 2026-10-21 16:51:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581673386 ms
+  Node 2 (localhost:2002): 1792581673385 ms
+  Node 3 (localhost:2003): 1792581673383 ms
+
+[2] Calculated Cluster Average Time: 1792581673384 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -2 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581673412 ms
+  Node 2 (localhost:2002): 1792581673404 ms
+  Node 3 (localhost:2003): 1792581673396 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #8 - 2026-10-21 16:52:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581733435 ms
+  Node 2 (localhost:2002): 1792581733437 ms
+  Node 3 (localhost:2003): 1792581733445 ms
+
+[2] Calculated Cluster Average Time: 1792581733439 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: +4 ms
+  Node 2 (localhost:2002) adjustment: +2 ms
+  Node 3 (localhost:2003) adjustment: -6 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581733473 ms
+  Node 2 (localhost:2002): 1792581733464 ms
+  Node 3 (localhost:2003): 1792581733450 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #9 - 2026-10-21 16:53:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581793490 ms
+  Node 2 (localhost:2002): 1792581793490 ms
+  Node 3 (localhost:2003): 1792581793484 ms
+
+[2] Calculated Cluster Average Time: 1792581793488 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -2 ms
+  Node 2 (localhost:2002) adjustment: -2 ms
+  Node 3 (localhost:2003) adjustment: +4 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581793516 ms
+  Node 2 (localhost:2002): 1792581793506 ms
+  Node 3 (localhost:2003): 1792581793497 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+-------------------------------------------------
+ [Round #10 - 2026-10-21 16:54:13] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792581853529 ms
+  Node 2 (localhost:2002): 1792581853527 ms
+  Node 3 (localhost:2003): 1792581853523 ms
+
+[2] Calculated Cluster Average Time: 1792581853526 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -3 ms
+  Node 2 (localhost:2002) adjustment: -1 ms
+  Node 3 (localhost:2003) adjustment: +3 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792581853547 ms
+  Node 2 (localhost:2002): 1792581853539 ms
+  Node 3 (localhost:2003): 1792581853534 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+

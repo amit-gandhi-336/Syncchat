@@ -214,3 +214,69 @@ Start three local nodes using the commands in **Local three-node cluster**. Stop
 Start the three-node cluster, register users, and send messages. Select the client's **Chat Activity Analytics (MapReduce)** menu option to count messages by sender. The primary snapshots its in-memory messages, divides them into batches of up to 100, distributes map tasks to the configured nodes, and reduces their partial sender counts. It analyzes only the primary's snapshot, avoiding duplicate counts from replicated backup data. With the one-node setup, the map work runs locally. Chat storage remains in-memory and is not partitioned; restarting nodes clears their data.
 
 To try EVENTUAL mode with all three local servers, stop the existing processes and restart the same three server commands with `EVENTUAL` as the last argument.
+
+## MPI Collective Communication (Broadcast, Scatter, Gather)
+
+This experiment demonstrates MPI-style collective communication operations across all nodes in the cluster:
+
+1. **Broadcast (`MPI_Bcast`)**: Root process (Node 1) sends the exact same piece of data to all processes in the communicator.
+2. **Scatter (`MPI_Scatter`)**: Root process partitions an array of items into equal chunks and sends a distinct chunk to each process in rank order.
+3. **Gather (`MPI_Gather`)**: Root process collects distinct processed data chunks from all processes in rank order and assembles them into a single final buffer.
+
+### How to Run:
+
+Start the 3-node cluster in three terminals as usual:
+```sh
+java -cp out server.ClockServer 1 2001 0 true STRONG
+java -cp out server.ClockServer 2 2002 100 false STRONG
+java -cp out server.ClockServer 3 2003 -100 false STRONG
+```
+
+#### Method 1: Using the Standalone Demo Runner (Recommended for quick testing)
+In another terminal, run:
+```sh
+java -cp out server.MPIDemo
+```
+
+#### Method 2: Through the Chat Client Menu
+In another terminal, run:
+```sh
+java -cp out client.ChatClient
+```
+Select menu option **5** to test **MPI Broadcast**, or option **6** to test **MPI Scatter & Gather**.
+
+## EXP 10: Parallel Matrix Multiplication using MPI
+
+This experiment implements 1D Row-Wise Parallel Matrix Multiplication ($C = A \times B$) across all cluster nodes using MPI collective functions:
+
+1. **`MPI_Bcast`**: Broadcasts the full Matrix $B$ ($N \times N$) from the Root process to all participating worker processes.
+2. **`MPI_Scatter`**: Distributes equal chunks of rows of Matrix $A$ to each worker process in rank order.
+3. **Local Compute**: Each process multiplies its assigned rows of Matrix $A$ with Matrix $B$.
+4. **`MPI_Gather`**: Assembles the computed partial result rows into the complete Matrix $C$ at Root.
+5. **Benchmarking & Verification**: Compares parallel execution time against sequential multiplication, verifies mathematical correctness, and reports speedup and parallel efficiency.
+
+### How to Run:
+
+Start the 3-node cluster in three terminals:
+```sh
+java -cp out server.ClockServer 1 2001 0 true STRONG
+java -cp out server.ClockServer 2 2002 100 false STRONG
+java -cp out server.ClockServer 3 2003 -100 false STRONG
+```
+
+#### Method 1: Using the Standalone Matrix Runner (Recommended)
+In another terminal, run:
+```sh
+# Default (150x150)
+java -cp out server.MatrixDemo
+
+# Or specify custom matrix dimension (e.g. 200x200 or 300x300):
+java -cp out server.MatrixDemo 200
+```
+
+#### Method 2: Through the Chat Client Menu
+In another terminal, run:
+```sh
+java -cp out client.ChatClient
+```
+Select menu option **7** (**Parallel Matrix Multiplication (MPI)**) and enter the matrix size.

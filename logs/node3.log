@@ -108,3 +108,238 @@ Consistency   : STRONG
 ======================================
 Heartbeat manager started.
 Node is ready.
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: localhost
+Registry Port : 2003
+RMI object port: 3003
+Primary       : true
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 3, initial delay: 60s, interval: 60s).
+Node is ready.
+-------------------------------------------------
+ [Round #1 - 2026-10-21 09:19:49] Synchronizing Clocks
+-------------------------------------------------
+
+[1] Querying node clocks (Before Synchronization):
+  Node 1 (localhost:2001): 1792554589977 ms
+  Node 2 (localhost:2002): 1792554589975 ms
+  Node 3 (localhost:2003): 1792554589974 ms
+
+[2] Calculated Cluster Average Time: 1792554589975 ms (across 3 reachable nodes)
+
+[3] Adjustments:
+  Node 1 (localhost:2001) adjustment: -2 ms
+  Node 2 (localhost:2002) adjustment: +0 ms
+  Node 3 (localhost:2003) adjustment: +1 ms
+
+[4] Verified Clocks (After Synchronization):
+  Node 1 (localhost:2001): 1792554589989 ms
+  Node 2 (localhost:2002): 1792554589984 ms
+  Node 3 (localhost:2003): 1792554589980 ms
+
+Next synchronization scheduled in 60s (1.0 min)...
+
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: localhost
+Registry Port : 2003
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 1 is not responding.
+Starting Ring Election...
+=================================
+
+=================================
+       RING ELECTION
+       Initiated by Node 3
+=================================
+Node 1 is unreachable, trying next successor.
+Node 3 forwarding candidate 3 to successor Node 2
+Node 3 received election token with candidate 3
+
+*********************************
+Node 3 WINS THE RING ELECTION
+Node 3 is now PRIMARY
+*********************************
+
+=================================
+Node 3 IS NOW PRIMARY
+Starting state recovery...
+=================================
+Starting state recovery...
+Unable to recover state from Node 1
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+Node 3 restored replicated state.
+
+=================================
+STATE RECOVERY SUCCESSFUL
+Recovered from Node 2
+Users recovered: 0
+Messages recovered: 0
+=================================
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 3, initial delay: 60s, interval: 60s).
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: localhost
+Registry Port : 2003
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 3
+  From Root : Root Node 1
+  Data      : "EMERGENCY CLUSTER BROADCAST: ALL NODES SYNC STATE"
+-------------------------------------------------
+
+-------------------------------------------------
+[MPI SCATTER RECEIVED] on Rank 2 (Node 3)
+  Received Chunk (2 items): [record_5, record_6]
+  Processed Chunk: [[Rank 2 PROCESSED]: RECORD_5, [Rank 2 PROCESSED]: RECORD_6]
+-------------------------------------------------
+[MPI GATHER] Node 3 (Rank 2) transmitting 2 items back to Root.
+Node 3 replicated user: amit
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 3
+  From Root : Root Node 1
+  Data      : "hi"
+-------------------------------------------------
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: localhost
+Registry Port : 2003
+RMI object port: 3004
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 3 replicated user: amit
+
+-------------------------------------------------
+[MPI BROADCAST RECEIVED] on Node 3
+  From Root : Root Node 1
+  Data      : "hi"
+-------------------------------------------------
+
+-------------------------------------------------
+[MPI SCATTER RECEIVED] on Rank 2 (Node 3)
+  Received Chunk (0 items): []
+  Processed Chunk: []
+-------------------------------------------------
+[MPI GATHER] Node 3 (Rank 2) transmitting 0 items back to Root.
+Node 3 received election token with candidate 2
+Node 3 discarding candidate 2 (candidate < self)
+
+=================================
+PRIMARY FAILURE DETECTED
+Node 1 is not responding.
+Starting Ring Election...
+=================================
+
+=================================
+       RING ELECTION
+       Initiated by Node 3
+=================================
+Node 1 is unreachable, trying next successor.
+Node 2 is unreachable, trying next successor.
+Node 3 is the only reachable node. Winning by default.
+
+*********************************
+Node 3 WINS THE RING ELECTION
+Node 3 is now PRIMARY
+*********************************
+
+=================================
+Node 3 IS NOW PRIMARY
+Starting state recovery...
+=================================
+Starting state recovery...
+Unable to recover state from Node 1
+Unable to recover state from Node 2
+No backup was available for state recovery.
+=================================================
+        BERKELEY CLOCK COORDINATOR
+=================================================
+Configured target nodes:
+  - Node 1 (localhost:2001)
+  - Node 2 (localhost:2002)
+  - Node 3 (localhost:2003)
+Sync interval: 60 seconds (1.0 minutes)
+Initial delay: 60 seconds (1.0 minutes)
+=================================================
+Periodic clock synchronization active.
+
+Berkeley clock coordinator started on Primary (Node 3, initial delay: 60s, interval: 60s).
+
+======================================
+       SYNCCHAT NODE STARTED
+======================================
+Node ID       : 3
+Advertised host: localhost
+Registry Port : 2003
+RMI object port: 3003
+Primary       : false
+Consistency   : STRONG
+======================================
+Heartbeat manager started.
+Node is ready.
+Node 3 replicated user: amit
+[MPI_Bcast] Node 3 received full Matrix B (200x200)
+[MPI_Scatter] Rank 2 (Node 3) received 66 rows of Matrix A
+[MPI_Compute & Gather] Rank 2 (Node 3) computed 66 rows of Matrix C
+[MPI_Bcast] Node 3 received full Matrix B (150x150)
+[MPI_Scatter] Rank 2 (Node 3) received 50 rows of Matrix A
+[MPI_Compute & Gather] Rank 2 (Node 3) computed 50 rows of Matrix C
+[MPI_Bcast] Node 3 received full Matrix B (300x300)
+[MPI_Scatter] Rank 2 (Node 3) received 100 rows of Matrix A
+[MPI_Compute & Gather] Rank 2 (Node 3) computed 100 rows of Matrix C

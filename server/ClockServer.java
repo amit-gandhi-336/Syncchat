@@ -87,14 +87,33 @@ public class ClockServer {
                                 System.err.println("Could not enable dashboard log capture: " + e.getMessage());
                         }
 
-            ChatServer server =
-                    new ChatServer(
+            ChatServer server = null;
+            int actualExportPort = rmiObjectPort;
+            for (int attempt = 0; attempt < 10; attempt++) {
+                try {
+                    server = new ChatServer(
                             nodeId,
                             offset,
                             primary,
                             consistencyMode,
-                            rmiObjectPort
+                            actualExportPort
                     );
+                    break;
+                } catch (java.rmi.server.ExportException ee) {
+                    if (actualExportPort == 0) throw ee;
+                    actualExportPort++;
+                }
+            }
+            if (server == null) {
+                actualExportPort = 0;
+                server = new ChatServer(
+                        nodeId,
+                        offset,
+                        primary,
+                        consistencyMode,
+                        0
+                );
+            }
 
             for (String entry : clusterConfig.split(",")) {
                 String[] fields = entry.trim().split("@", 3);
@@ -141,6 +160,11 @@ public class ClockServer {
                     server
             );
 
+            registry.rebind(
+                    "MPICollectiveService",
+                    server
+            );
+
             System.out.println();
             System.out.println(
                     "======================================"
@@ -167,7 +191,7 @@ public class ClockServer {
             );
 
             System.out.println(
-                    "RMI object port: " + rmiObjectPort
+                    "RMI object port: " + actualExportPort
             );
 
             System.out.println(

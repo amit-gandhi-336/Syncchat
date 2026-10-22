@@ -131,7 +131,16 @@ public class ChatClient {
                         "4. Chat Activity Analytics (MapReduce)"
                 );
                 System.out.println(
-                        "5. Exit"
+                        "5. MPI Broadcast"
+                );
+                System.out.println(
+                        "6. MPI Scatter & Gather"
+                );
+                System.out.println(
+                        "7. Parallel Matrix Multiplication (MPI)"
+                );
+                System.out.println(
+                        "8. Exit"
                 );
 
                 System.out.print(
@@ -186,6 +195,26 @@ public class ChatClient {
                         break;
 
                     case "5":
+
+                        System.out.print("Enter broadcast message: ");
+                        String bcastMsg = scanner.nextLine();
+                        runMPIBroadcast(bcastMsg);
+
+                        break;
+
+                    case "6":
+
+                        runMPIScatterGather(scanner);
+
+                        break;
+
+                    case "7":
+
+                        runMatrixMultiplication(scanner);
+
+                        break;
+
+                    case "8":
 
                         System.out.println(
                                 "Goodbye!"
@@ -464,5 +493,87 @@ public class ChatClient {
         System.out.println(
                 "==========================================="
         );
+    }
+
+    private static void runMPIBroadcast(String message) {
+        try {
+            chatService.mpiBroadcast(message);
+            System.out.println("[MPI SUCCESS] Broadcast successfully dispatched by Root.");
+        } catch (Exception e) {
+            System.out.println("Broadcast failed: " + e.getMessage());
+            try {
+                reconnect();
+                chatService.mpiBroadcast(message);
+                System.out.println("[MPI SUCCESS] Broadcast successfully dispatched by Root (after reconnect).");
+            } catch (Exception ex) {
+                System.out.println("Unable to complete broadcast: " + ex.getMessage());
+            }
+        }
+    }
+
+    private static void runMPIScatterGather(Scanner scanner) {
+        System.out.print("Enter comma-separated items to scatter (e.g. data1,data2,data3,data4,data5,data6): ");
+        String input = scanner.nextLine().trim();
+        List<String> items = new java.util.ArrayList<>();
+        if (input.isEmpty()) {
+            items.addAll(java.util.Arrays.asList("task-A", "task-B", "task-C", "task-D", "task-E", "task-F"));
+            System.out.println("Using default items: " + items);
+        } else {
+            for (String s : input.split(",")) {
+                if (!s.trim().isEmpty()) {
+                    items.add(s.trim());
+                }
+            }
+        }
+
+        try {
+            System.out.println("\n[MPI INITIATED] Scattering " + items.size() + " items and gathering processed results...");
+            List<String> gathered = chatService.mpiScatterGather(items);
+            System.out.println("\n[MPI GATHER FINAL RESULT]");
+            for (int i = 0; i < gathered.size(); i++) {
+                System.out.println("  Item " + (i + 1) + ": " + gathered.get(i));
+            }
+        } catch (Exception e) {
+            System.out.println("Scatter-Gather failed: " + e.getMessage());
+            try {
+                reconnect();
+                List<String> gathered = chatService.mpiScatterGather(items);
+                System.out.println("\n[MPI GATHER FINAL RESULT]");
+                for (int i = 0; i < gathered.size(); i++) {
+                    System.out.println("  Item " + (i + 1) + ": " + gathered.get(i));
+                }
+            } catch (Exception ex) {
+                System.out.println("Unable to complete Scatter-Gather: " + ex.getMessage());
+            }
+        }
+    }
+
+    private static void runMatrixMultiplication(Scanner scanner) {
+        System.out.print("Enter matrix dimension N (e.g. 150 for 150x150, or press Enter for default 150): ");
+        String input = scanner.nextLine().trim();
+        int size = 150;
+        if (!input.isEmpty()) {
+            try {
+                size = Integer.parseInt(input);
+                if (size <= 0) size = 150;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number, using default 150.");
+            }
+        }
+
+        try {
+            System.out.println("\nRunning MPI Parallel Matrix Multiplication for size " + size + "x" + size + "...");
+            String report = chatService.runParallelMatrixMultiplication(size);
+            System.out.println("\n" + report);
+        } catch (Exception e) {
+            System.out.println("Matrix multiplication failed: " + e.getMessage());
+            try {
+                reconnect();
+                String report = chatService.runParallelMatrixMultiplication(size);
+                System.out.println("\n" + report);
+            } catch (Exception ex) {
+                System.out.println("Unable to complete matrix multiplication: " + ex.getMessage());
+            }
+        }
     }
 }

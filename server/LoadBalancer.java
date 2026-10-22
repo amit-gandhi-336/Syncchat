@@ -221,6 +221,21 @@ public class LoadBalancer extends UnicastRemoteObject implements ChatService {
         return readFromHealthyNode(service -> service.getServerStatus());
     }
 
+    @Override
+    public void mpiBroadcast(String message) throws RemoteException {
+        primaryService().mpiBroadcast(message);
+    }
+
+    @Override
+    public List<String> mpiScatterGather(List<String> items) throws RemoteException {
+        return primaryService().mpiScatterGather(items);
+    }
+
+    @Override
+    public String runParallelMatrixMultiplication(int matrixSize) throws RemoteException {
+        return primaryService().runParallelMatrixMultiplication(matrixSize);
+    }
+
     private interface ReadOperation<T> {
         T call(ChatService service) throws RemoteException;
     }

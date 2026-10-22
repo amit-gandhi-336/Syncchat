@@ -13,4 +13,8 @@ public interface ChatService extends Remote {
     List<Message> getMessages(String username) throws RemoteException;
     Map<String, Long> getMessageCountsBySender() throws RemoteException;
     String getServerStatus() throws RemoteException;
+
+    void mpiBroadcast(String message) throws RemoteException;
+    List<String> mpiScatterGather(List<String> items) throws RemoteException;
+    String runParallelMatrixMultiplication(int matrixSize) throws RemoteException;
 }
