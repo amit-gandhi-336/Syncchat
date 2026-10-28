@@ -538,11 +538,21 @@
       const btn     = document.getElementById('sendBtn');
       if (!content || !activePeer || !myUsername) return;
       btn.disabled = inp.disabled = true;
+      const optimisticMsg = {
+        text: `[${new Date().toISOString()}] ${myUsername} -> ${activePeer}: ${content}`
+      };
+      allMessages.push(optimisticMsg);
+      renderChat();
       try {
         await postForm('/api/send', { sender: myUsername, receiver: activePeer, content });
         inp.value = ''; autoResize(inp);
         await refreshInbox();
-      } catch (e) { showToast(e.message, true); }
+      } catch (e) {
+        const idx = allMessages.indexOf(optimisticMsg);
+        if (idx !== -1) allMessages.splice(idx, 1);
+        renderChat();
+        showToast(e.message, true);
+      }
       finally { btn.disabled = inp.disabled = false; inp.focus(); }
     }
 

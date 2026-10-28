@@ -416,16 +416,35 @@ public class ChatServer
             String username)
             throws RemoteException {
 
-        List<Message> list =
-                messages.get(username);
-
-        if (list == null) {
+        if (username == null) {
             return new ArrayList<>();
         }
 
-        synchronized (list) {
-            return new ArrayList<>(list);
+        List<Message> conversation = new ArrayList<>();
+        Set<Message> seen = Collections.newSetFromMap(new IdentityHashMap<>());
+
+        for (List<Message> list : messages.values()) {
+            if (list == null) {
+                continue;
+            }
+            synchronized (list) {
+                for (Message msg : list) {
+                    if (seen.add(msg)) {
+                        if (username.equals(msg.getSender()) ||
+                                username.equals(msg.getReceiver())) {
+                            conversation.add(msg);
+                        }
+                    }
+                }
+            }
         }
+
+        conversation.sort(Comparator.comparing(
+                Message::getTime,
+                Comparator.nullsLast(Comparator.naturalOrder())
+        ));
+
+        return conversation;
     }
 
     // =====================================================

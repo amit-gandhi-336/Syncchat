@@ -20,6 +20,18 @@ public class Message implements Serializable {
         return sender;
     }
 
+    public String getReceiver() {
+        return receiver;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
     public String toString() {
         return "[" + time + "] " + sender +
                " -> " + receiver + ": " + content;

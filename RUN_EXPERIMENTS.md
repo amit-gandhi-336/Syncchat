@@ -17,6 +17,25 @@ java ... server.ClockServer <nodeId> <registryPort> <clockOffset> <primary> <STR
 
 Keep every server running in its own terminal. Start the primary before connecting clients.
 
+## Fix "Port already in use" / BindException
+
+If a server or load balancer fails with `Port already in use` or `Address already in use` (ports 2000-2003, 2100, 2200, or 3001-3004), free the ports using:
+
+```sh
+# Force-kill any process occupying Syncchat ports (quickest fix):
+fuser -k 2000/tcp 2001/tcp 2002/tcp 2003/tcp 2100/tcp 2200/tcp 3001/tcp 3002/tcp 3003/tcp 3004/tcp
+
+# Or kill all leftover Syncchat Java instances:
+pkill -f "server.ClockServer|server.LoadBalancer|server.SimulationDashboard|client.ChatClient"
+```
+
+To see which process is holding a specific port (e.g. 2001):
+```sh
+lsof -i :2001
+# or
+fuser 2001/tcp
+```
+
 ## Local three-node cluster
 
 Start one node per terminal on the same computer:
@@ -72,6 +91,29 @@ do not bind it to `0.0.0.0` or expose it to the public internet. Binding to a
 Tailscale IP makes the UI remotely accessible, but simulation processes are
 still launched on the dashboard host itself; it does not start server JVMs on
 the other computers.
+
+## Multi-laptop web dashboard (ClientDashboard)
+
+To run the web browser dashboard on separate laptops connected via Tailscale, use `server.ClientDashboard`. Each user runs their own dashboard connected to the central Load Balancer.
+
+### 1. Start the Load Balancer on Node 1 (Fedora):
+```sh
+java -Djava.rmi.server.hostname=100.68.59.4 -cp out server.LoadBalancer 2000 2200 "1@100.68.59.4@2001,2@100.85.12.25@2002"
+```
+
+### 2. Start the Web Dashboard on Node 1 (Fedora):
+```sh
+java --add-modules jdk.httpserver -Dsyncchat.node.id=1 -Dsyncchat.lb.host=100.68.59.4 -Dsyncchat.lb.port=2000 -Dsyncchat.dashboard.host=127.0.0.1 -cp out server.ClientDashboard
+```
+Open **<http://localhost:8080>** in your browser on Fedora.
+
+### 3. Start the Web Dashboard on Node 2 (Windows - PowerShell):
+```powershell
+java --add-modules jdk.httpserver "-Dsyncchat.node.id=2" "-Dsyncchat.lb.host=100.68.59.4" "-Dsyncchat.lb.port=2000" "-Dsyncchat.dashboard.host=127.0.0.1" -cp out server.ClientDashboard
+```
+Open **<http://localhost:8080>** in your browser on Windows.
+
+Both users can now join with their own usernames, view live user lists, send messages, and view status in the browser UI.
 
 ## Run three servers across Tailscale
 
