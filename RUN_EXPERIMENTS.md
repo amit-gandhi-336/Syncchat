@@ -103,13 +103,15 @@ java -Djava.rmi.server.hostname=100.68.59.4 -cp out server.LoadBalancer 2000 220
 
 ### 2. Start the Web Dashboard on Node 1 (Fedora):
 ```sh
-java --add-modules jdk.httpserver -Dsyncchat.node.id=1 -Dsyncchat.lb.host=100.68.59.4 -Dsyncchat.lb.port=2000 -Dsyncchat.dashboard.host=127.0.0.1 -cp out server.ClientDashboard
+java --add-modules jdk.httpserver -Dsyncchat.node.id=1 -Dsyncchat.lb.host=100.68.59.4 -Dsyncchat.lb.port=2000 -Dsyncchat.dashboard.host=0.0.0.0 -cp out server.ClientDashboard
 ```
-Open **<http://localhost:8080>** in your browser on Fedora.
+- On Fedora: Open **<http://localhost:8080>**
+- On any other laptop in your Tailscale network: Open **<http://100.68.59.4:8080>** directly in any browser (no terminal commands or Java installation needed!).
 
-### 3. Start the Web Dashboard on Node 2 (Windows - PowerShell):
+### 3. (Optional) Run a Dedicated Client Dashboard on Node 2 (Windows - PowerShell):
+If you prefer running a local dashboard instance directly on Windows:
 ```powershell
-java --add-modules jdk.httpserver "-Dsyncchat.node.id=2" "-Dsyncchat.lb.host=100.68.59.4" "-Dsyncchat.lb.port=2000" "-Dsyncchat.dashboard.host=127.0.0.1" -cp out server.ClientDashboard
+java --add-modules jdk.httpserver "-Dsyncchat.node.id=2" "-Dsyncchat.lb.host=100.68.59.4" "-Dsyncchat.lb.port=2000" "-Dsyncchat.dashboard.host=0.0.0.0" -cp out server.ClientDashboard
 ```
 Open **<http://localhost:8080>** in your browser on Windows.
 
