@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Message implements Serializable {
+    private static final long serialVersionUID = 6873437359484127782L;
+
     private final String sender;
     private final String receiver;
     private final String content;
